@@ -10,7 +10,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import { healthRouter } from "./routes/health.routes.js";
+import { healthRouter }   from "./routes/health.routes.js";
+import { designsRouter }  from "./routes/designs.routes.js";
 import { notFound, errorHandler } from "./middleware/errors.js";
 
 const app = express();
@@ -59,6 +60,7 @@ if (process.env.NODE_ENV !== "test") {
 
 // ─── Routes ───────────────────────────────────────────────────────────────
 app.use("/api", healthRouter);
+app.use("/api", designsRouter);
 
 // Root info (handy when poking the API directly)
 app.get("/", (_req, res) => {
