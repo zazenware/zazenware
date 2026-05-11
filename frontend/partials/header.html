@@ -1,0 +1,146 @@
+<!--
+  zazenware — header.html
+  Injected into every page at <div id="site-header"></div> by partials.js.
+  Master Spec § 9.3
+-->
+<a href="#main-content" class="zw-visually-hidden zw-skip-link">Skip to main content</a>
+
+<header class="zw-header" role="banner">
+  <div class="zw-container zw-header__inner">
+
+    <!-- Brand wordmark — smallcase blackletter -->
+    <a href="/" class="zw-header__brand" aria-label="zazenware — home">
+      <span class="zw-display">zazenware</span>
+    </a>
+
+    <!-- Desktop primary nav -->
+    <nav class="zw-header__nav zw-hide-mobile" aria-label="Primary">
+      <ul class="zw-nav" role="list">
+        <li>
+          <a href="/" class="zw-nav__link" data-nav="home">Home</a>
+        </li>
+        <li>
+          <a href="/art.html" class="zw-nav__link" data-nav="art">Art</a>
+        </li>
+
+        <!-- Shop dropdown -->
+        <li class="zw-dropdown" data-zw-dropdown>
+          <button
+            type="button"
+            class="zw-nav__link zw-dropdown__trigger"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="shop-menu"
+            data-zw-dropdown-trigger
+          >
+            Shop
+            <span class="zw-dropdown__chevron" aria-hidden="true">▾</span>
+          </button>
+          <ul
+            id="shop-menu"
+            class="zw-dropdown__menu"
+            role="menu"
+            hidden
+            data-zw-dropdown-menu
+          >
+            <li role="none">
+              <a href="/shop.html#shirts" class="zw-dropdown__item" role="menuitem">Shirts</a>
+            </li>
+            <li role="none">
+              <a href="/shop.html#patches" class="zw-dropdown__item" role="menuitem">Patches</a>
+            </li>
+            <li role="none">
+              <a href="/shop.html#prints" class="zw-dropdown__item" role="menuitem">Prints</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="/contact.html" class="zw-nav__link" data-nav="contact">Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Header actions: cart + theme toggle + mobile menu trigger -->
+    <div class="zw-header__actions zw-cluster zw-cluster-sm">
+      <!-- Cart link with badge -->
+      <a href="/cart.html" class="zw-header__cart" data-nav="cart" aria-label="Cart, 0 items">
+        <span class="zw-header__cart-icon" aria-hidden="true">⌫</span>
+        <span class="zw-header__cart-label">Cart</span>
+        <span class="zw-header__cart-badge" data-zw-cart-badge hidden>0</span>
+      </a>
+
+      <!-- Theme toggle -->
+      <button
+        type="button"
+        class="zw-theme-toggle"
+        aria-pressed="false"
+        aria-label="Switch to dark theme"
+        data-zw-theme-toggle
+      >
+        <span class="zw-theme-toggle__icon zw-theme-toggle__icon--sun" aria-hidden="true">☀</span>
+        <span class="zw-theme-toggle__icon zw-theme-toggle__icon--moon" aria-hidden="true">☾</span>
+      </button>
+
+      <!-- Mobile menu trigger -->
+      <button
+        type="button"
+        class="zw-header__menu-trigger zw-show-mobile"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        aria-label="Open menu"
+        data-zw-drawer-trigger
+      >
+        <span class="zw-header__menu-icon" aria-hidden="true">≡</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- Mobile nav drawer (outside .zw-header for positioning) -->
+<div
+  id="mobile-nav"
+  class="zw-drawer"
+  hidden
+  aria-hidden="true"
+  data-zw-drawer
+>
+  <div class="zw-drawer__overlay" data-zw-drawer-overlay></div>
+  <div
+    class="zw-drawer__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="mobile-nav-title"
+    tabindex="-1"
+    data-zw-drawer-panel
+  >
+    <div class="zw-drawer__header">
+      <h2 id="mobile-nav-title" class="zw-display zw-drawer__title">menu</h2>
+      <button
+        type="button"
+        class="zw-drawer__close"
+        aria-label="Close menu"
+        data-zw-drawer-close
+      >
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+    <nav aria-label="Mobile primary">
+      <ul class="zw-drawer__nav" role="list">
+        <li><a href="/" data-nav="home">Home</a></li>
+        <li><a href="/art.html" data-nav="art">Art</a></li>
+        <li>
+          <span class="zw-drawer__group-label">Shop</span>
+          <ul class="zw-drawer__subnav" role="list">
+            <li><a href="/shop.html#shirts">Shirts</a></li>
+            <li><a href="/shop.html#patches">Patches</a></li>
+            <li><a href="/shop.html#prints">Prints</a></li>
+          </ul>
+        </li>
+        <li><a href="/cart.html" data-nav="cart">Cart</a></li>
+        <li><a href="/contact.html" data-nav="contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>

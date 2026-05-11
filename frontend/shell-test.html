@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E-03 shell test — zazenware</title>
+  <meta name="description" content="Internal smoke test for the site shell. Delete before launch." />
+
+  <script src="/scripts/theme-init.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <!-- Partials must load before behavior scripts; type=module gives us defer + 'zw:partials-ready' wait -->
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
+</head>
+<body>
+
+  <!-- Header partial injects here -->
+  <div id="site-header"></div>
+
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+
+    <section class="zw-hero">
+      <div class="zw-hero__eyebrow">Shell test</div>
+      <h1 class="zw-hero__title zw-display">site shell</h1>
+      <p class="zw-hero__sub">
+        Verify the header, theme toggle, Shop dropdown, mobile drawer, cart badge, and footer all render and behave correctly.
+      </p>
+    </section>
+
+    <section class="zw-stack zw-prose">
+      <h2>What to check</h2>
+      <ul>
+        <li>Header renders with the smallcase blackletter brand and primary nav.</li>
+        <li>Theme toggle (top right) flips light/dark with no flash on refresh.</li>
+        <li>On desktop, click <strong>Shop</strong> — dropdown opens. Arrow keys navigate; ESC closes.</li>
+        <li>On mobile/tablet, the desktop nav hides and the hamburger appears. Click it → drawer slides in. ESC closes. Tab is trapped inside the drawer.</li>
+        <li>Click the button below to fake-add to the cart — the header badge should update.</li>
+        <li>Refresh — theme and cart count persist.</li>
+        <li>Footer renders with brand, three columns, copyright.</li>
+        <li>The <strong>Sibling Art</strong> link opens in a new tab.</li>
+        <li>Tab from the address bar — first focus is the Skip-to-content link (lavender block in the top-left).</li>
+      </ul>
+
+      <div class="zw-cluster">
+        <button id="add-fake-item" class="zw-btn zw-btn--primary">Fake-add to cart</button>
+        <button id="clear-cart" class="zw-btn zw-btn--secondary">Clear cart</button>
+      </div>
+
+      <p class="zw-text-muted zw-text-small">
+        These two buttons exist only on this test page. They directly read/write localStorage <code>zw-cart</code> and dispatch <code>zw:cart-updated</code> so the badge re-renders.
+      </p>
+    </section>
+
+    <section class="zw-stack" style="padding-block-end: 3rem;">
+      <hr />
+      <p class="zw-text-small zw-text-muted">E-03 shell test. Delete before launch.</p>
+    </section>
+
+  </main>
+
+  <!-- Footer partial injects here -->
+  <div id="site-footer"></div>
+
+  <script>
+    // Test buttons — only for this page.
+    document.getElementById("add-fake-item").addEventListener("click", () => {
+      let cart;
+      try { cart = JSON.parse(localStorage.getItem("zw-cart")) || []; } catch (_) { cart = []; }
+      cart.push({
+        product_id: "test-" + Date.now(),
+        product_type: "shirt",
+        design_slug: "test",
+        name: "Test Shirt",
+        unit_price_cents: 2500,
+        quantity: 1,
+        image_url: "",
+      });
+      localStorage.setItem("zw-cart", JSON.stringify(cart));
+      document.dispatchEvent(new CustomEvent("zw:cart-updated"));
+    });
+
+    document.getElementById("clear-cart").addEventListener("click", () => {
+      localStorage.removeItem("zw-cart");
+      document.dispatchEvent(new CustomEvent("zw:cart-updated"));
+    });
+  </script>
+</body>
+</html>
