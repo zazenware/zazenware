@@ -1,0 +1,213 @@
+/* ============================================================================
+   zazenware — cart.css
+   ----------------------------------------------------------------------------
+   Styles for the Cart page: CartItem layout, order summary table, form
+   fields, honeypot, error states.
+   ============================================================================ */
+
+/* ─── Cart item list ────────────────────────────────────────────────────── */
+.zw-cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-4);
+}
+
+.zw-cart-item {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  grid-template-areas:
+    "image body  total"
+    "image qty   remove";
+  gap: var(--zw-space-3) var(--zw-space-4);
+  padding: var(--zw-space-3);
+  background: var(--zw-surface);
+  border: var(--zw-border-width) solid var(--zw-border);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .zw-cart-item {
+    grid-template-columns: 120px 1fr auto auto auto;
+    grid-template-areas: "image body qty total remove";
+  }
+}
+
+.zw-cart-item__image {
+  grid-area: image;
+  width: 96px;
+  height: 96px;
+}
+
+@media (min-width: 768px) {
+  .zw-cart-item__image {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.zw-cart-item__body  { grid-area: body; }
+.zw-cart-item__qty   { grid-area: qty; }
+.zw-cart-item__total { grid-area: total; text-align: right; font-size: 1.125rem; }
+.zw-cart-item__remove{ grid-area: remove; }
+
+.zw-cart-item__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.zw-cart-item__meta {
+  margin: 0;
+}
+
+.zw-cart-item__price {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--zw-text-muted);
+}
+
+.zw-cart-item__qty-input {
+  width: 3.5rem;
+  text-align: center;
+  padding: var(--zw-space-2);
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  font-family: var(--zw-font-body);
+  -moz-appearance: textfield;
+}
+
+.zw-cart-item__qty-input::-webkit-outer-spin-button,
+.zw-cart-item__qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ─── Order summary table ───────────────────────────────────────────────── */
+.zw-order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: var(--zw-space-4) 0;
+  padding: var(--zw-space-4);
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+}
+
+.zw-order-summary__line {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--zw-space-4);
+  padding: var(--zw-space-2) 0;
+  border-bottom: 1px dashed var(--zw-border);
+}
+
+.zw-order-summary__line:last-child {
+  border-bottom: none;
+}
+
+.zw-order-summary__line dt,
+.zw-order-summary__line dd {
+  margin: 0;
+}
+
+.zw-order-summary__line dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.zw-order-summary__total {
+  font-size: 1.15rem;
+  padding-top: var(--zw-space-3);
+  margin-top: var(--zw-space-2);
+  border-top: var(--zw-border-width) solid var(--zw-border);
+}
+
+/* ─── Checkout form ─────────────────────────────────────────────────────── */
+.zw-checkout-form {
+  margin-top: var(--zw-space-5);
+  padding: var(--zw-space-5);
+  background: var(--zw-surface);
+  border: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-checkout-form__summary {
+  background: var(--zw-error-bg);
+  color: var(--zw-error);
+  border: var(--zw-border-width) solid var(--zw-error);
+  padding: var(--zw-space-3) var(--zw-space-4);
+}
+
+.zw-checkout-form__summary-list {
+  margin: var(--zw-space-2) 0 0;
+  padding-left: var(--zw-space-5);
+}
+
+/* ─── Form field ────────────────────────────────────────────────────────── */
+.zw-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-1);
+  margin-bottom: var(--zw-space-3);
+}
+
+.zw-field__label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.zw-field__input {
+  padding: var(--zw-space-3);
+  background: var(--zw-bg);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  font-family: var(--zw-font-body);
+  font-size: 1rem;
+  min-height: 44px;
+  width: 100%;
+}
+
+.zw-field__input:focus-visible {
+  outline: 3px solid var(--zw-focus);
+  outline-offset: 1px;
+}
+
+textarea.zw-field__input {
+  resize: vertical;
+  min-height: 88px;
+  font-family: var(--zw-font-body);
+}
+
+.zw-field__input[aria-invalid="true"] {
+  border-color: var(--zw-error);
+  border-width: var(--zw-border-thick);
+}
+
+.zw-field__helper {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--zw-text-muted);
+}
+
+.zw-field__error {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--zw-error);
+}
+
+/* ─── Honeypot ──────────────────────────────────────────────────────────── */
+.zw-honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}

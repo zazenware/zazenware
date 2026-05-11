@@ -21,6 +21,9 @@
   <script type="module" src="/scripts/theme.js"></script>
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
+
+  <!-- Cart page script — renders items, summary, and form -->
+  <script type="module" src="/scripts/cart-page.js"></script>
 </head>
 <body>
 
@@ -34,7 +37,7 @@
       <p class="zw-hero__sub">Review your items, enter your Canadian shipping address, and submit. Payment is by Interac e-transfer after submission.</p>
     </section>
 
-    <!-- Empty state (visible before E-09 wires real cart) -->
+    <!-- Empty state (visible when cart is empty) -->
     <section id="cart-empty" class="zw-panel zw-stack">
       <h2 class="zw-display" style="font-size: 1.75rem;">your cart is empty</h2>
       <p>Add a shirt, patch, or print from the Shop to get started.</p>
@@ -43,15 +46,11 @@
       </p>
     </section>
 
-    <!-- Cart items will be inserted here in E-09 -->
-    <section id="cart-items" hidden aria-label="Cart items">
-      <!-- E-09: cart line items render here -->
-    </section>
+    <!-- Cart items list (rendered by cart-page.js) -->
+    <section id="cart-items" hidden aria-label="Cart items"></section>
 
-    <!-- Order summary + shipping form will be inserted here in E-09 -->
-    <section id="cart-summary" hidden aria-label="Order summary">
-      <!-- E-09: subtotal, bundle, shipping, tax, total + form -->
-    </section>
+    <!-- Order summary + shipping form (rendered by cart-page.js) -->
+    <section id="cart-summary" hidden aria-label="Order summary"></section>
 
     <!-- SUPPORT ARTIST -->
     <section id="support" class="zw-block" style="margin-block: var(--zw-space-7);">
