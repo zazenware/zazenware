@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E-02 smoke test — zazenware</title>
+  <meta name="description" content="Internal smoke test for the CSS foundation. Delete before launch." />
+
+  <!-- Theme detection MUST be synchronous and before the stylesheet -->
+  <script src="/scripts/theme-init.js"></script>
+
+  <!-- Fonts: blackletter + typewriter, from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Single CSS entry -->
+  <link rel="stylesheet" href="/styles/main.css" />
+</head>
+<body>
+  <!-- Skip link — first focusable element -->
+  <a href="#main-content" class="zw-visually-hidden">Skip to main content</a>
+
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+
+    <!-- HERO: shows .zw-display blackletter + theme block -->
+    <section class="zw-hero">
+      <div class="zw-hero__eyebrow">Smoke test</div>
+      <h1 class="zw-hero__title zw-display">zazenware</h1>
+      <p class="zw-hero__sub">CSS foundation check — blackletter display, typewriter body, two themes, hard borders, hard shadow.</p>
+    </section>
+
+    <!-- Theme toggle -->
+    <section class="zw-stack">
+      <h2>Theme toggle</h2>
+      <button id="theme-test-toggle" type="button" class="zw-btn zw-btn--primary">
+        Toggle theme
+      </button>
+      <p class="zw-text-muted zw-text-small">
+        Current theme is shown on the &lt;html&gt; element as data-theme.
+        Click the button to flip and persist to localStorage.
+      </p>
+    </section>
+
+    <!-- Typography sample -->
+    <section class="zw-stack">
+      <h2>Typography</h2>
+      <p>This is body text in Special Elite. Reading length is comfortable. Long
+      paragraphs should never use the blackletter face — that's reserved for
+      display moments via the <code>.zw-display</code> class which lowercases its
+      contents automatically.</p>
+      <p>
+        <strong>Bold</strong> and <em>italic</em> and a <a href="#">link</a> for contrast checking.
+      </p>
+      <p class="zw-display" style="font-size: 2rem;">Sample Display Text</p>
+      <p class="zw-text-muted">Muted text reads at sufficient contrast in both themes.</p>
+    </section>
+
+    <!-- Buttons -->
+    <section class="zw-stack">
+      <h2>Buttons</h2>
+      <div class="zw-cluster">
+        <button class="zw-btn zw-btn--primary">Primary</button>
+        <button class="zw-btn zw-btn--secondary">Secondary</button>
+        <button class="zw-btn zw-btn--ghost">Ghost</button>
+        <button class="zw-btn zw-btn--danger">Danger</button>
+        <button class="zw-btn" disabled>Disabled</button>
+      </div>
+      <div class="zw-cluster">
+        <button class="zw-btn zw-btn--primary zw-btn--small">Small</button>
+        <button class="zw-btn zw-btn--primary zw-btn--large">Large</button>
+      </div>
+    </section>
+
+    <!-- Blocks -->
+    <section class="zw-stack">
+      <h2>Block language</h2>
+      <div class="zw-grid">
+        <div class="zw-block">
+          <p>Block — primary atmosphere.</p>
+        </div>
+        <div class="zw-block-accent">
+          <p>Block — accent.</p>
+        </div>
+        <div class="zw-panel">
+          <p>Panel — surface for content.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Status messages -->
+    <section class="zw-stack">
+      <h2>Status messages</h2>
+      <div class="zw-status zw-status--info">Info status: this is a neutral notice.</div>
+      <div class="zw-status zw-status--success">Success status: cart updated.</div>
+      <div class="zw-status zw-status--error" role="alert">Error status: something went wrong.</div>
+    </section>
+
+    <!-- Footer placeholder -->
+    <section class="zw-stack" style="padding-block-end: 3rem;">
+      <hr />
+      <p class="zw-text-small zw-text-muted">
+        E-02 smoke test page. Delete this file before launch.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Inline test for the theme toggle behavior (full ThemeToggle component lands in E-03) -->
+  <script>
+    (function () {
+      var btn = document.getElementById("theme-test-toggle");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var html = document.documentElement;
+        var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", next);
+        try { localStorage.setItem("zw-theme", next); } catch (e) { /* ignore */ }
+      });
+    })();
+  </script>
+</body>
+</html>

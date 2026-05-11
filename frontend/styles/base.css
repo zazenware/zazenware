@@ -1,0 +1,154 @@
+/* ============================================================================
+   zazenware — base.css
+   ----------------------------------------------------------------------------
+   Element-level resets and document defaults.
+   Sets the readable baseline before any component CSS lands.
+   ============================================================================ */
+
+/* ─── Box model + reset basics ──────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margins and paddings */
+html,
+body,
+h1, h2, h3, h4, h5, h6,
+p, ul, ol, li,
+figure, blockquote, dl, dd,
+fieldset, legend {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list bullets where lists are role="list" or explicitly styled */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* ─── Document defaults ─────────────────────────────────────────────────── */
+html {
+  /* Prevent iOS text auto-resize, keep scrollbar stable */
+  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--zw-bg);
+  color: var(--zw-text);
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-font-size-base);
+  line-height: var(--zw-line-height);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Headings (use the display font sparingly) ─────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--zw-font-body);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--zw-text);
+}
+
+/* The .zw-display class is the ONLY way to use the blackletter font.
+   It always renders smallcase per Master Spec § 7.6. */
+.zw-display {
+  font-family: var(--zw-font-display);
+  font-weight: 400;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+/* ─── Inline text ───────────────────────────────────────────────────────── */
+a {
+  color: var(--zw-link);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  transition: color var(--zw-transition);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--zw-link-hover);
+}
+
+strong {
+  font-weight: 700;
+}
+
+em {
+  font-style: italic;
+}
+
+/* ─── Focus ─────────────────────────────────────────────────────────────── */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--zw-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+}
+
+/* ─── Media defaults ────────────────────────────────────────────────────── */
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ─── Form controls inherit fonts ───────────────────────────────────────── */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ─── Tables ────────────────────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* ─── Code ──────────────────────────────────────────────────────────────── */
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--zw-font-body);
+  font-size: 0.95em;
+}
+
+/* ─── Horizontal rules ──────────────────────────────────────────────────── */
+hr {
+  border: none;
+  border-top: var(--zw-border-width) solid var(--zw-border);
+  margin: var(--zw-space-5) 0;
+}
+
+/* ─── Larger body font on desktop ───────────────────────────────────────── */
+@media (min-width: 768px) {
+  body {
+    font-size: 1rem; /* 16px — slightly tighter on desktop per § 7.6 */
+  }
+}

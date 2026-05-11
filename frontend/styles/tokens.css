@@ -1,0 +1,131 @@
+/* ============================================================================
+   zazenware — tokens.css
+   ----------------------------------------------------------------------------
+   Semantic design tokens for both themes.
+   Components NEVER reference hex codes directly — they read --zw-* variables.
+
+   Source: Master Spec v1.2 § 7.5 (Semantic token model)
+
+   THEME RULE:
+   - Default :root  = light theme (Cream Flyer)
+   - [data-theme="dark"] = dark theme (Basement Maroon)
+   - The theme detector script in <head> sets data-theme synchronously
+     before this file paints, preventing the flash of incorrect theme.
+   ============================================================================ */
+
+/* ─── Light theme — Cream Flyer ─────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --zw-bg:           #F3E8D2;   /* Cream Paper */
+  --zw-surface:      #FFF8E8;   /* Warm Bone   */
+
+  /* Text */
+  --zw-text:         #111111;   /* Ink Black */
+  --zw-text-muted:   #3A3333;   /* Charcoal  */
+
+  /* Structure */
+  --zw-border:       #080707;   /* Black */
+
+  /* Blocks (primary atmosphere colour) */
+  --zw-block:        #B9A1FF;   /* Lavender */
+  --zw-block-text:   #111111;   /* Ink Black */
+  --zw-block-deep:   #8D6FE8;   /* Deep Lavender (hover/active) */
+
+  /* Accent */
+  --zw-accent:       #6E1E2E;   /* Maroon */
+  --zw-accent-text:  #FFF8E8;   /* Warm Bone on Maroon */
+
+  /* Focus + links */
+  --zw-focus:        #8D6FE8;   /* Lavender focus ring */
+  --zw-link:         #6E1E2E;   /* Maroon */
+  --zw-link-hover:   #4A101C;   /* Blood Maroon */
+
+  /* Status */
+  --zw-error:        #6E1E2E;
+  --zw-error-bg:     #FFF8E8;
+  --zw-success:      #1F5A2E;   /* deep green, used sparingly */
+  --zw-success-bg:   #FFF8E8;
+
+  /* Shadows (hard, screen-print feel) */
+  --zw-shadow-offset: 4px 4px 0 0;
+  --zw-shadow:        var(--zw-shadow-offset) var(--zw-border);
+
+  /* Spacing scale (rem-based, 8px grid) */
+  --zw-space-1:  0.25rem;   /*  4px */
+  --zw-space-2:  0.5rem;    /*  8px */
+  --zw-space-3:  0.75rem;   /* 12px */
+  --zw-space-4:  1rem;      /* 16px */
+  --zw-space-5:  1.5rem;    /* 24px */
+  --zw-space-6:  2rem;      /* 32px */
+  --zw-space-7:  3rem;      /* 48px */
+  --zw-space-8:  4rem;      /* 64px */
+
+  /* Borders */
+  --zw-border-width: 2px;
+  --zw-border-thick: 3px;
+  --zw-radius:       0;      /* HARD corners — no rounding by default */
+
+  /* Typography */
+  --zw-font-display: "UnifrakturMaguntia", "MedievalSharp", "Pirata One", serif;
+  --zw-font-body:    "Special Elite", "Courier Prime", "Cutive Mono", ui-monospace, monospace;
+  --zw-font-size-base: 1.125rem;  /* 18px on mobile */
+  --zw-line-height:    1.55;
+
+  /* Layout */
+  --zw-container-max: 1280px;
+  --zw-content-max:   72ch;
+
+  /* Motion */
+  --zw-transition: 150ms ease-out;
+}
+
+/* ─── Dark theme — Basement Maroon ──────────────────────────────────────── */
+[data-theme="dark"] {
+  /* Surfaces */
+  --zw-bg:           #080707;   /* Void Black */
+  --zw-surface:      #181111;   /* Black Brown */
+
+  /* Text */
+  --zw-text:         #F3E8D2;   /* Cream */
+  --zw-text-muted:   #CFC3B2;   /* Dust Cream */
+
+  /* Structure */
+  --zw-border:       #F3E8D2;   /* Cream */
+
+  /* Blocks (now maroon-driven) */
+  --zw-block:        #6E1E2E;   /* Maroon */
+  --zw-block-text:   #F3E8D2;   /* Cream */
+  --zw-block-deep:   #4A101C;   /* Blood Maroon */
+
+  /* Accent (flips to lavender) */
+  --zw-accent:       #B9A1FF;   /* Lavender */
+  --zw-accent-text:  #111111;   /* Ink Black on Lavender */
+
+  /* Focus + links */
+  --zw-focus:        #B9A1FF;   /* Lavender focus ring */
+  --zw-link:         #B9A1FF;   /* Lavender */
+  --zw-link-hover:   #D5C4FF;   /* Pale Lavender */
+
+  /* Status */
+  --zw-error:        #6E1E2E;
+  --zw-error-bg:     #181111;
+  --zw-success:      #8FCB9B;   /* Pale green on dark */
+  --zw-success-bg:   #181111;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --zw-transition: 0ms;
+    --zw-shadow-offset: 2px 2px 0 0;  /* shorter offset, no animation */
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

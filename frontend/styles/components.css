@@ -1,0 +1,220 @@
+/* ============================================================================
+   zazenware — components.css
+   ----------------------------------------------------------------------------
+   Component-level styles. Most selectors are intentionally EMPTY rule sets,
+   filled in their respective epics (E-03 header/footer, E-08 cards, etc).
+   This file establishes naming, ordering, and reservation of class names.
+
+   Source: Master Spec v1.2 § 9 (Components Inventory)
+   ============================================================================ */
+
+/* ─── BUTTONS (filled minimally now; refined in E-03+) ──────────────────── */
+.zw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--zw-space-2);
+  padding: var(--zw-space-3) var(--zw-space-5);
+  font-family: var(--zw-font-body);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  transition: transform var(--zw-transition), box-shadow var(--zw-transition);
+  user-select: none;
+  min-height: 44px;       /* WCAG touch target */
+  text-transform: none;
+}
+
+.zw-btn:hover,
+.zw-btn:focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 var(--zw-border);
+}
+
+.zw-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.zw-btn--primary {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+}
+
+.zw-btn--secondary {
+  background: var(--zw-surface);
+  color: var(--zw-text);
+}
+
+.zw-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.zw-btn--ghost:hover,
+.zw-btn--ghost:focus-visible {
+  border-color: var(--zw-border);
+}
+
+.zw-btn--danger {
+  background: var(--zw-accent);
+  color: var(--zw-accent-text);
+}
+
+.zw-btn--small {
+  padding: var(--zw-space-2) var(--zw-space-3);
+  font-size: 0.875rem;
+  min-height: 36px;
+}
+
+.zw-btn--large {
+  padding: var(--zw-space-4) var(--zw-space-7);
+  font-size: 1.125rem;
+}
+
+.zw-btn[disabled],
+.zw-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ─── HEADER (filled in E-03) ───────────────────────────────────────────── */
+.zw-header { }
+.zw-header__inner { }
+.zw-header__brand { }
+.zw-header__nav { }
+.zw-header__cart-badge { }
+
+/* ─── FOOTER (filled in E-03) ───────────────────────────────────────────── */
+.zw-footer { }
+.zw-footer__inner { }
+.zw-footer__brand { }
+.zw-footer__nav { }
+.zw-footer__legal { }
+
+/* ─── NAV (filled in E-03) ──────────────────────────────────────────────── */
+.zw-nav { }
+.zw-nav__link { }
+.zw-nav__link[aria-current="page"] { }
+
+/* ─── SHOP DROPDOWN (filled in E-03) ────────────────────────────────────── */
+.zw-dropdown { }
+.zw-dropdown__trigger { }
+.zw-dropdown__menu { }
+.zw-dropdown__item { }
+
+/* ─── MOBILE NAV DRAWER (filled in E-03) ────────────────────────────────── */
+.zw-drawer { }
+.zw-drawer__overlay { }
+.zw-drawer__panel { }
+.zw-drawer__close { }
+
+/* ─── THEME TOGGLE (filled in E-03) ─────────────────────────────────────── */
+.zw-theme-toggle { }
+.zw-theme-toggle__icon { }
+
+/* ─── SKIP LINK ─────────────────────────────────────────────────────────── */
+.zw-skip-link {
+  /* Inherits .zw-visually-hidden behavior — visible only on focus.
+     Placed here for clarity even though the rule lives in utilities.css. */
+}
+
+/* ─── PAGE HERO (filled in E-04) ────────────────────────────────────────── */
+.zw-hero {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border: var(--zw-border-thick) solid var(--zw-border);
+  padding: var(--zw-space-6) var(--zw-space-5);
+  box-shadow: var(--zw-shadow);
+}
+
+.zw-hero__eyebrow {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  margin-bottom: var(--zw-space-2);
+}
+
+.zw-hero__title {
+  font-family: var(--zw-font-display);
+  text-transform: lowercase;
+  font-size: clamp(2rem, 5vw + 1rem, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+
+.zw-hero__sub {
+  margin-top: var(--zw-space-4);
+  max-width: 60ch;
+}
+
+/* ─── SECTION HEADER (filled in E-04) ───────────────────────────────────── */
+.zw-section-header { }
+.zw-section-header__title { }
+
+/* ─── CARDS (filled in E-08) ────────────────────────────────────────────── */
+.zw-card { }
+.zw-card__image { }
+.zw-card__body { }
+.zw-card__title { }
+.zw-card__meta { }
+.zw-card__actions { }
+
+.zw-design-card { }
+.zw-shirt-card { }
+.zw-patch-card { }
+.zw-print-card { }
+
+/* ─── SHOP SECTION (filled in E-04/E-08) ────────────────────────────────── */
+.zw-shop-section { }
+.zw-shop-section__toggle { }
+.zw-shop-section__content { }
+.zw-shop-section__content[aria-hidden="true"] {
+  display: none;
+}
+
+/* ─── CART ITEM (filled in E-09) ────────────────────────────────────────── */
+.zw-cart-item { }
+.zw-cart-item__image { }
+.zw-cart-item__body { }
+.zw-cart-item__qty { }
+.zw-cart-item__remove { }
+
+/* ─── ORDER SUMMARY (filled in E-09) ────────────────────────────────────── */
+.zw-order-summary { }
+.zw-order-summary__line { }
+.zw-order-summary__total { }
+
+/* ─── FORM FIELD (filled in E-09/E-12) ──────────────────────────────────── */
+.zw-field { }
+.zw-field__label { }
+.zw-field__input { }
+.zw-field__helper { }
+.zw-field__error { }
+
+/* ─── STATUS MESSAGE (filled in E-08+) ──────────────────────────────────── */
+.zw-status {
+  display: flex;
+  gap: var(--zw-space-3);
+  padding: var(--zw-space-3) var(--zw-space-4);
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+}
+
+.zw-status--info     { }
+.zw-status--success  { border-color: var(--zw-success); }
+.zw-status--warning  { }
+.zw-status--error    { border-color: var(--zw-error); color: var(--zw-error); }
+
+/* ─── FEATURE LINK CARD (filled in E-04) ────────────────────────────────── */
+.zw-feature-card { }
+
+/* ─── INQUIRY INFO CARD (filled in E-12) ────────────────────────────────── */
+.zw-inquiry-card { }

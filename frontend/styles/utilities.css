@@ -1,0 +1,186 @@
+/* ============================================================================
+   zazenware — utilities.css
+   ----------------------------------------------------------------------------
+   Small, named utility classes used across components and pages.
+   Source: Master Spec v1.2 § 7
+   ============================================================================ */
+
+/* ─── Container ─────────────────────────────────────────────────────────── */
+.zw-container {
+  width: 100%;
+  max-width: var(--zw-container-max);
+  margin-inline: auto;
+  padding-inline: var(--zw-space-4);
+}
+
+@media (min-width: 768px) {
+  .zw-container {
+    padding-inline: var(--zw-space-6);
+  }
+}
+
+/* ─── Stack: vertical rhythm ────────────────────────────────────────────── */
+.zw-stack > * + * {
+  margin-block-start: var(--zw-space-4);
+}
+
+.zw-stack-sm > * + * { margin-block-start: var(--zw-space-2); }
+.zw-stack-lg > * + * { margin-block-start: var(--zw-space-6); }
+.zw-stack-xl > * + * { margin-block-start: var(--zw-space-8); }
+
+/* ─── Cluster: horizontal flow with wrap ────────────────────────────────── */
+.zw-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--zw-space-3);
+  align-items: center;
+}
+
+.zw-cluster-sm { gap: var(--zw-space-2); }
+.zw-cluster-lg { gap: var(--zw-space-5); }
+
+/* ─── Visually hidden — accessible, not visible ─────────────────────────── */
+.zw-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* When a focusable visually-hidden element receives focus, make it visible.
+   This is what enables the skip-to-content link to appear on focus. */
+.zw-visually-hidden:focus,
+.zw-visually-hidden:focus-within,
+.zw-visually-hidden:active {
+  position: fixed;
+  top: var(--zw-space-3);
+  left: var(--zw-space-3);
+  width: auto;
+  height: auto;
+  padding: var(--zw-space-3) var(--zw-space-4);
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border: var(--zw-border-thick) solid var(--zw-border);
+  text-decoration: none;
+  font-weight: 700;
+  z-index: 9999;
+}
+
+/* ─── Text utilities ────────────────────────────────────────────────────── */
+.zw-text-muted { color: var(--zw-text-muted); }
+.zw-text-center { text-align: center; }
+.zw-text-uppercase { text-transform: uppercase; letter-spacing: 0.06em; }
+.zw-text-small { font-size: 0.875em; }
+
+.zw-prose {
+  max-width: var(--zw-content-max);
+}
+
+.zw-prose > * + * {
+  margin-block-start: var(--zw-space-4);
+}
+
+/* ─── Block — the dominant visual motif (§ 7.7) ─────────────────────────── */
+.zw-block {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  padding: var(--zw-space-5);
+  box-shadow: var(--zw-shadow);
+}
+
+.zw-block-accent {
+  background: var(--zw-accent);
+  color: var(--zw-accent-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  padding: var(--zw-space-5);
+  box-shadow: var(--zw-shadow);
+}
+
+.zw-panel {
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  padding: var(--zw-space-5);
+}
+
+/* ─── Grid utility ──────────────────────────────────────────────────────── */
+.zw-grid {
+  display: grid;
+  gap: var(--zw-space-5);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 540px) {
+  .zw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .zw-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1200px) {
+  .zw-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ─── Inline image alignment ────────────────────────────────────────────── */
+.zw-img-frame {
+  display: block;
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+  overflow: hidden;
+}
+
+.zw-img-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ─── Aspect-ratio helpers ──────────────────────────────────────────────── */
+.zw-aspect-square { aspect-ratio: 1 / 1; }
+.zw-aspect-4-5    { aspect-ratio: 4 / 5; }
+.zw-aspect-3-4    { aspect-ratio: 3 / 4; }
+
+/* ─── Spacing utilities ─────────────────────────────────────────────────── */
+.zw-mt-0 { margin-top: 0 !important; }
+.zw-mb-0 { margin-bottom: 0 !important; }
+
+.zw-mt-2 { margin-top: var(--zw-space-2); }
+.zw-mt-4 { margin-top: var(--zw-space-4); }
+.zw-mt-6 { margin-top: var(--zw-space-6); }
+.zw-mb-2 { margin-bottom: var(--zw-space-2); }
+.zw-mb-4 { margin-bottom: var(--zw-space-4); }
+.zw-mb-6 { margin-bottom: var(--zw-space-6); }
+
+/* ─── Display ────────────────────────────────────────────────────────────── */
+.zw-hidden { display: none !important; }
+.zw-block-el { display: block; }
+.zw-inline-block { display: inline-block; }
+.zw-flex { display: flex; }
+.zw-inline-flex { display: inline-flex; }
+
+/* ─── Responsive helpers ────────────────────────────────────────────────── */
+.zw-hide-mobile  { display: initial; }
+.zw-show-mobile  { display: none; }
+
+@media (max-width: 767px) {
+  .zw-hide-mobile  { display: none !important; }
+  .zw-show-mobile  { display: initial; }
+}
+
+/* ─── Print: simplify ───────────────────────────────────────────────────── */
+@media print {
+  .zw-hide-print { display: none !important; }
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
