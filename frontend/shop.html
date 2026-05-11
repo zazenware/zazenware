@@ -21,6 +21,9 @@
   <script type="module" src="/scripts/theme.js"></script>
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
+
+  <!-- Shop page script — fetches /api/designs and renders Shirt/Patch/Print cards -->
+  <script type="module" src="/scripts/shop.js"></script>
 </head>
 <body>
 
@@ -47,9 +50,9 @@
     <section id="shirts" class="zw-shop-section zw-stack" aria-labelledby="shirts-heading">
       <h2 id="shirts-heading" class="zw-display" style="font-size: 2rem;">shirts</h2>
       <p class="zw-text-muted">$25 CAD each. Size and colour required before adding to cart.</p>
-      <div id="shirts-grid" class="zw-grid" data-shop-grid="shirts">
+      <div id="shirts-grid" class="zw-grid" data-shop-grid="shirts" aria-label="Shirts">
         <article class="zw-panel" aria-busy="true">
-          <p class="zw-text-muted zw-text-small">Shirt cards will appear here once products are wired (epic E-08).</p>
+          <p class="zw-text-muted zw-text-small">Loading shirts…</p>
         </article>
       </div>
     </section>
@@ -58,9 +61,9 @@
     <section id="patches" class="zw-shop-section zw-stack" aria-labelledby="patches-heading">
       <h2 id="patches-heading" class="zw-display" style="font-size: 2rem;">patches</h2>
       <p class="zw-text-muted">$10 CAD each. Add directly — no size or colour selection.</p>
-      <div id="patches-grid" class="zw-grid" data-shop-grid="patches">
+      <div id="patches-grid" class="zw-grid" data-shop-grid="patches" aria-label="Patches">
         <article class="zw-panel" aria-busy="true">
-          <p class="zw-text-muted zw-text-small">Patch cards will appear here once products are wired (epic E-08).</p>
+          <p class="zw-text-muted zw-text-small">Loading patches…</p>
         </article>
       </div>
     </section>
@@ -69,9 +72,9 @@
     <section id="prints" class="zw-shop-section zw-stack" aria-labelledby="prints-heading">
       <h2 id="prints-heading" class="zw-display" style="font-size: 2rem;">prints</h2>
       <p class="zw-text-muted">$10 CAD each. Add directly — no variants.</p>
-      <div id="prints-grid" class="zw-grid" data-shop-grid="prints">
+      <div id="prints-grid" class="zw-grid" data-shop-grid="prints" aria-label="Prints">
         <article class="zw-panel" aria-busy="true">
-          <p class="zw-text-muted zw-text-small">Print cards will appear here once products are wired (epic E-08).</p>
+          <p class="zw-text-muted zw-text-small">Loading prints…</p>
         </article>
       </div>
     </section>

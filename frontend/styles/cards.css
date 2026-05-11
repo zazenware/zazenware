@@ -1,0 +1,139 @@
+/* ============================================================================
+   zazenware — cards.css
+   ----------------------------------------------------------------------------
+   Component-level styling for DesignCard, ShirtCard, PatchCard, PrintCard.
+   Loaded after main.css via shell.css? No — added to main.css @imports list.
+   ============================================================================ */
+
+/* ─── Base card ─────────────────────────────────────────────────────────── */
+.zw-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  box-shadow: var(--zw-shadow);
+  overflow: hidden;
+  transition: transform var(--zw-transition), box-shadow var(--zw-transition);
+}
+
+.zw-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--zw-border);
+}
+
+.zw-card__image {
+  width: 100%;
+  background: var(--zw-bg);
+  border: none;
+  border-bottom: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-card__image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.zw-card__body {
+  padding: var(--zw-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-3);
+  flex: 1;
+}
+
+.zw-card__title {
+  font-size: 1.5rem;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.zw-card__meta {
+  font-size: 0.875rem;
+  color: var(--zw-text-muted);
+  margin: 0;
+}
+
+.zw-card__price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--zw-text);
+}
+
+.zw-card__helper {
+  margin: 0;
+}
+
+.zw-card__actions {
+  margin-top: auto;
+}
+
+.zw-card__status {
+  /* status messages live here when an item is added or fails to add */
+  min-height: 0;
+}
+
+.zw-card__status:empty {
+  display: none;
+}
+
+/* ─── DesignCard cluster of view-X buttons ──────────────────────────────── */
+.zw-design-card .zw-card__actions {
+  flex-wrap: wrap;
+}
+
+/* ─── Variants (shirt size + colour pickers) ────────────────────────────── */
+.zw-card__variants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-3);
+}
+
+.zw-variant-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.zw-variant-legend {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--zw-space-2);
+  color: var(--zw-text);
+  padding: 0;
+}
+
+.zw-variant-btn {
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  min-width: 2.5rem;
+  border: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-variant-btn[aria-pressed="true"] {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  box-shadow: 2px 2px 0 0 var(--zw-border);
+}
+
+/* ─── Status messages inside cards ──────────────────────────────────────── */
+.zw-card__status .zw-status {
+  margin-top: var(--zw-space-3);
+  padding: var(--zw-space-2) var(--zw-space-3);
+  font-size: 0.875rem;
+}
+
+/* ─── Grids ─────────────────────────────────────────────────────────────── */
+.zw-grid {
+  /* Already defined in utilities.css. Override gap for product density. */
+  gap: var(--zw-space-5);
+}
+
+/* ─── Empty / loading panels inside grids ───────────────────────────────── */
+.zw-grid > .zw-panel {
+  grid-column: 1 / -1;
+}

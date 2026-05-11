@@ -21,6 +21,9 @@
   <script type="module" src="/scripts/theme.js"></script>
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
+
+  <!-- Art page script — fetches /api/designs and renders DesignCards -->
+  <script type="module" src="/scripts/art.js"></script>
 </head>
 <body>
 
@@ -42,14 +45,14 @@
       </p>
     </section>
 
-    <!-- DesignCard grid — populated in E-08 from /api/designs. Placeholder for now. -->
+    <!-- DesignCard grid — populated by art.js from /api/designs. -->
     <section
       id="design-grid"
       class="zw-grid"
       aria-label="Designs"
     >
       <article class="zw-panel" aria-busy="true">
-        <p class="zw-text-muted zw-text-small">Design cards will appear here once the Art &amp; Shop wiring is in place (epic E-08).</p>
+        <p class="zw-text-muted zw-text-small">Loading designs…</p>
       </article>
     </section>
 
