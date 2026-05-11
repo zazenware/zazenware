@@ -386,7 +386,7 @@
 /* ─── FOOTER ────────────────────────────────────────────────────────────── */
 .zw-footer {
   margin-top: var(--zw-space-8);
-  background: var(--zw-bg);
+  background: var(--zw-block);
   color: var(--zw-text);
   border-top: var(--zw-border-thick) solid var(--zw-border);
 }
