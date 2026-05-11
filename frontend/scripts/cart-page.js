@@ -5,9 +5,8 @@
      - Render cart line items from localStorage (CartItem component).
      - Render order summary block with live math preview.
      - Render the checkout form (customer + shipping + honeypot + time-trap).
-     - Validate and prepare a payload on submit.
-     - Submission to POST /api/orders is wired in E-10. For now, the submit
-       handler logs the payload to the console so we can verify shape.
+     - On submit: validate, then POST to /api/orders. On 201, clear cart and
+       redirect to /order-confirmation.html?order=<number>.
    ============================================================================ */
 
 import {
@@ -15,12 +14,12 @@ import {
   updateQuantity,
   removeLine,
   clearCart,
-  totalQuantity,
 } from "./cart.js";
 
 import { breakdown, VALID_PROVINCES } from "./cart-math.js";
 import { validateCheckout, normalizePostalCode } from "./validation.js";
 import { el, formatMoney, clampInt } from "./format.js";
+import { submitAndRedirect } from "./checkout.js";
 
 const PROVINCE_LABELS = {
   ON: "Ontario", QC: "Quebec", BC: "British Columbia", AB: "Alberta",
@@ -29,16 +28,16 @@ const PROVINCE_LABELS = {
   YT: "Yukon", NT: "Northwest Territories", NU: "Nunavut",
 };
 
-// Page-scoped state for the live math (just the province pick)
+// Page-scoped state for the live math (just the province pick + form age)
 const state = {
   province: "",
   formLoadedAt: Date.now(),
+  isSubmitting: false,
 };
 
 // ─── Boot ───────────────────────────────────────────────────────────────
 function mount() {
   refreshAll();
-  // React to cart changes from anywhere (other tabs, header badge)
   document.addEventListener("zw:cart-updated", refreshAll);
 }
 
@@ -269,7 +268,7 @@ function renderCheckoutForm(cart) {
       field("shipping_address_line_2", "Address line 2",     { type: "text", autocomplete: "shipping address-line2", maxlength: 200, helper: "Apt, unit, suite (optional)." }),
       field("shipping_city",           "City *",              { type: "text", required: true, autocomplete: "shipping address-level2", maxlength: 100 }),
 
-      // Province (custom-rendered select)
+      // Province
       el("div", { class: "zw-field" }, [
         el("label", { for: "f_shipping_province", class: "zw-field__label" }, ["Province *"]),
         provinceSelect,
@@ -287,13 +286,13 @@ function renderCheckoutForm(cart) {
         },
       }),
 
-      // Honeypot — visually hidden, server-validated. Bots fill it; humans don't.
+      // Honeypot — visually hidden, server-validated
       el("div", { class: "zw-honeypot", "aria-hidden": "true" }, [
         el("label", { for: "zw_hp" }, ["Leave this field empty"]),
         el("input", { type: "text", id: "zw_hp", name: "zw_hp", tabindex: "-1", autocomplete: "off", value: "" }),
       ]),
 
-      // Time-trap — captures form load time. Server rejects submissions < 3s.
+      // Time-trap — captures form load time
       el("input", { type: "hidden", id: "zw_t", name: "zw_t", value: String(state.formLoadedAt) }),
 
       el("div", { class: "zw-cluster", style: "margin-top: var(--zw-space-5);" }, [
@@ -350,7 +349,9 @@ function field(name, label, opts = {}) {
 }
 
 // ─── Submit ─────────────────────────────────────────────────────────────
-function handleSubmit(form, cart) {
+async function handleSubmit(form, cart) {
+  if (state.isSubmitting) return;          // double-click guard
+
   // Clear previous errors
   form.querySelectorAll(".zw-field__error").forEach((e) => { e.hidden = true; e.textContent = ""; });
   form.querySelectorAll(".zw-field__input").forEach((i) => { i.removeAttribute("aria-invalid"); });
@@ -368,13 +369,12 @@ function handleSubmit(form, cart) {
     showSummary(summary, errors);
     return;
   }
-
   if (cart.length === 0) {
     showSummary(summary, { _form: "Your cart is empty." });
     return;
   }
 
-  // Build the payload the backend will receive in E-10
+  // Build payload — backend recalculates all monetary fields
   const payload = {
     customer_name:           normalized.customer_name,
     customer_email:          normalized.customer_email,
@@ -397,18 +397,37 @@ function handleSubmit(form, cart) {
     zw_t:  Number(fields.zw_t) || 0,
   };
 
-  // E-10 will replace this with: POST /api/orders → redirect to /order-confirmation.html
-  console.log("[zw] Checkout payload (ready for POST /api/orders):", payload);
-  alert(
-    "Your order details have been validated and are ready to submit.\n\n" +
-    "Order submission (POST /api/orders) will be wired in the next epic (E-10).\n\n" +
-    "Open the browser console to inspect the exact payload."
-  );
+  // Disable submit, show busy state
+  const btn = form.querySelector("#place-order-btn");
+  state.isSubmitting = true;
+  btn.disabled = true;
+  btn.setAttribute("aria-busy", "true");
+  btn.textContent = "Submitting…";
+
+  try {
+    await submitAndRedirect(payload);
+    // On success, submitAndRedirect navigates away — code below doesn't run
+  } catch (err) {
+    // Field-level errors from the backend
+    if (Array.isArray(err.fields) && err.fields.length > 0) {
+      const fieldErrs = {};
+      for (const f of err.fields) fieldErrs[f] = err.message || "Invalid.";
+      showFieldErrors(form, fieldErrs);
+    }
+    // Always show a top-of-form banner with the human message
+    showSummary(summary, { _form: err.message || "Order submission failed." });
+
+    state.isSubmitting = false;
+    btn.disabled = false;
+    btn.removeAttribute("aria-busy");
+    btn.textContent = "Place order";
+  }
 }
 
 function showFieldErrors(form, errors) {
   let firstInvalid = null;
   for (const [field, msg] of Object.entries(errors)) {
+    if (field === "_form") continue;
     const err = form.querySelector("#err_" + field);
     const input = form.querySelector("#f_" + field);
     if (err) { err.hidden = false; err.textContent = msg; }
