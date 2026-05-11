@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order confirmation — zazenware</title>
+  <meta name="description" content="Your zazenware order has been received. Send payment by Interac e-transfer using the order number below." />
+  <meta name="robots" content="noindex,nofollow" />
+
+  <script src="/scripts/theme-init.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+
+    <section class="zw-hero">
+      <div class="zw-hero__eyebrow">Order received</div>
+      <h1 class="zw-hero__title zw-display">thank you</h1>
+      <p class="zw-hero__sub">
+        Your order intent has been recorded. To finalize it, send an e-transfer for the amount on this page to <strong>payments@zazenware.com</strong> and include the order number in the message.
+      </p>
+    </section>
+
+    <!-- ORDER NUMBER (read from URL ?order=ZW-YYYY-NNNNNN) -->
+    <section class="zw-block-accent" style="text-align: center;">
+      <div class="zw-hero__eyebrow">Your order number</div>
+      <p class="zw-display" id="order-number" style="font-size: clamp(2rem, 5vw, 3rem); margin: var(--zw-space-2) 0;">—</p>
+      <p style="margin: 0;">Include this exact number as the message on your e-transfer.</p>
+    </section>
+
+    <!-- DETAILS placeholder — populated in E-11 from GET /api/orders/:order_number -->
+    <section id="order-details" class="zw-panel zw-stack" aria-labelledby="details-heading">
+      <h2 id="details-heading" class="zw-display" style="font-size: 1.5rem;">order details</h2>
+      <p class="zw-text-muted">Item details, totals, and e-transfer instructions will appear here once the order API is wired (epic E-11).</p>
+    </section>
+
+    <!-- E-TRANSFER INSTRUCTIONS -->
+    <section class="zw-stack zw-prose">
+      <h2 class="zw-display" style="font-size: 1.5rem;">how to pay</h2>
+      <ol>
+        <li>From your bank's app or website, send an Interac e-transfer.</li>
+        <li>Recipient: <strong>payments@zazenware.com</strong></li>
+        <li>Amount: the exact total shown above (once order details are loaded).</li>
+        <li>Message: paste your order number from this page.</li>
+        <li>Auto-deposit is enabled, so no security question is required.</li>
+      </ol>
+      <p>
+        Once the e-transfer arrives and is matched to your order, you'll receive a fulfillment update from <strong>orders@zazenware.com</strong>. If something looks off, reply to that email or send a fresh message to <a href="mailto:contact@zazenware.com">contact@zazenware.com</a>.
+      </p>
+    </section>
+
+    <section class="zw-cluster">
+      <a href="/" class="zw-btn zw-btn--primary">Back to home</a>
+      <a href="/shop.html" class="zw-btn zw-btn--secondary">Continue browsing</a>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Inline: read ?order=… from the URL and display it.
+       Full data fetch lands in E-11 via /api/orders/:order_number -->
+  <script>
+    (function () {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const order = params.get("order");
+        const target = document.getElementById("order-number");
+        if (order && /^ZW-\d{4}-\d{6}$/.test(order)) {
+          target.textContent = order;
+          document.title = order + " — Order confirmation — zazenware";
+        } else if (order) {
+          // Has an order param but wrong format — show but flag
+          target.textContent = order;
+          target.style.color = "var(--zw-error)";
+        } else {
+          target.textContent = "(no order number)";
+          target.style.color = "var(--zw-text-muted)";
+        }
+      } catch (e) {
+        /* leave the default em-dash */
+      }
+    })();
+  </script>
+
+</body>
+</html>

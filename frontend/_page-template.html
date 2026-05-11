@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+  zazenware — page template
+  Copy this file to a new name, then update <title>, <meta description>,
+  and the <main> content. Keep everything else identical.
+
+  Required structure:
+    1. Skip-link target id="main-content" on <main>
+    2. <div id="site-header"></div> — header partial injects here
+    3. <main id="main-content"> — your unique content
+    4. <div id="site-footer"></div> — footer partial injects here
+
+  Loading order matters:
+    - theme-init.js (sync, in <head>) — sets data-theme before paint
+    - main.css        — design tokens, base, utilities, components, shell
+    - partials.js     — module, fetches header/footer, dispatches 'zw:partials-ready'
+    - theme.js / nav.js / cart-badge.js — modules, wire behavior on ready event
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page Title — zazenware</title>
+  <meta name="description" content="One-sentence summary under 160 characters." />
+
+  <!-- Sync theme detect (must run before stylesheet to avoid flash) -->
+  <script src="/scripts/theme-init.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Single CSS entry -->
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <!-- Shell behavior (deferred via type=module) -->
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+
+    <!-- Replace this section with your page content -->
+    <section class="zw-hero">
+      <div class="zw-hero__eyebrow">Section label</div>
+      <h1 class="zw-hero__title zw-display">page title</h1>
+      <p class="zw-hero__sub">One-line description of what this page does.</p>
+    </section>
+
+    <section class="zw-stack zw-prose">
+      <p>Page content goes here.</p>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

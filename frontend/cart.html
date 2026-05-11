@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cart — zazenware</title>
+  <meta name="description" content="Review your zazenware order, enter your Canadian shipping address, and submit. Payment is by e-transfer." />
+
+  <script src="/scripts/theme-init.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+
+    <section class="zw-hero">
+      <div class="zw-hero__eyebrow">Review &amp; submit</div>
+      <h1 class="zw-hero__title zw-display">cart</h1>
+      <p class="zw-hero__sub">Review your items, enter your Canadian shipping address, and submit. Payment is by Interac e-transfer after submission.</p>
+    </section>
+
+    <!-- Empty state (visible before E-09 wires real cart) -->
+    <section id="cart-empty" class="zw-panel zw-stack">
+      <h2 class="zw-display" style="font-size: 1.75rem;">your cart is empty</h2>
+      <p>Add a shirt, patch, or print from the Shop to get started.</p>
+      <p>
+        <a href="/shop.html" class="zw-btn zw-btn--primary">Browse shop</a>
+      </p>
+    </section>
+
+    <!-- Cart items will be inserted here in E-09 -->
+    <section id="cart-items" hidden aria-label="Cart items">
+      <!-- E-09: cart line items render here -->
+    </section>
+
+    <!-- Order summary + shipping form will be inserted here in E-09 -->
+    <section id="cart-summary" hidden aria-label="Order summary">
+      <!-- E-09: subtotal, bundle, shipping, tax, total + form -->
+    </section>
+
+    <!-- SUPPORT ARTIST -->
+    <section id="support" class="zw-block" style="margin-block: var(--zw-space-7);">
+      <div class="zw-stack">
+        <div class="zw-hero__eyebrow">Support the artist</div>
+        <h2 class="zw-display" style="font-size: 2rem; margin: 0;">how payment works</h2>
+        <p style="margin: 0;">
+          After you submit your order, you'll receive a confirmation page and email with your order number. Send a Canadian Interac e-transfer to <strong>payments@zazenware.com</strong> for the exact total, with your order number in the message.
+        </p>
+        <p style="margin: 0;">
+          Auto-deposit is on — no security question needed. Once payment lands, you'll get a fulfillment email from <strong>orders@zazenware.com</strong>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+</body>
+</html>

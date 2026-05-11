@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Art — zazenware</title>
+  <meta name="description" content="Original designs by zazenware. Browse the artwork that becomes shirts, patches, and prints." />
+
+  <script src="/scripts/theme-init.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+
+    <section class="zw-hero">
+      <div class="zw-hero__eyebrow">Browse the artwork</div>
+      <h1 class="zw-hero__title zw-display">art</h1>
+      <p class="zw-hero__sub">
+        Original designs. Each one becomes a shirt, patch, print — or all three. Pick a medium to see it on the Shop page.
+      </p>
+    </section>
+
+    <section class="zw-stack zw-prose">
+      <p>
+        <strong>Tip:</strong> the cards below are for browsing the artwork. To add anything to your cart, click <strong>View Shirt</strong>, <strong>View Patch</strong>, or <strong>View Print</strong> on the design you like — that jumps you to the matching section on the Shop page.
+      </p>
+    </section>
+
+    <!-- DesignCard grid — populated in E-08 from /api/designs. Placeholder for now. -->
+    <section
+      id="design-grid"
+      class="zw-grid"
+      aria-label="Designs"
+    >
+      <article class="zw-panel" aria-busy="true">
+        <p class="zw-text-muted zw-text-small">Design cards will appear here once the Art &amp; Shop wiring is in place (epic E-08).</p>
+      </article>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+</body>
+</html>
