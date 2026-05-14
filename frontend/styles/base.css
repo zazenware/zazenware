@@ -1,154 +1,293 @@
-/* ============================================================================
-   zazenware — base.css
-   ----------------------------------------------------------------------------
-   Element-level resets and document defaults.
-   Sets the readable baseline before any component CSS lands.
-   ============================================================================ */
+/* ============================================================
+   base.css — Zazenware MVP1
+   Reset, body defaults, headings, links, images, forms,
+   semantic element defaults, accessibility baseline.
+   ============================================================ */
 
-/* ─── Box model + reset basics ──────────────────────────────────────────── */
+
+/* ── Box model reset ────────────────────────────────────────── */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-/* Remove default margins and paddings */
-html,
-body,
-h1, h2, h3, h4, h5, h6,
-p, ul, ol, li,
-figure, blockquote, dl, dd,
-fieldset, legend {
   margin: 0;
   padding: 0;
 }
 
-/* Remove list bullets where lists are role="list" or explicitly styled */
-ul[role="list"],
-ol[role="list"] {
-  list-style: none;
-}
-
-/* ─── Document defaults ─────────────────────────────────────────────────── */
 html {
-  /* Prevent iOS text auto-resize, keep scrollbar stable */
-  -webkit-text-size-adjust: 100%;
-  scrollbar-gutter: stable;
+  font-size: 100%;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  hanging-punctuation: first last;
 }
 
 body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
   min-height: 100vh;
-  background-color: var(--zw-bg);
-  color: var(--zw-text);
-  font-family: var(--zw-font-body);
-  font-size: var(--zw-font-size-base);
-  line-height: var(--zw-line-height);
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
 }
 
-/* ─── Headings (use the display font sparingly) ─────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--zw-font-body);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--zw-text);
+
+/* ── Accessibility ──────────────────────────────────────────── */
+
+/* Skip-to-content link */
+.skip-link {
+  position: absolute;
+  top: -200%;
+  left: var(--space-4);
+  z-index: var(--z-modal);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-primary-block);
+  color: var(--color-primary-text);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: var(--border-lg) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: top var(--transition-fast);
 }
 
-/* The .zw-display class is the ONLY way to use the blackletter font.
-   It always renders smallcase per Master Spec § 7.6. */
-.zw-display {
-  font-family: var(--zw-font-display);
-  font-weight: 400;
-  text-transform: lowercase;
-  letter-spacing: 0.02em;
-  line-height: 1.1;
+.skip-link:focus {
+  top: var(--space-4);
 }
 
-/* ─── Inline text ───────────────────────────────────────────────────────── */
-a {
-  color: var(--zw-link);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
-  transition: color var(--zw-transition);
+/* Global focus ring */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
 }
 
-a:hover,
-a:focus-visible {
-  color: var(--zw-link-hover);
-}
-
-strong {
-  font-weight: 700;
-}
-
-em {
-  font-style: italic;
-}
-
-/* ─── Focus ─────────────────────────────────────────────────────────────── */
-:focus {
+/* Remove focus ring for mouse users on elements that have it by default */
+:focus:not(:focus-visible) {
   outline: none;
 }
 
-:focus-visible {
-  outline: 3px solid var(--zw-focus);
-  outline-offset: 2px;
+
+/* ── Typography ─────────────────────────────────────────────── */
+
+/* Blackletter: h1 + h2 display use only */
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-normal); /* blackletter carries visual weight itself */
+  line-height: var(--leading-tight);
+  color: var(--color-text);
 }
 
-/* ─── Selection ─────────────────────────────────────────────────────────── */
-::selection {
-  background: var(--zw-block);
-  color: var(--zw-block-text);
+/* Typewriter: h3–h6 and all body */
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-body);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
 }
 
-/* ─── Media defaults ────────────────────────────────────────────────────── */
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+h5 { font-size: var(--text-md); }
+h6 { font-size: var(--text-base); }
+
+/* Fluid h1 so it never breaks awkwardly */
+h1 {
+  font-size: clamp(var(--text-2xl), 5.5vw, var(--text-4xl));
+}
+
+p {
+  line-height: var(--leading-base);
+  margin-bottom: var(--space-4);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+strong { font-weight: var(--weight-bold); }
+em     { font-style: italic; }
+
+small  { font-size: var(--text-sm); }
+
+/* Prevent long words from breaking layouts */
+p,
+li,
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+}
+
+
+/* ── Links ──────────────────────────────────────────────────── */
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+
+/* ── Images ─────────────────────────────────────────────────── */
 img,
-picture,
-video,
-svg {
+svg,
+video {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* ─── Form controls inherit fonts ───────────────────────────────────────── */
-input,
-button,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
+/* Default image rounding — cards override this per context */
+img {
+  border-radius: var(--radius-md);
 }
 
-/* ─── Tables ────────────────────────────────────────────────────────────── */
-table {
-  border-collapse: collapse;
-  width: 100%;
+
+/* ── Lists ──────────────────────────────────────────────────── */
+ul,
+ol {
+  padding-left: var(--space-6);
 }
 
-/* ─── Code ──────────────────────────────────────────────────────────────── */
-code,
-pre,
-kbd,
-samp {
-  font-family: var(--zw-font-body);
-  font-size: 0.95em;
+li {
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-base);
 }
 
-/* ─── Horizontal rules ──────────────────────────────────────────────────── */
+/* Unstyled list helper used in nav, footer etc. */
+.list-unstyled {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* ── Horizontal rule ────────────────────────────────────────── */
 hr {
   border: none;
-  border-top: var(--zw-border-width) solid var(--zw-border);
-  margin: var(--zw-space-5) 0;
+  border-top: var(--border-md) solid var(--color-border);
+  opacity: 0.25;
+  margin: var(--space-8) 0;
 }
 
-/* ─── Larger body font on desktop ───────────────────────────────────────── */
-@media (min-width: 768px) {
-  body {
-    font-size: 1rem; /* 16px — slightly tighter on desktop per § 7.6 */
+
+/* ── Tables ─────────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+th,
+td {
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-sm) solid var(--color-border);
+  text-align: left;
+}
+
+th {
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: var(--text-xs);
+  background-color: var(--color-surface-alt);
+}
+
+
+/* ── Semantic layout shells ─────────────────────────────────── */
+main {
+  display: block;          /* IE11 fallback */
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-20);
+}
+
+section {
+  margin-bottom: var(--space-12);
+}
+
+article {
+  line-height: var(--leading-base);
+}
+
+
+/* ── Buttons and inputs base resets ─────────────────────────── */
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+}
+
+/* Remove default number input spinners — qty uses custom controls */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+/* ── Code / pre ─────────────────────────────────────────────── */
+code,
+pre {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+}
+
+code {
+  padding: 0.1em 0.4em;
+}
+
+pre {
+  padding: var(--space-6);
+  overflow-x: auto;
+  border: var(--border-md) solid var(--color-border);
+}
+
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.01ms !important;
+    scroll-behavior: auto           !important;
   }
 }

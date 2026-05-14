@@ -1,17 +1,125 @@
-/* ============================================================================
-   zazenware — main.css
-   ----------------------------------------------------------------------------
-   The single CSS entry point. Page HTML files link to ONLY this file.
-   Import order is significant — tokens first, then base, utilities, components,
-   shell, cards, cart, confirmation, contact styles last.
-   ============================================================================ */
+/* ============================================================
+   main.css — Zazenware MVP1
+   Import layer only. Page-shell glue styles.
+   No component or token declarations here.
 
-@import url("./tokens.css");
-@import url("./base.css");
-@import url("./utilities.css");
-@import url("./components.css");
-@import url("./shell.css");
-@import url("./cards.css");
-@import url("./cart.css");
-@import url("./confirmation.css");
-@import url("./contact.css");
+   Load order matters:
+     tokens → base → utilities → components
+   ============================================================ */
+
+/* ── Google Fonts ───────────────────────────────────────────── */
+/* UnifrakturMaguntia: blackletter display headings (h1, h2)    */
+/* Courier Prime: typewriter body, nav, buttons, forms          */
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ── Design system layers ───────────────────────────────────── */
+@import './tokens.css';
+@import './base.css';
+@import './utilities.css';
+@import './components.css';
+
+
+/* ── Page shell ─────────────────────────────────────────────── */
+/* Wraps header + main + footer so footer sticks to bottom.     */
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-shell > main {
+  flex: 1;
+}
+
+
+/* ── Page section padding ───────────────────────────────────── */
+/* Standard vertical rhythm for page-level sections.            */
+.page-section {
+  padding-block: var(--space-12);
+}
+
+.page-section--sm {
+  padding-block: var(--space-8);
+}
+
+.page-section--lg {
+  padding-block: var(--space-20);
+}
+
+.page-section--xl {
+  padding-block: var(--space-24);
+}
+
+@media (max-width: 767px) {
+  .page-section    { padding-block: var(--space-8); }
+  .page-section--lg { padding-block: var(--space-12); }
+  .page-section--xl { padding-block: var(--space-16); }
+}
+
+
+/* ── Content areas ──────────────────────────────────────────── */
+/* Max-width wrapper with horizontal padding for page body.     */
+.content-area {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-8);
+}
+
+.content-area--narrow {
+  max-width: var(--container-narrow);
+}
+
+.content-area--wide {
+  max-width: var(--container-wide);
+}
+
+@media (max-width: 767px) {
+  .content-area {
+    padding-inline: var(--space-5);
+  }
+}
+
+
+/* ── Two-column page layout (e.g. cart) ─────────────────────── */
+.page-cols {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+@media (max-width: 991px) {
+  .page-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ── Breadcrumb ─────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-link);
+}
+
+.breadcrumb__sep {
+  opacity: 0.4;
+  flex-shrink: 0;
+}

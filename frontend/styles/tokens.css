@@ -1,131 +1,253 @@
-/* ============================================================================
-   zazenware — tokens.css
-   ----------------------------------------------------------------------------
-   Semantic design tokens for both themes.
-   Components NEVER reference hex codes directly — they read --zw-* variables.
+/* ============================================================
+   tokens.css — Zazenware MVP1
+   Design system tokens: colors, typography, spacing, radius,
+   shadows, borders, z-index, focus, transitions.
 
-   Source: Master Spec v1.2 § 7.5 (Semantic token model)
+   Rule: all component styles consume these tokens.
+         No hardcoded hex values in base/utilities/components.
+   ============================================================ */
 
-   THEME RULE:
-   - Default :root  = light theme (Cream Flyer)
-   - [data-theme="dark"] = dark theme (Basement Maroon)
-   - The theme detector script in <head> sets data-theme synchronously
-     before this file paints, preventing the flash of incorrect theme.
-   ============================================================================ */
 
-/* ─── Light theme — Cream Flyer ─────────────────────────────────────────── */
-:root {
-  /* Surfaces */
-  --zw-bg:           #F3E8D2;   /* Cream Paper */
-  --zw-surface:      #FFF8E8;   /* Warm Bone   */
+/* ─────────────────────────────────────────────────────────────
+   LIGHT THEME (default)
+   "Aged Parchment" — warmer/darker cream base so lavender and
+   maroon read bolder; less stark than pure white-adjacent cream.
+   ───────────────────────────────────────────────────────────── */
+:root,
+[data-theme="light"] {
 
-  /* Text */
-  --zw-text:         #111111;   /* Ink Black */
-  --zw-text-muted:   #3A3333;   /* Charcoal  */
+  /* Raw palette */
+  --palette-bg:            #DDD0B0;   /* aged parchment — darker than original #F3E8D2 */
+  --palette-surface:       #CEBF9A;   /* warm bone — deeper surface */
+  --palette-surface-alt:   #BFB08A;   /* deepest bone — fieldsets, alt panels */
+  --palette-black:         #0D0B09;   /* near-black ink */
+  --palette-charcoal:      #3A3228;   /* muted text */
+  --palette-dust:          #7A6A54;   /* placeholder / helper text */
+  --palette-lavender:      #B9A1FF;   /* primary block, primary buttons */
+  --palette-lavender-deep: #9D84F0;   /* hover/active lavender */
+  --palette-maroon:        #6E1E2E;   /* accent, badges, active nav */
+  --palette-maroon-deep:   #4A101C;   /* footer, deep panels */
+  --palette-cream-on-dark: #F3E8D2;   /* cream text on dark/maroon surfaces */
+  --palette-green-ok:      #2A5C2A;   /* success states */
 
-  /* Structure */
-  --zw-border:       #080707;   /* Black */
+  /* Semantic tokens — light */
+  --color-bg:              var(--palette-bg);
+  --color-surface:         var(--palette-surface);
+  --color-surface-alt:     var(--palette-surface-alt);
+  --color-text:            var(--palette-black);
+  --color-text-muted:      var(--palette-charcoal);
+  --color-text-placeholder:var(--palette-dust);
+  --color-border:          var(--palette-black);
+  --color-primary-block:   var(--palette-lavender);
+  --color-primary-text:    var(--palette-black);
+  --color-accent:          var(--palette-maroon);
+  --color-accent-text:     var(--palette-cream-on-dark);
+  --color-link:            var(--palette-maroon);
+  --color-link-hover:      var(--palette-maroon-deep);
+  --color-focus:           var(--palette-lavender-deep);
+  --color-focus-shadow:    rgba(157, 132, 240, 0.35);
+  --color-success-border:  var(--palette-green-ok);
+  --color-error-border:    var(--palette-maroon);
+  --color-muted-fill:      rgba(13, 11, 9, 0.07);
 
-  /* Blocks (primary atmosphere colour) */
-  --zw-block:        #B9A1FF;   /* Lavender */
-  --zw-block-text:   #111111;   /* Ink Black */
-  --zw-block-deep:   #8D6FE8;   /* Deep Lavender (hover/active) */
+  /* Button tokens — light */
+  --btn-primary-bg:         var(--palette-lavender);
+  --btn-primary-text:       var(--palette-black);
+  --btn-primary-border:     var(--palette-black);
+  --btn-primary-shadow:     4px 4px 0 var(--palette-black);
+  --btn-primary-shadow-hover: 6px 6px 0 var(--palette-black);
+  --btn-primary-bg-hover:   var(--palette-lavender-deep);
 
-  /* Accent */
-  --zw-accent:       #6E1E2E;   /* Maroon */
-  --zw-accent-text:  #FFF8E8;   /* Warm Bone on Maroon */
+  --btn-secondary-bg:       transparent;
+  --btn-secondary-text:     var(--palette-black);
+  --btn-secondary-border:   var(--palette-black);
+  --btn-secondary-shadow:   4px 4px 0 var(--palette-black);
+  --btn-secondary-shadow-hover: 6px 6px 0 var(--palette-black);
 
-  /* Focus + links */
-  --zw-focus:        #8D6FE8;   /* Lavender focus ring */
-  --zw-link:         #6E1E2E;   /* Maroon */
-  --zw-link-hover:   #4A101C;   /* Blood Maroon */
+  /* Card tokens — light */
+  --card-bg:                var(--palette-surface);
+  --card-border:            var(--palette-black);
+  --card-strip-bg:          var(--palette-lavender);
+  --card-strip-text:        var(--palette-black);
+  --card-shadow:            4px 4px 0 var(--palette-black);
+  --card-shadow-hover:      7px 7px 0 var(--palette-black);
 
-  /* Status */
-  --zw-error:        #6E1E2E;
-  --zw-error-bg:     #FFF8E8;
-  --zw-success:      #1F5A2E;   /* deep green, used sparingly */
-  --zw-success-bg:   #FFF8E8;
+  /* Header tokens — light */
+  --header-bg:              var(--palette-lavender);
+  --header-text:            var(--palette-black);
+  --header-border:          var(--palette-black);
 
-  /* Shadows (hard, screen-print feel) */
-  --zw-shadow-offset: 4px 4px 0 0;
-  --zw-shadow:        var(--zw-shadow-offset) var(--zw-border);
+  /* Footer tokens — light */
+  --footer-bg:              var(--palette-black);
+  --footer-text:            var(--palette-cream-on-dark);
+  --footer-border:          var(--palette-black);
 
-  /* Spacing scale (rem-based, 8px grid) */
-  --zw-space-1:  0.25rem;   /*  4px */
-  --zw-space-2:  0.5rem;    /*  8px */
-  --zw-space-3:  0.75rem;   /* 12px */
-  --zw-space-4:  1rem;      /* 16px */
-  --zw-space-5:  1.5rem;    /* 24px */
-  --zw-space-6:  2rem;      /* 32px */
-  --zw-space-7:  3rem;      /* 48px */
-  --zw-space-8:  4rem;      /* 64px */
-
-  /* Borders */
-  --zw-border-width: 2px;
-  --zw-border-thick: 3px;
-  --zw-radius:       0;      /* HARD corners — no rounding by default */
-
-  /* Typography */
-  --zw-font-display: "UnifrakturMaguntia", "MedievalSharp", "Pirata One", serif;
-  --zw-font-body:    "Special Elite", "Courier Prime", "Cutive Mono", ui-monospace, monospace;
-  --zw-font-size-base: 1.125rem;  /* 18px on mobile */
-  --zw-line-height:    1.55;
-
-  /* Layout */
-  --zw-container-max: 1280px;
-  --zw-content-max:   72ch;
-
-  /* Motion */
-  --zw-transition: 150ms ease-out;
+  /* Form tokens — light */
+  --input-bg:               var(--palette-bg);
+  --input-text:             var(--palette-black);
+  --input-border:           var(--palette-black);
+  --input-border-focus:     var(--palette-lavender-deep);
 }
 
-/* ─── Dark theme — Basement Maroon ──────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────────────────────
+   DARK THEME
+   "Basement Maroon" — void black, maroon blocks, cream text
+   ───────────────────────────────────────────────────────────── */
 [data-theme="dark"] {
-  /* Surfaces */
-  --zw-bg:           #080707;   /* Void Black */
-  --zw-surface:      #181111;   /* Black Brown */
 
-  /* Text */
-  --zw-text:         #F3E8D2;   /* Cream */
-  --zw-text-muted:   #CFC3B2;   /* Dust Cream */
+  /* Raw palette */
+  --palette-bg:            #080707;   /* void black */
+  --palette-surface:       #181111;   /* black-brown panels */
+  --palette-surface-alt:   #1E1515;   /* slightly lighter dark surface */
+  --palette-cream:         #F3E8D2;   /* primary text */
+  --palette-dustcream:     #CFC3B2;   /* muted text */
+  --palette-lavender:      #B9A1FF;   /* accent, focus rings, links */
+  --palette-lavender-dim:  #9D84F0;   /* hover */
+  --palette-maroon:        #6E1E2E;   /* primary block */
+  --palette-maroon-deep:   #4A101C;   /* footer, deep panels */
+  --palette-black-ink:     #0D0B09;   /* text on lavender surfaces */
+  --palette-green-ok:      #5A9A5A;   /* success */
 
-  /* Structure */
-  --zw-border:       #F3E8D2;   /* Cream */
+  /* Semantic tokens — dark */
+  --color-bg:              var(--palette-bg);
+  --color-surface:         var(--palette-surface);
+  --color-surface-alt:     var(--palette-surface-alt);
+  --color-text:            var(--palette-cream);
+  --color-text-muted:      var(--palette-dustcream);
+  --color-text-placeholder:var(--palette-dustcream);
+  --color-border:          var(--palette-cream);
+  --color-primary-block:   var(--palette-maroon);
+  --color-primary-text:    var(--palette-cream);
+  --color-accent:          var(--palette-lavender);
+  --color-accent-text:     var(--palette-black-ink);
+  --color-link:            var(--palette-lavender);
+  --color-link-hover:      var(--palette-lavender-dim);
+  --color-focus:           var(--palette-lavender);
+  --color-focus-shadow:    rgba(185, 161, 255, 0.28);
+  --color-success-border:  var(--palette-green-ok);
+  --color-error-border:    var(--palette-lavender);
+  --color-muted-fill:      rgba(243, 232, 210, 0.06);
 
-  /* Blocks (now maroon-driven) */
-  --zw-block:        #6E1E2E;   /* Maroon */
-  --zw-block-text:   #F3E8D2;   /* Cream */
-  --zw-block-deep:   #4A101C;   /* Blood Maroon */
+  /* Button tokens — dark */
+  --btn-primary-bg:         var(--palette-maroon);
+  --btn-primary-text:       var(--palette-cream);
+  --btn-primary-border:     var(--palette-cream);
+  --btn-primary-shadow:     4px 4px 0 rgba(243, 232, 210, 0.35);
+  --btn-primary-shadow-hover: 6px 6px 0 rgba(243, 232, 210, 0.45);
+  --btn-primary-bg-hover:   var(--palette-maroon-deep);
 
-  /* Accent (flips to lavender) */
-  --zw-accent:       #B9A1FF;   /* Lavender */
-  --zw-accent-text:  #111111;   /* Ink Black on Lavender */
+  --btn-secondary-bg:       transparent;
+  --btn-secondary-text:     var(--palette-cream);
+  --btn-secondary-border:   var(--palette-cream);
+  --btn-secondary-shadow:   4px 4px 0 rgba(243, 232, 210, 0.25);
+  --btn-secondary-shadow-hover: 6px 6px 0 rgba(243, 232, 210, 0.35);
 
-  /* Focus + links */
-  --zw-focus:        #B9A1FF;   /* Lavender focus ring */
-  --zw-link:         #B9A1FF;   /* Lavender */
-  --zw-link-hover:   #D5C4FF;   /* Pale Lavender */
+  /* Card tokens — dark */
+  --card-bg:                var(--palette-surface);
+  --card-border:            var(--palette-cream);
+  --card-strip-bg:          var(--palette-maroon);
+  --card-strip-text:        var(--palette-cream);
+  --card-shadow:            4px 4px 0 rgba(243, 232, 210, 0.22);
+  --card-shadow-hover:      7px 7px 0 rgba(243, 232, 210, 0.32);
 
-  /* Status */
-  --zw-error:        #6E1E2E;
-  --zw-error-bg:     #181111;
-  --zw-success:      #8FCB9B;   /* Pale green on dark */
-  --zw-success-bg:   #181111;
+  /* Header tokens — dark */
+  --header-bg:              var(--palette-maroon);
+  --header-text:            var(--palette-cream);
+  --header-border:          var(--palette-cream);
+
+  /* Footer tokens — dark */
+  --footer-bg:              var(--palette-maroon-deep);
+  --footer-text:            var(--palette-cream);
+  --footer-border:          var(--palette-cream);
+
+  /* Form tokens — dark */
+  --input-bg:               var(--palette-surface);
+  --input-text:             var(--palette-cream);
+  --input-border:           var(--palette-cream);
+  --input-border-focus:     var(--palette-lavender);
 }
 
-/* ─── Reduced motion ────────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --zw-transition: 0ms;
-    --zw-shadow-offset: 2px 2px 0 0;  /* shorter offset, no animation */
-  }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* ─────────────────────────────────────────────────────────────
+   THEME-INDEPENDENT TOKENS
+   Typography, spacing, radius, borders, z-index, transitions.
+   ───────────────────────────────────────────────────────────── */
+:root {
+
+  /* ── Typefaces ──────────────────────────────────────────── */
+  --font-display: 'UnifrakturMaguntia', 'MedievalSharp', serif;
+  --font-body:    'Courier Prime', 'Courier New', Courier, monospace;
+
+  /* ── Type scale ─────────────────────────────────────────── */
+  --text-xs:   0.75rem;    /*  12px */
+  --text-sm:   0.875rem;   /*  14px */
+  --text-base: 1rem;       /*  16px */
+  --text-md:   1.125rem;   /*  18px */
+  --text-lg:   1.25rem;    /*  20px */
+  --text-xl:   1.5rem;     /*  24px */
+  --text-2xl:  2rem;       /*  32px */
+  --text-3xl:  2.5rem;     /*  40px */
+  --text-4xl:  3.5rem;     /*  56px */
+
+  /* ── Line height ────────────────────────────────────────── */
+  --leading-tight: 1.15;
+  --leading-snug:  1.35;
+  --leading-base:  1.65;
+  --leading-loose: 1.85;
+
+  /* ── Font weight ────────────────────────────────────────── */
+  --weight-normal: 400;
+  --weight-bold:   700;
+
+  /* ── Spacing scale ──────────────────────────────────────── */
+  --space-1:  0.25rem;     /*   4px */
+  --space-2:  0.5rem;      /*   8px */
+  --space-3:  0.75rem;     /*  12px */
+  --space-4:  1rem;        /*  16px */
+  --space-5:  1.25rem;     /*  20px */
+  --space-6:  1.5rem;      /*  24px */
+  --space-8:  2rem;        /*  32px */
+  --space-10: 2.5rem;      /*  40px */
+  --space-12: 3rem;        /*  48px */
+  --space-16: 4rem;        /*  64px */
+  --space-20: 5rem;        /*  80px */
+  --space-24: 6rem;        /*  96px */
+
+  /* ── Border widths ──────────────────────────────────────── */
+  --border-sm:  1px;
+  --border-md:  2px;
+  --border-lg:  3px;
+
+  /* ── Border radius ──────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-sm:   0.375rem;   /*   6px — very subtle */
+  --radius-md:   0.75rem;    /*  12px — inputs, image frames */
+  --radius-lg:   1.25rem;    /*  20px — cards, panels, section blocks */
+  --radius-xl:   1.75rem;    /*  28px — hero blocks, large panels */
+  --radius-pill: 999px;      /* buttons, badges, chips, qty controls */
+
+  /* ── Z-index ────────────────────────────────────────────── */
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:    10;
+  --z-dropdown:  100;
+  --z-header:    200;
+  --z-overlay:   300;
+  --z-modal:     400;
+
+  /* ── Transitions ────────────────────────────────────────── */
+  --transition-fast: 140ms ease;
+  --transition-base: 210ms ease;
+  --transition-slow: 340ms ease;
+
+  /* ── Focus ring ─────────────────────────────────────────── */
+  --focus-ring-width:  3px;
+  --focus-ring-offset: 3px;
+
+  /* ── Layout containers ──────────────────────────────────── */
+  --container-max:    1200px;
+  --container-wide:   1400px;
+  --container-narrow:  720px;
+  --header-height:      68px;
 }
