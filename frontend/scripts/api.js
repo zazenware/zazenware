@@ -13,8 +13,10 @@
      The backend always returns { error: { code, message, fields? } } on
      non-2xx. This wrapper throws an ApiError with those fields populated.
    ============================================================================ */
-
-const DEFAULT_BASE = "http://localhost:4000";
+const DEFAULT_BASE =
+  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:4000"
+    : "https://zazenware-production-2f30.up.railway.app";
 
 function getBase() {
   if (typeof window !== "undefined" && window.ZW_CONFIG?.apiBaseUrl) {
