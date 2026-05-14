@@ -21,6 +21,9 @@
   <script type="module" src="/scripts/theme.js"></script>
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
+
+  <!-- Contact page script — renders the form and handles POST /api/contact -->
+  <script type="module" src="/scripts/contact.js"></script>
 </head>
 <body>
 
@@ -48,13 +51,10 @@
       </ul>
     </section>
 
-    <!-- Form placeholder — wired in E-12 -->
-    <section class="zw-panel zw-stack" aria-labelledby="contact-form-heading">
-      <h2 id="contact-form-heading" class="zw-display" style="font-size: 1.75rem; margin: 0;">send a message</h2>
-      <p class="zw-text-muted">
-        The contact form will be wired up in epic E-12. For now, email
-        <a href="mailto:contact@zazenware.com">contact@zazenware.com</a> directly.
-      </p>
+    <!-- Mount node for contact.js to render the form into -->
+    <section class="zw-stack" aria-labelledby="contact-form-heading">
+      <h2 id="contact-form-heading" class="zw-display" style="font-size: 1.75rem;">send a message</h2>
+      <div id="contact-form-mount"></div>
     </section>
 
   </main>

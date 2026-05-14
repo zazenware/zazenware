@@ -3,7 +3,7 @@
    ----------------------------------------------------------------------------
    The single CSS entry point. Page HTML files link to ONLY this file.
    Import order is significant — tokens first, then base, utilities, components,
-   shell, cards, cart, and confirmation styles last.
+   shell, cards, cart, confirmation, contact styles last.
    ============================================================================ */
 
 @import url("./tokens.css");
@@ -14,3 +14,4 @@
 @import url("./cards.css");
 @import url("./cart.css");
 @import url("./confirmation.css");
+@import url("./contact.css");

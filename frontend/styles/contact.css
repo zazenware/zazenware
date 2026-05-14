@@ -1,0 +1,55 @@
+/* ============================================================================
+   zazenware — contact.css
+   ----------------------------------------------------------------------------
+   Small additions for the Contact page. Re-uses .zw-field / .zw-checkout-form
+   styles from cart.css. Adds checkbox-row styling and the success banner.
+   ============================================================================ */
+
+.zw-contact-form {
+  margin-top: var(--zw-space-5);
+  padding: var(--zw-space-5);
+  background: var(--zw-surface);
+  border: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-field--checkbox {
+  flex-direction: column;
+  gap: var(--zw-space-2);
+  padding: var(--zw-space-3);
+  background: var(--zw-bg);
+  border: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-field__checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--zw-space-3);
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.zw-field__checkbox {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  cursor: pointer;
+  margin-top: 0.1rem;
+}
+
+.zw-field__checkbox:focus-visible {
+  outline: 3px solid var(--zw-focus);
+  outline-offset: 2px;
+}
+
+.zw-field__checkbox[aria-invalid="true"] {
+  outline: 2px solid var(--zw-error);
+}
+
+/* ─── Success banner ─────────────────────────────────────────────────────── */
+.zw-contact-form__success {
+  background: var(--zw-success-bg, var(--zw-block));
+  color: var(--zw-success, var(--zw-block-text));
+  border: var(--zw-border-width) solid var(--zw-border);
+  padding: var(--zw-space-4);
+}

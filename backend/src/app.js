@@ -13,6 +13,7 @@ import morgan from "morgan";
 import { healthRouter }  from "./routes/health.routes.js";
 import { designsRouter } from "./routes/designs.routes.js";
 import { ordersRouter }  from "./routes/orders.routes.js";
+import { contactRouter } from "./routes/contact.routes.js";
 import { notFound, errorHandler } from "./middleware/errors.js";
 
 const app = express();
@@ -56,6 +57,7 @@ if (process.env.NODE_ENV !== "test") {
 app.use("/api", healthRouter);
 app.use("/api", designsRouter);
 app.use("/api", ordersRouter);
+app.use("/api", contactRouter);
 
 app.get("/", (_req, res) => {
   res.json({
