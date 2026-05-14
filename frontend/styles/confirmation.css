@@ -1,0 +1,50 @@
+/* ============================================================================
+   zazenware — confirmation.css
+   ----------------------------------------------------------------------------
+   Styles for the order-confirmation page items list. Re-uses .zw-order-summary
+   from cart.css for the totals table.
+   ============================================================================ */
+
+.zw-confirm-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-3);
+}
+
+.zw-confirm-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--zw-space-3);
+  padding: var(--zw-space-3);
+  background: var(--zw-surface);
+  border: var(--zw-border-width) solid var(--zw-border);
+  align-items: center;
+}
+
+@media (min-width: 600px) {
+  .zw-confirm-item {
+    grid-template-columns: 96px 1fr;
+  }
+}
+
+.zw-confirm-item__image {
+  width: 80px;
+  height: 80px;
+}
+
+@media (min-width: 600px) {
+  .zw-confirm-item__image {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.zw-confirm-item__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}

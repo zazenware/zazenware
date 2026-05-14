@@ -87,6 +87,10 @@ export const api = {
   getDesign(slug, opts) {
     return request(`/api/designs/${encodeURIComponent(slug)}`, opts);
   },
+  /** GET /api/orders/:order_number → { order: {...} } */
+  getOrder(orderNumber, opts) {
+    return request(`/api/orders/${encodeURIComponent(orderNumber)}`, opts);
+  },
   /** GET /api/health → { status, db, version, uptime, timestamp } */
   health(opts) {
     return request("/api/health", opts);

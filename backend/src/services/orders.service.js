@@ -7,10 +7,16 @@
 // Authority (Master Spec § 12): this service is the source of truth for
 // prices, totals, statuses, and order numbers. Everything from the request
 // payload is treated as untrusted input.
+//
+// Email (Master Spec § 4.3): after a successful insert, we fire the
+// confirmation email. The send is fire-and-forget — email failure NEVER
+// rolls back the order. email_status records sent | failed | skipped on the
+// order row for manual retry from DBeaver.
 // =============================================================================
 
 import { query, withTransaction } from "../lib/db.js";
 import { errors } from "../middleware/errors.js";
+import { sendOrderConfirmation } from "./email.service.js";
 
 // ─── Constants (mirror frontend/cart-math.js) ────────────────────────────
 const TAX_RATE_BPS         = 1300;     // 13.00% HST
@@ -38,14 +44,6 @@ const MAX_QTY_PER_LINE    = 99;
 
 // ─── createOrder ─────────────────────────────────────────────────────────
 
-/**
- * Validate input, recalculate authoritatively, insert order + items, return
- * the persisted record shape that gets returned to the client.
- *
- * @param {object} input  Raw request body
- * @param {Date}   now    Injectable clock (defaults to new Date()).
- * @returns {Promise<object>} Persisted order summary
- */
 export async function createOrder(input, now = new Date()) {
   // ─── Step 1: shape validation ─────────────────────────────────────────
   const fieldErrors = [];
@@ -104,7 +102,6 @@ export async function createOrder(input, now = new Date()) {
     );
     const order = orderResult.rows[0];
 
-    // Insert order_items rows
     for (const item of items) {
       await client.query(
         `INSERT INTO order_items (
@@ -122,6 +119,26 @@ export async function createOrder(input, now = new Date()) {
 
     return order;
   });
+
+  // ─── Step 5: fire confirmation email (fire-and-forget) ────────────────
+  // We DO NOT await this — order is already committed. Failure is logged
+  // and recorded on the row's email_status; operator retries from DBeaver.
+  const emailPayload = {
+    order_number: persisted.order_number,
+    subtotal_cents: subtotal,
+    bundle_discount_cents: bundleDiscount,
+    shipping_cents: shipping,
+    tax_rate_bps: TAX_RATE_BPS,
+    tax_cents: taxCents,
+    total_cents: totalCents,
+    items: items.map(publicItemDTO),
+  };
+
+  sendOrderConfirmation(persisted.id, emailPayload, v.customer_email)
+    .catch((err) => {
+      // sendOrderConfirmation has its own try/catch — this is belt-and-suspenders.
+      console.error("[zw][orders] sendOrderConfirmation unexpectedly threw:", err);
+    });
 
   return {
     order_number: persisted.order_number,
@@ -141,10 +158,6 @@ export async function createOrder(input, now = new Date()) {
 
 // ─── fetchOrderByNumber ──────────────────────────────────────────────────
 
-/**
- * Read a single order by its ZW-YYYY-NNNNNN number. Returns the public DTO
- * (no shipping address, no PII — the order_number URL is semi-public).
- */
 export async function fetchOrderByNumber(orderNumber) {
   if (typeof orderNumber !== "string" || !/^ZW-\d{4}-\d{6}$/.test(orderNumber)) {
     return null;
@@ -192,13 +205,10 @@ export async function fetchOrderByNumber(orderNumber) {
 function validateShape(input, fieldErrors, now) {
   const out = {};
 
-  // Honeypot — must be empty
   if (input.zw_hp && String(input.zw_hp).trim() !== "") {
-    // Generic rejection — never disclose which spam check failed
     throw errors.badRequest("Submission could not be processed. Please refresh and try again.");
   }
 
-  // Time-trap — at least 3s since form load, no older than 24h
   const zwT = Number(input.zw_t);
   if (!Number.isFinite(zwT)) {
     throw errors.badRequest("Submission could not be processed. Please refresh and try again.");
@@ -208,18 +218,14 @@ function validateShape(input, fieldErrors, now) {
     throw errors.badRequest("Submission could not be processed. Please refresh and try again.");
   }
 
-  // Customer name
   out.customer_name = trimmedStr(input.customer_name, 1, 120, fieldErrors, "customer_name");
-  // Email
   const email = trimmedStr(input.customer_email, 1, 254, fieldErrors, "customer_email");
   if (email && !EMAIL_REGEX.test(email)) fieldErrors.push("customer_email");
   out.customer_email = email ? email.toLowerCase() : "";
-  // Optional note
   const note = typeof input.customer_note === "string" ? input.customer_note.trim() : "";
   if (note.length > 500) fieldErrors.push("customer_note");
   out.customer_note = note || null;
 
-  // Shipping
   out.shipping_full_name      = trimmedStr(input.shipping_full_name,      1, 120, fieldErrors, "shipping_full_name");
   out.shipping_address_line_1 = trimmedStr(input.shipping_address_line_1, 1, 200, fieldErrors, "shipping_address_line_1");
   const line2 = typeof input.shipping_address_line_2 === "string" ? input.shipping_address_line_2.trim() : "";
@@ -231,17 +237,14 @@ function validateShape(input, fieldErrors, now) {
   if (!VALID_PROVINCES.has(province)) fieldErrors.push("shipping_province");
   out.shipping_province = province;
 
-  // Postal — normalize and validate
   const postal = normalizePostal(input.shipping_postal_code);
   if (!POSTAL_CODE_REGEX.test(postal)) fieldErrors.push("shipping_postal_code");
   out.shipping_postal_code = postal;
 
-  // Country must be CA (we don't accept anything else)
   if (input.shipping_country && String(input.shipping_country).toUpperCase() !== "CA") {
     fieldErrors.push("shipping_country");
   }
 
-  // Items
   out.items = Array.isArray(input.items) ? input.items : [];
 
   return out;
@@ -312,7 +315,6 @@ async function fetchAllProductsForItems(items) {
 }
 
 function buildLine(input, productRows) {
-  // Per-item shape
   const type = input.product_type;
   if (!VALID_PRODUCT_TYPES.has(type)) {
     throw errors.badRequest("Invalid product type.", ["items"]);
@@ -344,7 +346,6 @@ function buildLine(input, productRows) {
     throw errors.badRequest(`Product/slug mismatch.`, ["items"]);
   }
 
-  // Shirt-only options
   let shirtSize = null;
   let shirtColor = null;
   if (type === "shirt") {
@@ -379,12 +380,16 @@ function buildLine(input, productRows) {
 }
 
 function publicItemDTO(item) {
+  // Accepts either the internal {shirt_size, shirt_color, ...} shape OR
+  // an already-public {size, color, ...} shape (used by retrievers).
+  const size  = item.shirt_size  ?? item.size  ?? null;
+  const color = item.shirt_color ?? item.color ?? null;
   return {
     product_type: item.product_type,
     design_slug: item.design_slug,
     product_name: item.product_name,
-    ...(item.shirt_size  ? { size:  item.shirt_size  } : {}),
-    ...(item.shirt_color ? { color: item.shirt_color } : {}),
+    ...(size  ? { size }  : {}),
+    ...(color ? { color } : {}),
     unit_price_cents: item.unit_price_cents,
     quantity: item.quantity,
     line_total_cents: item.line_total_cents,

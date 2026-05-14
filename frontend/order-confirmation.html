@@ -22,6 +22,9 @@
   <script type="module" src="/scripts/theme.js"></script>
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
+
+  <!-- Order confirmation page script — fetches the real order via API -->
+  <script type="module" src="/scripts/order-confirmation.js"></script>
 </head>
 <body>
 
@@ -37,17 +40,17 @@
       </p>
     </section>
 
-    <!-- ORDER NUMBER (read from URL ?order=ZW-YYYY-NNNNNN) -->
+    <!-- ORDER NUMBER (rendered by order-confirmation.js from ?order= param) -->
     <section class="zw-block-accent" style="text-align: center;">
       <div class="zw-hero__eyebrow">Your order number</div>
       <p class="zw-display" id="order-number" style="font-size: clamp(2rem, 5vw, 3rem); margin: var(--zw-space-2) 0;">—</p>
       <p style="margin: 0;">Include this exact number as the message on your e-transfer.</p>
     </section>
 
-    <!-- DETAILS placeholder — populated in E-11 from GET /api/orders/:order_number -->
+    <!-- ORDER DETAILS — populated by order-confirmation.js from /api/orders/:order_number -->
     <section id="order-details" class="zw-panel zw-stack" aria-labelledby="details-heading">
       <h2 id="details-heading" class="zw-display" style="font-size: 1.5rem;">order details</h2>
-      <p class="zw-text-muted">Item details, totals, and e-transfer instructions will appear here once the order API is wired (epic E-11).</p>
+      <p class="zw-text-muted" aria-busy="true">Loading order…</p>
     </section>
 
     <!-- E-TRANSFER INSTRUCTIONS -->
@@ -56,7 +59,7 @@
       <ol>
         <li>From your bank's app or website, send an Interac e-transfer.</li>
         <li>Recipient: <strong>payments@zazenware.com</strong></li>
-        <li>Amount: the exact total shown above (once order details are loaded).</li>
+        <li>Amount: the exact total shown above.</li>
         <li>Message: paste your order number from this page.</li>
         <li>Auto-deposit is enabled, so no security question is required.</li>
       </ol>
@@ -73,31 +76,6 @@
   </main>
 
   <div id="site-footer"></div>
-
-  <!-- Inline: read ?order=… from the URL and display it.
-       Full data fetch lands in E-11 via /api/orders/:order_number -->
-  <script>
-    (function () {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const order = params.get("order");
-        const target = document.getElementById("order-number");
-        if (order && /^ZW-\d{4}-\d{6}$/.test(order)) {
-          target.textContent = order;
-          document.title = order + " — Order confirmation — zazenware";
-        } else if (order) {
-          // Has an order param but wrong format — show but flag
-          target.textContent = order;
-          target.style.color = "var(--zw-error)";
-        } else {
-          target.textContent = "(no order number)";
-          target.style.color = "var(--zw-text-muted)";
-        }
-      } catch (e) {
-        /* leave the default em-dash */
-      }
-    })();
-  </script>
 
 </body>
 </html>
