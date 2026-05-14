@@ -253,6 +253,28 @@
   .zw-header__nav { display: none; }
 }
 
+.zw-nav > li {
+  display: flex;
+  align-items: center;
+}
+
+.zw-nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0 var(--zw-space-2);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+button.zw-nav__link {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  font: inherit;
+}
+
 /* ─── MOBILE DRAWER ─────────────────────────────────────────────────────── */
 .zw-drawer {
   position: fixed;

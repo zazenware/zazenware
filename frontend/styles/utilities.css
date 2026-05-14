@@ -448,3 +448,7 @@
   background: var(--zw-block);
   color: var(--zw-block-text);
 }
+
+.zw-cluster-sm {
+  gap: var(--zw-space-2);
+}
