@@ -452,3 +452,33 @@
 .zw-cluster-sm {
   gap: var(--zw-space-2);
 }
+
+.zw-nav__link {
+  position: relative;
+  text-decoration: none;
+}
+
+.zw-nav__link:hover,
+.zw-nav__link:focus-visible,
+.zw-nav__link[aria-current="page"] {
+  text-decoration: none;
+}
+
+.zw-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.25rem;
+  height: 3px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--zw-transition);
+}
+
+.zw-nav__link:hover::after,
+.zw-nav__link:focus-visible::after,
+.zw-nav__link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
