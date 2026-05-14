@@ -1,293 +1,268 @@
-/* ============================================================
-   base.css — Zazenware MVP1
-   Reset, body defaults, headings, links, images, forms,
-   semantic element defaults, accessibility baseline.
-   ============================================================ */
+/* ============================================================================
+   zazenware — base.css
+   ----------------------------------------------------------------------------
+   Reset, document defaults, typography, links, media, forms, accessibility.
+   Uses canonical --zw-* tokens only.
+   ============================================================================ */
 
-
-/* ── Box model reset ────────────────────────────────────────── */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+* {
   margin: 0;
-  padding: 0;
 }
 
 html {
   font-size: 100%;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  hanging-punctuation: first last;
 }
 
 body {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: var(--leading-base);
-  color: var(--color-text);
-  background-color: var(--color-bg);
   min-height: 100vh;
+  background: var(--zw-bg);
+  color: var(--zw-text);
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-base);
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
 }
 
-
-/* ── Accessibility ──────────────────────────────────────────── */
-
-/* Skip-to-content link */
-.skip-link {
-  position: absolute;
-  top: -200%;
-  left: var(--space-4);
-  z-index: var(--z-modal);
-  padding: var(--space-3) var(--space-6);
-  background: var(--color-primary-block);
-  color: var(--color-primary-text);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border: var(--border-lg) solid var(--color-border);
-  border-radius: var(--radius-pill);
-  text-decoration: none;
-  transition: top var(--transition-fast);
+body.zw-drawer-lock {
+  overflow: hidden;
 }
 
-.skip-link:focus {
-  top: var(--space-4);
+main {
+  display: block;
 }
 
-/* Global focus ring */
-:focus-visible {
-  outline: var(--focus-ring-width) solid var(--color-focus);
-  outline-offset: var(--focus-ring-offset);
-  border-radius: var(--radius-sm);
-}
-
-/* Remove focus ring for mouse users on elements that have it by default */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-
-/* ── Typography ─────────────────────────────────────────────── */
-
-/* Blackletter: h1 + h2 display use only */
 h1,
-h2 {
-  font-family: var(--font-display);
-  font-weight: var(--weight-normal); /* blackletter carries visual weight itself */
-  line-height: var(--leading-tight);
-  color: var(--color-text);
-}
-
-/* Typewriter: h3–h6 and all body */
+h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-body);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
-  color: var(--color-text);
-}
-
-h1 { font-size: var(--text-4xl); }
-h2 { font-size: var(--text-3xl); }
-h3 { font-size: var(--text-xl); }
-h4 { font-size: var(--text-lg); }
-h5 { font-size: var(--text-md); }
-h6 { font-size: var(--text-base); }
-
-/* Fluid h1 so it never breaks awkwardly */
-h1 {
-  font-size: clamp(var(--text-2xl), 5.5vw, var(--text-4xl));
-}
-
-p {
-  line-height: var(--leading-base);
-  margin-bottom: var(--space-4);
-}
-
-p:last-child {
-  margin-bottom: 0;
-}
-
-strong { font-weight: var(--weight-bold); }
-em     { font-style: italic; }
-
-small  { font-size: var(--text-sm); }
-
-/* Prevent long words from breaking layouts */
-p,
-li,
-h1,
-h2,
-h3 {
+  color: var(--zw-text);
+  line-height: 1.15;
   overflow-wrap: break-word;
 }
 
+h1,
+h2,
+.zw-display {
+  font-family: var(--zw-font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
 
-/* ── Links ──────────────────────────────────────────────────── */
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--zw-font-body);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 8vw, var(--zw-text-4xl));
+}
+
+h2 {
+  font-size: clamp(1.8rem, 5vw, var(--zw-text-3xl));
+}
+
+h3 {
+  font-size: var(--zw-text-xl);
+}
+
+h4 {
+  font-size: var(--zw-text-lg);
+}
+
+h5 {
+  font-size: var(--zw-text-md);
+}
+
+h6 {
+  font-size: var(--zw-text-base);
+}
+
+p,
+li {
+  overflow-wrap: break-word;
+}
+
+p + p {
+  margin-top: var(--zw-space-4);
+}
+
 a {
-  color: var(--color-link);
+  color: var(--zw-link);
   text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color var(--transition-fast);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  transition:
+    color var(--zw-transition),
+    text-decoration-thickness var(--zw-transition);
 }
 
 a:hover {
-  color: var(--color-link-hover);
+  color: var(--zw-link-hover);
+  text-decoration-thickness: 2px;
 }
 
-a:focus-visible {
-  outline: var(--focus-ring-width) solid var(--color-focus);
-  outline-offset: var(--focus-ring-offset);
-  border-radius: var(--radius-sm);
-}
-
-
-/* ── Images ─────────────────────────────────────────────────── */
 img,
+picture,
 svg,
-video {
+video,
+canvas {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* Default image rounding — cards override this per context */
 img {
-  border-radius: var(--radius-md);
+  border-radius: var(--zw-radius);
 }
 
-
-/* ── Lists ──────────────────────────────────────────────────── */
-ul,
-ol {
-  padding-left: var(--space-6);
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
-li {
-  margin-bottom: var(--space-2);
-  line-height: var(--leading-base);
-}
-
-/* Unstyled list helper used in nav, footer etc. */
-.list-unstyled {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-
-/* ── Horizontal rule ────────────────────────────────────────── */
-hr {
-  border: none;
-  border-top: var(--border-md) solid var(--color-border);
-  opacity: 0.25;
-  margin: var(--space-8) 0;
-}
-
-
-/* ── Tables ─────────────────────────────────────────────────── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--text-sm);
-}
-
-th,
-td {
-  padding: var(--space-3) var(--space-4);
-  border: var(--border-sm) solid var(--color-border);
-  text-align: left;
-}
-
-th {
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: var(--text-xs);
-  background-color: var(--color-surface-alt);
-}
-
-
-/* ── Semantic layout shells ─────────────────────────────────── */
-main {
-  display: block;          /* IE11 fallback */
-  padding-top: var(--space-10);
-  padding-bottom: var(--space-20);
-}
-
-section {
-  margin-bottom: var(--space-12);
-}
-
-article {
-  line-height: var(--leading-base);
-}
-
-
-/* ── Buttons and inputs base resets ─────────────────────────── */
 button {
-  font-family: var(--font-body);
   cursor: pointer;
-  border: none;
-  background: none;
 }
 
 input,
 textarea,
 select {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
+  width: 100%;
+  padding: var(--zw-space-3) var(--zw-space-4);
+  background: var(--zw-input-bg);
+  color: var(--zw-input-text);
+  border: var(--zw-border-width) solid var(--zw-input-border);
+  border-radius: var(--zw-radius-sm);
 }
 
-/* Remove default number input spinners — qty uses custom controls */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+textarea {
+  min-height: 9rem;
+  resize: vertical;
 }
 
-input[type="number"] {
-  -moz-appearance: textfield;
+input:focus,
+textarea:focus,
+select:focus {
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
 }
 
+fieldset {
+  padding: var(--zw-space-5);
+  border: var(--zw-border-width) solid var(--zw-border);
+}
 
-/* ── Code / pre ─────────────────────────────────────────────── */
+legend {
+  padding-inline: var(--zw-space-2);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+ul,
+ol {
+  padding-left: var(--zw-space-5);
+}
+
+li + li {
+  margin-top: var(--zw-space-2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: var(--zw-space-3);
+  border: var(--zw-border-width) solid var(--zw-border);
+  text-align: left;
+}
+
+th {
+  background: var(--zw-surface-alt);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+hr {
+  margin-block: var(--zw-space-7);
+  border: 0;
+  border-top: var(--zw-border-width) solid var(--zw-border);
+}
+
 code,
 pre {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  background: var(--color-surface-alt);
-  border-radius: var(--radius-md);
+  background: var(--zw-surface-alt);
+  font-family: var(--zw-font-body);
 }
 
 code {
-  padding: 0.1em 0.4em;
+  padding: 0.1em 0.35em;
 }
 
 pre {
-  padding: var(--space-6);
   overflow-x: auto;
-  border: var(--border-md) solid var(--color-border);
+  padding: var(--zw-space-5);
+  border: var(--zw-border-width) solid var(--zw-border);
 }
 
+:focus-visible {
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
+}
 
-/* ── Reduced motion ─────────────────────────────────────────── */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--zw-accent);
+  color: var(--zw-accent-text);
+}
+
+.zw-skip-link {
+  position: absolute;
+  top: -20rem;
+  left: var(--zw-space-4);
+  z-index: var(--zw-z-modal);
+  padding: var(--zw-space-3) var(--zw-space-5);
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border: var(--zw-border-thick) solid var(--zw-border);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.zw-skip-link:focus {
+  top: var(--zw-space-4);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration:       0.01ms !important;
-    animation-iteration-count: 1     !important;
-    transition-duration:      0.01ms !important;
-    scroll-behavior: auto           !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
