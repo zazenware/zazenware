@@ -35,29 +35,133 @@
     </section>
 
     <section class="zw-prose zw-stack">
-      <p class="zw-text-muted"><strong>Effective:</strong> 2026-05-10. Last reviewed 2026-05-10.</p>
+      <p class="zw-text-muted"><strong>Effective:</strong> 2026-05-10. Last reviewed: 2026-05-10.</p>
 
       <h2>Our commitment</h2>
-      <p>zazenware aims to meet Web Content Accessibility Guidelines (WCAG) 2.1, Level AA, across every page.</p>
+      <p>
+        zazenware aims to meet the Web Content Accessibility Guidelines (WCAG) 2.1, Level AA,
+        across every page of the site. Accessibility is a design value, not a checkbox — we want
+        anyone who wants to browse our art or place an order to be able to do so.
+      </p>
+      <p>
+        We treat accessibility issues as bugs. If you encounter something that doesn't work,
+        please tell us; we will work to fix it.
+      </p>
 
       <h2>How we work toward this</h2>
+      <p>The site is built with the following accessibility principles:</p>
       <ul>
-        <li>Semantic HTML landmarks (header, nav, main, footer).</li>
-        <li>Visible focus on every interactive control.</li>
-        <li>Keyboard-operable navigation, forms, cart, and theme toggle.</li>
-        <li>Text alternatives for images that convey meaning.</li>
-        <li>Colour contrast that meets AA on every theme combination we ship.</li>
-        <li>Honest labelling — colour is never the only indicator of state.</li>
-        <li>Respect for prefers-reduced-motion.</li>
+        <li>
+          <strong>Semantic HTML.</strong> Pages use proper landmarks
+          (<code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>),
+          one <code>h1</code> per page, and a sensible heading hierarchy.
+        </li>
+        <li>
+          <strong>Keyboard navigation.</strong> Everything you can do with a mouse, you can do
+          with the keyboard. Tab order matches visual order; menus, dropdowns, and the cart
+          drawer are operable via Tab, Enter, Escape, and arrow keys.
+        </li>
+        <li>
+          <strong>Visible focus.</strong> Every interactive control shows a clear focus outline
+          when reached by keyboard.
+        </li>
+        <li>
+          <strong>Skip link.</strong> The first focusable element on every page is "Skip to main
+          content", which jumps past the header navigation.
+        </li>
+        <li>
+          <strong>Text alternatives.</strong> Images that convey meaning have
+          descriptive <code>alt</code> text. Decorative images use empty <code>alt</code> so
+          screen readers skip them.
+        </li>
+        <li>
+          <strong>Colour contrast.</strong> Body text meets AA contrast ratios against its
+          background in both the light and dark themes.
+        </li>
+        <li>
+          <strong>Colour is never the only indicator.</strong> Selected, error, and disabled
+          states all use additional cues — text, icons, ARIA attributes — not colour alone.
+        </li>
+        <li>
+          <strong>Forms with labels.</strong> Every form field has an associated visible label,
+          and validation errors are announced to screen readers via <code>role="alert"</code> or
+          <code>aria-live</code>.
+        </li>
+        <li>
+          <strong>Predictable behaviour.</strong> The site does not auto-play media, does not
+          auto-submit forms, and does not change context without user action.
+        </li>
+        <li>
+          <strong>Reduced motion.</strong> If your system has "reduce motion" set, decorative
+          animations are minimised.
+        </li>
+        <li>
+          <strong>Responsive layout.</strong> Pages work at 320 px wide and up, and reflow without
+          horizontal scrolling at standard zoom levels up to 200%.
+        </li>
+        <li>
+          <strong>Light and dark themes.</strong> The theme toggle is keyboard-accessible and your
+          preference is remembered. We also respect your system's preferred colour scheme on
+          first visit.
+        </li>
+      </ul>
+
+      <h2>What we use to verify</h2>
+      <p>
+        Each release is checked against:
+      </p>
+      <ul>
+        <li>Automated audits (axe DevTools, Lighthouse accessibility).</li>
+        <li>Manual keyboard-only walkthroughs of every page and every interaction.</li>
+        <li>Screen reader spot checks (VoiceOver on macOS / iOS, NVDA on Windows).</li>
+        <li>Zoom and reflow checks up to 200%.</li>
       </ul>
 
       <h2>Known limitations</h2>
-      <p class="zw-text-muted">To be populated honestly as issues are discovered during launch QA (epic E-14).</p>
+      <p>
+        We will publish known limitations here honestly as they surface during QA. This list will
+        be updated whenever we find something we haven't yet fixed.
+      </p>
+      <p class="zw-text-muted"><em>To be populated during launch QA (epic E-14).</em></p>
+
+      <h2>What we don't yet support</h2>
+      <ul>
+        <li>
+          Languages other than English. The site is English-only at launch.
+        </li>
+        <li>
+          Server-side rendering of dynamic content. The product catalog, cart, and forms are
+          rendered client-side via JavaScript. If JavaScript is disabled, the site will not
+          function. This is a known trade-off we accept for the simplicity of the vanilla
+          frontend.
+        </li>
+      </ul>
 
       <h2>Tell us if something doesn't work</h2>
-      <p>Email <a href="mailto:contact@zazenware.com">contact@zazenware.com</a> with the subject line "Accessibility" and describe what you ran into. Include your browser and device if you can. We aim to acknowledge within 7 days.</p>
+      <p>
+        Email <a href="mailto:contact@zazenware.com">contact@zazenware.com</a> with the subject
+        line <strong>"Accessibility"</strong> and describe what you ran into. If you can,
+        include:
+      </p>
+      <ul>
+        <li>What you were trying to do.</li>
+        <li>What happened instead.</li>
+        <li>What browser, operating system, and assistive technology you were using.</li>
+        <li>The URL of the page where it happened.</li>
+      </ul>
+      <p>
+        We aim to acknowledge accessibility reports within 7 days and to fix or respond
+        substantively within 30 days.
+      </p>
 
-      <p class="zw-text-muted zw-text-small">Full canonical copy will be installed during epic E-13 (Master Spec § 11.5).</p>
+      <h2>Formal complaints</h2>
+      <p>
+        If you live in Ontario and we have not resolved an accessibility issue to your
+        satisfaction, you may file a complaint with the
+        <a href="https://www.ontario.ca/page/accessibility-laws" target="_blank" rel="noopener noreferrer">Accessibility for Ontarians with Disabilities Act office ↗</a>.
+        Federally, you may file with the
+        <a href="https://www.accessibilitychrc.ca" target="_blank" rel="noopener noreferrer">Accessibility Commissioner of Canada ↗</a>.
+      </p>
     </section>
 
   </main>
