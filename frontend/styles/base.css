@@ -1,268 +1,274 @@
-/* ============================================================================
-   zazenware — base.css
-   ----------------------------------------------------------------------------
-   Reset, document defaults, typography, links, media, forms, accessibility.
-   Uses canonical --zw-* tokens only.
-   ============================================================================ */
+/* ============================================================
+   base.css — Zazenware MVP1
+   Reset, element defaults, typography, accessibility defaults.
+   No class names here — targets HTML elements only.
+   Depends on: tokens.css
+   ============================================================ */
 
+/* -------------------------------------------------------
+   BOX MODEL RESET
+------------------------------------------------------- */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-* {
   margin: 0;
+  padding: 0;
 }
 
+/* -------------------------------------------------------
+   DOCUMENT
+------------------------------------------------------- */
 html {
-  font-size: 100%;
+  font-size: 100%;           /* 16px base; rem units scale from here */
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  min-height: 100vh;
-  background: var(--zw-bg);
-  color: var(--zw-text);
   font-family: var(--zw-font-body);
   font-size: var(--zw-text-base);
-  line-height: 1.65;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
-body.zw-drawer-lock {
-  overflow: hidden;
-}
-
-main {
-  display: block;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+  line-height: var(--zw-leading-normal);
+  background-color: var(--zw-bg);
   color: var(--zw-text);
-  line-height: 1.15;
-  overflow-wrap: break-word;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--zw-transition-base), color var(--zw-transition-base);
 }
 
+/* Main content grows to fill available space */
+main {
+  flex: 1 0 auto;
+}
+
+/* -------------------------------------------------------
+   HEADINGS
+   h1 / h2: blackletter display, always lowercase.
+   h3–h6:   typewriter body font.
+------------------------------------------------------- */
 h1,
-h2,
-.zw-display {
-  font-family: var(--zw-font-display);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-}
-
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--zw-font-body);
-  font-weight: 700;
-}
-
-h1 {
-  font-size: clamp(2.25rem, 8vw, var(--zw-text-4xl));
-}
-
 h2 {
-  font-size: clamp(1.8rem, 5vw, var(--zw-text-3xl));
+  font-family: var(--zw-font-display);
+  text-transform: lowercase;
+  font-weight: 400;          /* UnifrakturMaguntia has its own visual weight */
+  line-height: var(--zw-leading-tight);
 }
+
+h1 { font-size: var(--zw-text-4xl); }
+h2 { font-size: var(--zw-text-3xl); }
 
 h3 {
+  font-family: var(--zw-font-body);
   font-size: var(--zw-text-xl);
+  font-weight: 700;
+  line-height: var(--zw-leading-tight);
 }
 
 h4 {
+  font-family: var(--zw-font-body);
   font-size: var(--zw-text-lg);
+  font-weight: 700;
+  line-height: var(--zw-leading-tight);
 }
 
-h5 {
-  font-size: var(--zw-text-md);
-}
-
+h5,
 h6 {
+  font-family: var(--zw-font-body);
   font-size: var(--zw-text-base);
+  font-weight: 700;
+  line-height: var(--zw-leading-tight);
 }
 
-p,
+/* Mobile heading scale */
+@media (max-width: 47.999em) {
+  h1 { font-size: var(--zw-text-3xl); }
+  h2 { font-size: var(--zw-text-2xl); }
+  h3 { font-size: var(--zw-text-lg);  }
+}
+
+/* -------------------------------------------------------
+   PARAGRAPHS & INLINE TEXT
+------------------------------------------------------- */
+p {
+  margin-bottom: var(--zw-space-4);
+  max-width: 70ch;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+strong { font-weight: 700; }
+em     { font-style: italic; }
+
+small {
+  font-size: var(--zw-text-sm);
+  color: var(--zw-text-muted);
+}
+
+/* -------------------------------------------------------
+   LISTS
+------------------------------------------------------- */
+ul,
+ol {
+  padding-left: var(--zw-space-6);
+  margin-bottom: var(--zw-space-4);
+}
+
 li {
-  overflow-wrap: break-word;
+  margin-bottom: var(--zw-space-1);
+  line-height: var(--zw-leading-normal);
 }
 
-p + p {
-  margin-top: var(--zw-space-4);
-}
-
+/* -------------------------------------------------------
+   LINKS
+------------------------------------------------------- */
 a {
   color: var(--zw-link);
   text-decoration: underline;
-  text-underline-offset: 0.22em;
-  text-decoration-thickness: 1px;
-  transition:
-    color var(--zw-transition),
-    text-decoration-thickness var(--zw-transition);
+  text-underline-offset: 3px;
+  transition: color var(--zw-transition-fast);
 }
 
 a:hover {
   color: var(--zw-link-hover);
-  text-decoration-thickness: 2px;
 }
 
+a:focus-visible {
+  outline: 3px solid var(--zw-focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--zw-radius-sm);
+}
+
+/* -------------------------------------------------------
+   IMAGES & MEDIA
+------------------------------------------------------- */
 img,
-picture,
-svg,
 video,
-canvas {
+svg {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
 img {
-  border-radius: var(--zw-radius);
+  font-style: italic;        /* Style alt text visually when image fails */
 }
 
+/* -------------------------------------------------------
+   FORM ELEMENT DEFAULTS
+   Full component styles are in components.css.
+------------------------------------------------------- */
 button,
 input,
 textarea,
-select {
-  font: inherit;
+select,
+optgroup {
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-base);
+  line-height: var(--zw-leading-normal);
 }
 
 button {
   cursor: pointer;
+  border: none;
+  background: none;
 }
 
-input,
-textarea,
-select {
-  width: 100%;
-  padding: var(--zw-space-3) var(--zw-space-4);
-  background: var(--zw-input-bg);
-  color: var(--zw-input-text);
-  border: var(--zw-border-width) solid var(--zw-input-border);
-  border-radius: var(--zw-radius-sm);
+/* -------------------------------------------------------
+   HORIZONTAL RULE
+------------------------------------------------------- */
+hr {
+  border: none;
+  border-top: var(--zw-border-width) solid var(--zw-border);
+  margin: var(--zw-space-8) 0;
 }
 
-textarea {
-  min-height: 9rem;
-  resize: vertical;
+/* -------------------------------------------------------
+   BLOCKQUOTE
+------------------------------------------------------- */
+blockquote {
+  border-left: var(--zw-border-width-heavy) solid var(--zw-accent);
+  padding-left: var(--zw-space-6);
+  margin: var(--zw-space-6) 0;
+  color: var(--zw-text-muted);
+  font-style: italic;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: var(--zw-focus-ring);
-  outline-offset: var(--zw-focus-offset);
+/* -------------------------------------------------------
+   CODE
+------------------------------------------------------- */
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--zw-font-body);
+  font-size: 0.9em;
 }
 
-fieldset {
-  padding: var(--zw-space-5);
+pre {
+  background-color: var(--zw-surface);
   border: var(--zw-border-width) solid var(--zw-border);
+  padding: var(--zw-space-4);
+  overflow-x: auto;
 }
 
-legend {
-  padding-inline: var(--zw-space-2);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-ul,
-ol {
-  padding-left: var(--zw-space-5);
-}
-
-li + li {
-  margin-top: var(--zw-space-2);
-}
-
+/* -------------------------------------------------------
+   TABLES
+------------------------------------------------------- */
 table {
-  width: 100%;
   border-collapse: collapse;
+  width: 100%;
 }
 
 th,
 td {
-  padding: var(--zw-space-3);
-  border: var(--zw-border-width) solid var(--zw-border);
   text-align: left;
+  padding: var(--zw-space-3) var(--zw-space-4);
+  border-bottom: var(--zw-border-width) solid var(--zw-border);
 }
 
 th {
-  background: var(--zw-surface-alt);
   font-weight: 700;
+  background-color: var(--zw-surface);
+  font-size: var(--zw-text-sm);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
 }
 
-hr {
-  margin-block: var(--zw-space-7);
-  border: 0;
-  border-top: var(--zw-border-width) solid var(--zw-border);
+/* -------------------------------------------------------
+   SELECTION
+------------------------------------------------------- */
+::selection {
+  background-color: var(--zw-block);
+  color: var(--zw-block-text);
 }
 
-code,
-pre {
-  background: var(--zw-surface-alt);
-  font-family: var(--zw-font-body);
-}
-
-code {
-  padding: 0.1em 0.35em;
-}
-
-pre {
-  overflow-x: auto;
-  padding: var(--zw-space-5);
-  border: var(--zw-border-width) solid var(--zw-border);
-}
-
+/* -------------------------------------------------------
+   GLOBAL FOCUS VISIBLE
+   Individual components may refine this further.
+------------------------------------------------------- */
 :focus-visible {
-  outline: var(--zw-focus-ring);
-  outline-offset: var(--zw-focus-offset);
+  outline: 3px solid var(--zw-focus-ring);
+  outline-offset: 3px;
 }
 
 :focus:not(:focus-visible) {
   outline: none;
 }
 
-::selection {
-  background: var(--zw-accent);
-  color: var(--zw-accent-text);
-}
-
-.zw-skip-link {
-  position: absolute;
-  top: -20rem;
-  left: var(--zw-space-4);
-  z-index: var(--zw-z-modal);
-  padding: var(--zw-space-3) var(--zw-space-5);
-  background: var(--zw-block);
-  color: var(--zw-block-text);
-  border: var(--zw-border-thick) solid var(--zw-border);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.zw-skip-link:focus {
-  top: var(--zw-space-4);
-}
-
+/* -------------------------------------------------------
+   REDUCED MOTION
+------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.01ms !important;
+    scroll-behavior:          auto   !important;
   }
 }

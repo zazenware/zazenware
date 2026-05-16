@@ -1,27 +1,34 @@
 /* ============================================================================
    zazenware — cards.js
    ----------------------------------------------------------------------------
-   Pure render functions for the four card types. Each function returns an
-   HTMLElement; the calling page script appends them to the right container.
+   Pure render functions for the four card types.
+
+   E-16 change: ShirtCard now swaps the card image when Black or White is
+   selected. URL is constructed from the design slug + chosen colour:
+     /assets/images/{slug}/{slug}-shirt-{black|white}.png
 
    Card rules (Master Spec § 9):
-     - DesignCard:  parent artwork only. NEVER has Add to Cart.
-                    Shows View Shirt / View Patch / View Print links if those
-                    children exist (jumps to /shop.html#<type>-<slug>).
+     - DesignCard:  parent artwork. Never has Add to Cart.
+                    Shows View Shirt / View Patch / View Print links.
      - ShirtCard:   size + colour required before Add to Cart enables.
                     Sizes: S, M, L, XL, 2XL.  Colours: Black, White.
-     - PatchCard:   immediate Add to Cart, no variants.
-     - PrintCard:   immediate Add to Cart, no variants.
+                    Card image swaps to match selected colour.
+     - PatchCard:   immediate Add to Cart, no variants, uses design image.
+     - PrintCard:   immediate Add to Cart, no variants, uses design image.
    ============================================================================ */
 
-import { el } from "./format.js";
-import { formatMoney } from "./format.js";
+import { el, formatMoney } from "./format.js";
 import { addToCart } from "./cart.js";
 
 const SHIRT_SIZES  = ["S", "M", "L", "XL", "2XL"];
 const SHIRT_COLORS = ["Black", "White"];
 
-/** Common card image element with lazy loading. */
+/** Shirt image URL derived from slug + colour. */
+function shirtImageUrl(slug, color) {
+  return `/assets/images/${slug}/${slug}-shirt-${color.toLowerCase()}.png`;
+}
+
+/** Common card image wrapper with lazy loading. */
 function cardImage(src, alt) {
   return el("div", { class: "zw-card__image zw-img-frame zw-aspect-square" }, [
     el("img", {
@@ -77,9 +84,16 @@ export function renderShirtCard(design) {
   const shirt = design.shirt;
   if (!shirt) return null;
 
-  let selectedSize = null;
+  let selectedSize  = null;
   let selectedColor = null;
   const helperId = `shirt-helper-${design.slug}`;
+
+  // Build card image element first so we can grab the <img> for swapping
+  const cardImg = cardImage(
+    shirtImageUrl(design.slug, "black"),   // default to black
+    `${design.name} shirt`
+  );
+  const imgEl = cardImg.querySelector("img");
 
   const sizeButtons = SHIRT_SIZES.map((size) =>
     el("button", {
@@ -87,7 +101,11 @@ export function renderShirtCard(design) {
       class: "zw-btn zw-btn--small zw-variant-btn",
       "aria-pressed": "false",
       dataset: { variantType: "size", variant: size },
-      onClick: (e) => { selectedSize = size; updatePressed(e.currentTarget, sizeButtons); refreshAdd(); },
+      onClick: (e) => {
+        selectedSize = size;
+        updatePressed(e.currentTarget, sizeButtons);
+        refreshAdd();
+      },
     }, [size])
   );
 
@@ -97,7 +115,16 @@ export function renderShirtCard(design) {
       class: "zw-btn zw-btn--small zw-variant-btn",
       "aria-pressed": "false",
       dataset: { variantType: "color", variant: color },
-      onClick: (e) => { selectedColor = color; updatePressed(e.currentTarget, colorButtons); refreshAdd(); },
+      onClick: (e) => {
+        selectedColor = color;
+        updatePressed(e.currentTarget, colorButtons);
+        // ── Swap card image to match chosen colour ──────────────────────
+        if (imgEl) {
+          imgEl.src = shirtImageUrl(design.slug, color);
+          imgEl.alt = `${design.name} shirt in ${color}`;
+        }
+        refreshAdd();
+      },
     }, [color])
   );
 
@@ -134,7 +161,7 @@ export function renderShirtCard(design) {
     id: `shirt-${design.slug}`,
     dataset: { slug: design.slug, productId: String(shirt.id) },
   }, [
-    cardImage(shirt.image_url, shirt.alt_text || `${design.name} shirt`),
+    cardImg,   // ← the swappable image element
     el("div", { class: "zw-card__body zw-stack" }, [
       el("h3", { class: "zw-card__title zw-display" }, [design.name]),
       el("p", { class: "zw-card__price" }, [formatMoney(shirt.unit_price_cents)]),
@@ -231,9 +258,10 @@ function updatePressed(clicked, group) {
 
 function flashStatus(statusEl, text, variant = "success") {
   statusEl.textContent = "";
-  const cls = variant === "error" ? "zw-status zw-status--error" : "zw-status zw-status--success";
+  const cls = variant === "error"
+    ? "zw-status zw-status--error"
+    : "zw-status zw-status--success";
   statusEl.append(el("div", { class: cls }, [text]));
-  // Clear after 4 seconds so it doesn't linger
   clearTimeout(statusEl._flashTimer);
   statusEl._flashTimer = setTimeout(() => { statusEl.textContent = ""; }, 4000);
 }
@@ -245,13 +273,13 @@ function handleAddShirt(design, shirt, size, color, statusEl) {
   }
   try {
     addToCart({
-      product_id: Number(shirt.id),
-      product_type: "shirt",
-      design_slug: design.slug,
-      name: `${design.name} — Shirt`,
+      product_id:       Number(shirt.id),
+      product_type:     "shirt",
+      design_slug:      design.slug,
+      name:             `${design.name} — Shirt`,
       unit_price_cents: shirt.unit_price_cents,
-      quantity: 1,
-      image_url: shirt.image_url,
+      quantity:         1,
+      image_url:        shirtImageUrl(design.slug, color),  // store the chosen colour image
       size,
       color,
     });
@@ -269,13 +297,13 @@ function handleAddShirt(design, shirt, size, color, statusEl) {
 function handleAddSimple(design, product, type, label, statusEl) {
   try {
     addToCart({
-      product_id: Number(product.id),
-      product_type: type,
-      design_slug: design.slug,
-      name: `${design.name} — ${label}`,
+      product_id:       Number(product.id),
+      product_type:     type,
+      design_slug:      design.slug,
+      name:             `${design.name} — ${label}`,
       unit_price_cents: product.unit_price_cents,
-      quantity: 1,
-      image_url: product.image_url,
+      quantity:         1,
+      image_url:        product.image_url,
     });
     flashStatus(statusEl, `Added: ${design.name} ${label.toLowerCase()}.`, "success");
   } catch (err) {

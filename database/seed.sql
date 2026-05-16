@@ -1,186 +1,385 @@
 -- =============================================================================
 -- zazenware — seed.sql
 -- =============================================================================
--- Placeholder seed data. Five designs across various medium combinations.
--- Swap the names / descriptions / image filenames for your real artwork later.
+-- 10 real designs. Every design gets a shirt, a patch, and a print.
 --
--- IMAGES:
---   These reference filenames in /frontend/assets/images/. You can leave these
---   strings as-is during dev (the cards will show broken-image icons until
---   real files exist with those names), or update them to match files you
---   already have.
+-- Image path convention:
+--   Design / patch / print : /assets/images/{slug}/{slug}-design.png
+--   Shirt (black default)  : /assets/images/{slug}/{slug}-shirt-black.png
+--   Shirt (white, via JS)  : /assets/images/{slug}/{slug}-shirt-white.png
+--     ↑ The white URL is constructed client-side in cards.js on colour select.
+--       Only the black URL is stored in the DB as the default image_url.
 --
--- ORDER:
---   The display_order column governs the sort. Lower numbers appear first.
---   Designs with the same display_order break tie by id (insert order).
+-- Descriptions are placeholder one-liners — update any time in DBeaver:
+--   UPDATE designs SET short_description = '...' WHERE slug = '...';
 -- =============================================================================
 
--- ─── Clean any existing seed data (idempotent) ─────────────────────────────
+-- ─── Clean slate (idempotent) ────────────────────────────────────────────
 TRUNCATE order_items, orders, contact_submissions, shirts, patches, prints, designs
   RESTART IDENTITY CASCADE;
 
--- ─── DESIGN 1: Black Sun ───────────────────────────────────────────────────
-INSERT INTO designs (slug, name, short_description, long_description, image_url, alt_text, display_order)
+ALTER SEQUENCE zw_order_seq RESTART WITH 1;
+
+
+-- =============================================================================
+-- DESIGN 1 — Baby Teeth
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
 VALUES (
-  'black-sun',
-  'Black Sun',
-  'Stippled skull with antlers and a radiating halo.',
-  'A skull crowned with antlers, framed by a halo of fine stippled rays. Pen-and-ink intensity, screen-ready.',
-  '/assets/images/black-sun-design.jpg',
-  'Pen-and-ink illustration of a horned skull haloed by radiating rays.',
+  'baby-teeth',
+  'Baby Teeth',
+  'Serrated forms and raw energy.',
+  '/assets/images/baby-teeth/baby-teeth-design.png',
+  'Baby Teeth design illustration.',
   10
 );
 
 INSERT INTO shirts (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'black-sun'),
-  '/assets/images/black-sun-shirt.jpg',
-  'Black Sun design printed on a t-shirt.'
+  (SELECT id FROM designs WHERE slug = 'baby-teeth'),
+  '/assets/images/baby-teeth/baby-teeth-shirt-black.png',
+  'Baby Teeth design on a black t-shirt.'
 );
 
 INSERT INTO patches (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'black-sun'),
-  '/assets/images/black-sun-patch.jpg',
-  'Black Sun design as a 12x12 inch back patch.'
+  (SELECT id FROM designs WHERE slug = 'baby-teeth'),
+  '/assets/images/baby-teeth/baby-teeth-design.png',
+  'Baby Teeth design as a back patch.'
 );
 
 INSERT INTO prints (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'black-sun'),
-  '/assets/images/black-sun-print.jpg',
-  'Black Sun design as an 11x17 inch paper print.'
+  (SELECT id FROM designs WHERE slug = 'baby-teeth'),
+  '/assets/images/baby-teeth/baby-teeth-design.png',
+  'Baby Teeth design as a paper print.'
 );
 
 
--- ─── DESIGN 2: Zazen Skull ─────────────────────────────────────────────────
-INSERT INTO designs (slug, name, short_description, long_description, image_url, alt_text, display_order)
+-- =============================================================================
+-- DESIGN 2 — Black Sun
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
 VALUES (
-  'zazen-skull',
-  'Zazen Skull',
-  'Blackletter "zazen" wordmark above a dotwork skull.',
-  'A clean blackletter "zazen" set above a dot-stipple skull. The original house logo direction.',
-  '/assets/images/zazen-skull-design.jpg',
-  'Dot-stipple skull with the word "zazen" rendered in blackletter above it.',
+  'black-sun',
+  'Black Sun',
+  'Stippled skull with antlers and a radiating halo.',
+  '/assets/images/black-sun/black-sun-design.png',
+  'Black Sun design illustration.',
   20
 );
 
 INSERT INTO shirts (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'zazen-skull'),
-  '/assets/images/zazen-skull-shirt.jpg',
-  'Zazen Skull design printed on a t-shirt.'
+  (SELECT id FROM designs WHERE slug = 'black-sun'),
+  '/assets/images/black-sun/black-sun-shirt-black.png',
+  'Black Sun design on a black t-shirt.'
 );
 
 INSERT INTO patches (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'zazen-skull'),
-  '/assets/images/zazen-skull-patch.jpg',
-  'Zazen Skull design as a 12x12 inch back patch.'
+  (SELECT id FROM designs WHERE slug = 'black-sun'),
+  '/assets/images/black-sun/black-sun-design.png',
+  'Black Sun design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'black-sun'),
+  '/assets/images/black-sun/black-sun-design.png',
+  'Black Sun design as a paper print.'
 );
 
 
--- ─── DESIGN 3: Tree Of Roots ───────────────────────────────────────────────
-INSERT INTO designs (slug, name, short_description, long_description, image_url, alt_text, display_order)
+-- =============================================================================
+-- DESIGN 3 — Dysphoria
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
 VALUES (
-  'tree-of-roots',
-  'Tree of Roots',
-  'Sunburst behind a tangled tree with Celtic-knot roots.',
-  'High-contrast woodcut energy. A black-and-white sunburst pattern frames a tree whose roots tangle into knotwork.',
-  '/assets/images/tree-of-roots-design.jpg',
-  'Black and white illustration of a stylized tree with knotwork roots in front of a sunburst.',
+  'dysphoria',
+  'Dysphoria',
+  'Graffiti-style wordmark in bold bubble letters.',
+  '/assets/images/dysphoria/dysphoria-design.png',
+  'Dysphoria design illustration.',
   30
 );
 
 INSERT INTO shirts (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'tree-of-roots'),
-  '/assets/images/tree-of-roots-shirt.jpg',
-  'Tree of Roots design printed on a t-shirt.'
+  (SELECT id FROM designs WHERE slug = 'dysphoria'),
+  '/assets/images/dysphoria/dysphoria-shirt-black.png',
+  'Dysphoria design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'dysphoria'),
+  '/assets/images/dysphoria/dysphoria-design.png',
+  'Dysphoria design as a back patch.'
 );
 
 INSERT INTO prints (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'tree-of-roots'),
-  '/assets/images/tree-of-roots-print.jpg',
-  'Tree of Roots design as an 11x17 inch paper print.'
+  (SELECT id FROM designs WHERE slug = 'dysphoria'),
+  '/assets/images/dysphoria/dysphoria-design.png',
+  'Dysphoria design as a paper print.'
 );
 
 
--- ─── DESIGN 4: Dysphoria ───────────────────────────────────────────────────
-INSERT INTO designs (slug, name, short_description, long_description, image_url, alt_text, display_order)
+-- =============================================================================
+-- DESIGN 4 — Heart Altar
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
 VALUES (
-  'dysphoria',
-  'Dysphoria',
-  'Graffiti-style wordmark, bubble letters with hard outline.',
-  'The word "dysphoria" in throwie-style bubble letters. Heavy outline, glossy interior. Looks loud on a black tee.',
-  '/assets/images/dysphoria-design.jpg',
-  'Graffiti-style bubble lettering reading "dysphoria".',
+  'heart-altar',
+  'Heart Altar',
+  'Sacred geometry meets punk iconography.',
+  '/assets/images/heart-altar/heart-altar-design.png',
+  'Heart Altar design illustration.',
   40
 );
 
 INSERT INTO shirts (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'dysphoria'),
-  '/assets/images/dysphoria-shirt.jpg',
-  'Dysphoria design printed on a t-shirt.'
+  (SELECT id FROM designs WHERE slug = 'heart-altar'),
+  '/assets/images/heart-altar/heart-altar-shirt-black.png',
+  'Heart Altar design on a black t-shirt.'
 );
 
 INSERT INTO patches (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'dysphoria'),
-  '/assets/images/dysphoria-patch.jpg',
-  'Dysphoria design as a 12x12 inch back patch.'
+  (SELECT id FROM designs WHERE slug = 'heart-altar'),
+  '/assets/images/heart-altar/heart-altar-design.png',
+  'Heart Altar design as a back patch.'
 );
 
 INSERT INTO prints (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'dysphoria'),
-  '/assets/images/dysphoria-print.jpg',
-  'Dysphoria design as an 11x17 inch paper print.'
+  (SELECT id FROM designs WHERE slug = 'heart-altar'),
+  '/assets/images/heart-altar/heart-altar-design.png',
+  'Heart Altar design as a paper print.'
 );
 
 
--- ─── DESIGN 5: Inverted Zazen ──────────────────────────────────────────────
-INSERT INTO designs (slug, name, short_description, long_description, image_url, alt_text, display_order)
+-- =============================================================================
+-- DESIGN 5 — Sibling Lost
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
 VALUES (
-  'inverted-zazen',
-  'Inverted Zazen',
-  'Seated skeleton meditating beneath a haloed sun.',
-  'A seated, meditating skeleton inside a haloed sun. Beneath, a layered "zazen" wordmark fans out in three readings.',
-  '/assets/images/inverted-zazen-design.jpg',
-  'Seated skeleton in lotus pose with a halo, above a triple-layer "zazen" hand-lettering.',
+  'sibling-lost',
+  'Sibling Lost',
+  'A memorial design in stark black and white.',
+  '/assets/images/sibling-lost/sibling-lost-design.png',
+  'Sibling Lost design illustration.',
   50
 );
 
 INSERT INTO shirts (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'inverted-zazen'),
-  '/assets/images/inverted-zazen-shirt.jpg',
-  'Inverted Zazen design printed on a t-shirt.'
+  (SELECT id FROM designs WHERE slug = 'sibling-lost'),
+  '/assets/images/sibling-lost/sibling-lost-shirt-black.png',
+  'Sibling Lost design on a black t-shirt.'
 );
 
 INSERT INTO patches (design_id, image_url, alt_text)
 VALUES (
-  (SELECT id FROM designs WHERE slug = 'inverted-zazen'),
-  '/assets/images/inverted-zazen-patch.jpg',
-  'Inverted Zazen design as a 12x12 inch back patch.'
+  (SELECT id FROM designs WHERE slug = 'sibling-lost'),
+  '/assets/images/sibling-lost/sibling-lost-design.png',
+  'Sibling Lost design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'sibling-lost'),
+  '/assets/images/sibling-lost/sibling-lost-design.png',
+  'Sibling Lost design as a paper print.'
 );
 
 
 -- =============================================================================
--- Sanity-check summary
+-- DESIGN 6 — Skeleton Body
 -- =============================================================================
--- After running this script, the following should be true:
---   designs:             5 rows  (all is_active = true)
---   shirts:              5 rows  (one per design)
---   patches:             4 rows  (all except Tree of Roots)
---   prints:              3 rows  (Black Sun, Tree of Roots, Dysphoria)
---   orders:              0 rows
---   order_items:         0 rows
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'skeleton-body',
+  'Skeleton Body',
+  'Full anatomical skeleton, rendered in detail.',
+  '/assets/images/skeleton-body/skeleton-body-design.png',
+  'Skeleton Body design illustration.',
+  60
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'skeleton-body'),
+  '/assets/images/skeleton-body/skeleton-body-shirt-black.png',
+  'Skeleton Body design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'skeleton-body'),
+  '/assets/images/skeleton-body/skeleton-body-design.png',
+  'Skeleton Body design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'skeleton-body'),
+  '/assets/images/skeleton-body/skeleton-body-design.png',
+  'Skeleton Body design as a paper print.'
+);
+
+
+-- =============================================================================
+-- DESIGN 7 — Spore Crown
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'spore-crown',
+  'Spore Crown',
+  'Organic crown of spores and growth.',
+  '/assets/images/spore-crown/spore-crown-design.png',
+  'Spore Crown design illustration.',
+  70
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'spore-crown'),
+  '/assets/images/spore-crown/spore-crown-shirt-black.png',
+  'Spore Crown design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'spore-crown'),
+  '/assets/images/spore-crown/spore-crown-design.png',
+  'Spore Crown design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'spore-crown'),
+  '/assets/images/spore-crown/spore-crown-design.png',
+  'Spore Crown design as a paper print.'
+);
+
+
+-- =============================================================================
+-- DESIGN 8 — Zazen Glyph
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'zazen-glyph',
+  'Zazen Glyph',
+  'Meditative symbol rendered in bold line.',
+  '/assets/images/zazen-glyph/zazen-glyph-design.png',
+  'Zazen Glyph design illustration.',
+  80
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-glyph'),
+  '/assets/images/zazen-glyph/zazen-glyph-shirt-black.png',
+  'Zazen Glyph design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-glyph'),
+  '/assets/images/zazen-glyph/zazen-glyph-design.png',
+  'Zazen Glyph design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-glyph'),
+  '/assets/images/zazen-glyph/zazen-glyph-design.png',
+  'Zazen Glyph design as a paper print.'
+);
+
+
+-- =============================================================================
+-- DESIGN 9 — Zazen Logo
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'zazen-logo',
+  'Zazen Logo',
+  'The zazenware house mark.',
+  '/assets/images/zazen-logo/zazen-logo-design.png',
+  'Zazen Logo design illustration.',
+  90
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-logo'),
+  '/assets/images/zazen-logo/zazen-logo-shirt-black.png',
+  'Zazen Logo design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-logo'),
+  '/assets/images/zazen-logo/zazen-logo-design.png',
+  'Zazen Logo design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-logo'),
+  '/assets/images/zazen-logo/zazen-logo-design.png',
+  'Zazen Logo design as a paper print.'
+);
+
+
+-- =============================================================================
+-- DESIGN 10 — Zazen Tree Roots
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'zazen-tree-roots',
+  'Zazen Tree Roots',
+  'Roots, branches, and the space between.',
+  '/assets/images/zazen-tree-roots/zazen-tree-roots-design.png',
+  'Zazen Tree Roots design illustration.',
+  100
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-tree-roots'),
+  '/assets/images/zazen-tree-roots/zazen-tree-roots-shirt-black.png',
+  'Zazen Tree Roots design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-tree-roots'),
+  '/assets/images/zazen-tree-roots/zazen-tree-roots-design.png',
+  'Zazen Tree Roots design as a back patch.'
+);
+
+INSERT INTO prints (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'zazen-tree-roots'),
+  '/assets/images/zazen-tree-roots/zazen-tree-roots-design.png',
+  'Zazen Tree Roots design as a paper print.'
+);
+
+
+-- =============================================================================
+-- Health summary (run verify.sql to see this in full)
+-- =============================================================================
+-- Expected after this script:
+--   designs:  10 rows (all is_active = true)
+--   shirts:   10 rows (unit_price_cents = 2500)
+--   patches:  10 rows (unit_price_cents = 1000)
+--   prints:   10 rows (unit_price_cents = 1000)
+--   orders:    0 rows
+--   order_items: 0 rows
 --   contact_submissions: 0 rows
---
--- Verify with:
---   SELECT count(*) FROM designs;
---   SELECT slug, name, display_order FROM designs ORDER BY display_order;
 -- =============================================================================

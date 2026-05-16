@@ -1,12 +1,26 @@
-/* ============================================================================
-   zazenware — main.css
-   ----------------------------------------------------------------------------
-   Canonical import order for the OG zw-* CSS system.
-   ============================================================================ */
+/* ============================================================
+   main.css — Zazenware MVP1
+   Entry point. @imports CSS layers in canonical dependency order.
+   This file is the only CSS file linked in HTML pages.
+   DO NOT add component or utility styles here — import only.
 
-@import "./tokens.css";
-@import "./base.css";
-@import "./layout.css";
-@import "./components.css";
-@import "./utilities.css";
-@import "./shell.css";
+   Load order:
+     1. Google Fonts
+     2. tokens.css  — CSS custom properties (palette, spacing, type)
+     3. base.css    — Reset + element defaults
+     4. utilities.css — Layout helpers and reusable classes
+     5. components.css — UI components (header, nav, cards, forms, etc.)
+
+   HTML usage:
+     <link rel="stylesheet" href="./css/main.css">
+     (adjust path depending on your page depth)
+   ============================================================ */
+
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Special+Elite&display=swap');
+
+/* --- CSS layers in dependency order --- */
+@import './tokens.css';
+@import './base.css';
+@import './utilities.css';
+@import './components.css';
