@@ -4,11 +4,13 @@
    Site shell styles: header, footer, theme toggle, Shop dropdown, mobile
    drawer, skip link visuals. Loaded after main.css.
 
-   Changes from E-03:
-   - Cart badge: no accent colour — uses --zw-border / --zw-bg / --zw-text
-   - Cart badge: hidden by default (shown by cart-badge.js when qty ≥ 1)
-   - Dropdown menu: no accent on hover — uses plain --zw-block / --zw-block-text
-   - Removed all --zw-accent references from header-area rules
+   Fixes vs E-03:
+   - Cart badge: hidden at 0, visible ≥ 1; uses plain theme colours, no accent
+   - Dropdown: list-style removed on li too; link colours explicitly overridden
+     on all states (:link :visited :hover :focus-visible) to beat base a{}
+   - Theme toggle: default state (no data-theme on html) shows sun only,
+     preventing both icons being visible on first paint
+   - Hamburger: explicit hide at ≥ 992px with !important to beat zw-show-mobile
    ============================================================================ */
 
 /* ─── HEADER ────────────────────────────────────────────────────────────── */
@@ -58,6 +60,8 @@
   align-items: center;
   gap: var(--zw-space-5);
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .zw-nav__link {
@@ -73,7 +77,6 @@
   cursor: pointer;
   font-family: var(--zw-font-body);
   font-size: 1rem;
-  position: relative;
 }
 
 .zw-nav__link:hover {
@@ -104,7 +107,7 @@
   transform: rotate(180deg);
 }
 
-/* Menu panel — theme surface, solid border, no shadow tricks */
+/* Menu panel */
 .zw-dropdown__menu {
   position: absolute;
   top: calc(100% + 0.4rem);
@@ -113,14 +116,24 @@
   background: var(--zw-bg);
   color: var(--zw-text);
   border: var(--zw-border-width) solid var(--zw-border);
+  /* Remove bullets — must target ul AND li */
   list-style: none;
-  padding: var(--zw-space-1) 0;
   margin: 0;
+  padding: var(--zw-space-1) 0;
   z-index: 50;
 }
 
-/* Each item — plain theme colours, no accent on hover */
-.zw-dropdown__item {
+/* FIX 1: remove bullets from li directly — ul rule doesn't always cascade */
+.zw-dropdown__menu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* FIX 2: override base a{color:var(--zw-accent)} on ALL link states */
+.zw-dropdown__item,
+.zw-dropdown__item:link,
+.zw-dropdown__item:visited {
   display: block;
   padding: var(--zw-space-2) var(--zw-space-4);
   color: var(--zw-text);
@@ -152,6 +165,12 @@
   font-family: var(--zw-font-body);
 }
 
+.zw-header__cart:link,
+.zw-header__cart:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
 .zw-header__cart:hover,
 .zw-header__cart:focus-visible {
   border-color: var(--zw-border);
@@ -165,7 +184,6 @@
   transform: scaleX(-1);
 }
 
-/* "Cart" label — hidden on mobile, shown on tablet+ */
 .zw-header__cart-label {
   display: none;
 }
@@ -175,9 +193,8 @@
 }
 
 /*
- * Badge — hidden until cart-badge.js sets it visible (qty ≥ 1).
- * No accent colour: uses the same border and background as the theme,
- * inverted so it reads clearly on the header block.
+ * Badge: hidden when qty = 0 (hidden attr set by cart-badge.js).
+ * No accent — inverts the header's own palette.
  */
 .zw-header__cart-badge {
   display: inline-flex;
@@ -186,18 +203,14 @@
   min-width: 1.35em;
   height: 1.35em;
   padding: 0 0.25em;
-
-  /* Plain theme colours — border colour as bg, theme bg as text */
   background: var(--zw-block-text);
   color: var(--zw-block);
   border: var(--zw-border-width) solid var(--zw-block-text);
-
   font-size: 0.78em;
   font-weight: 700;
   line-height: 1;
 }
 
-/* When hidden attribute is present, ensure it's truly invisible */
 .zw-header__cart-badge[hidden] {
   display: none;
 }
@@ -226,7 +239,6 @@
   color: var(--zw-block-text);
 }
 
-/* Show sun in light, moon in dark */
 .zw-theme-toggle__icon {
   position: absolute;
   inset: 0;
@@ -235,6 +247,14 @@
   justify-content: center;
   transition: transform var(--zw-transition), opacity var(--zw-transition);
 }
+
+/*
+ * FIX 3: default state (before theme-init.js sets data-theme, or if it fails)
+ * defaults to light — sun visible, moon hidden.
+ * The [data-theme] rules below then override once the attribute is set.
+ */
+.zw-theme-toggle__icon--sun  { opacity: 1; transform: translateY(0); }
+.zw-theme-toggle__icon--moon { opacity: 0; transform: translateY(120%); }
 
 [data-theme="light"] .zw-theme-toggle__icon--sun  { opacity: 1; transform: translateY(0); }
 [data-theme="light"] .zw-theme-toggle__icon--moon { opacity: 0; transform: translateY(120%); }
@@ -264,12 +284,16 @@
   color: var(--zw-block-text);
 }
 
-/* Hide on desktop */
+/*
+ * FIX 4: hide hamburger at desktop with !important.
+ * zw-show-mobile only kicks in at ≤767px; at 768–991px both the nav and
+ * hamburger were visible. !important beats the utility's display:initial.
+ */
 @media (min-width: 992px) {
-  .zw-header__menu-trigger { display: none; }
+  .zw-header__menu-trigger { display: none !important; }
 }
 
-/* On tablet and below, hide desktop nav */
+/* Hide desktop nav on tablet / mobile */
 @media (max-width: 991px) {
   .zw-header__nav { display: none; }
 }
@@ -353,9 +377,15 @@
 
 .zw-drawer__nav {
   list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--zw-space-2);
+}
+
+.zw-drawer__nav li {
+  list-style: none;
 }
 
 .zw-drawer__nav > li > a {
@@ -366,6 +396,11 @@
   font-weight: 700;
   font-size: 1.1rem;
   border-bottom: var(--zw-border-width) solid transparent;
+}
+
+.zw-drawer__nav > li > a:link,
+.zw-drawer__nav > li > a:visited {
+  color: var(--zw-text);
 }
 
 .zw-drawer__nav a:hover,
@@ -386,13 +421,20 @@
 
 .zw-drawer__subnav {
   list-style: none;
+  margin: 0;
   padding-left: var(--zw-space-4);
   display: flex;
   flex-direction: column;
   gap: var(--zw-space-1);
 }
 
-.zw-drawer__subnav a {
+.zw-drawer__subnav li {
+  list-style: none;
+}
+
+.zw-drawer__subnav a,
+.zw-drawer__subnav a:link,
+.zw-drawer__subnav a:visited {
   display: block;
   padding: var(--zw-space-2);
   color: var(--zw-text);
@@ -402,6 +444,7 @@
 .zw-drawer__subnav a:hover,
 .zw-drawer__subnav a:focus-visible {
   text-decoration: underline;
+  color: var(--zw-text);
 }
 
 /* ─── FOOTER ────────────────────────────────────────────────────────────── */
@@ -430,16 +473,12 @@
   }
 }
 
-.zw-footer__brand {
-  max-width: 28rem;
-}
+.zw-footer__brand      { max-width: 28rem; }
+.zw-footer__wordmark   { font-size: 2.5rem; line-height: 1; }
 
-.zw-footer__wordmark {
-  font-size: 2.5rem;
-  line-height: 1;
-}
-
-.zw-footer__brand-link {
+.zw-footer__brand-link,
+.zw-footer__brand-link:link,
+.zw-footer__brand-link:visited {
   text-decoration: none;
   color: inherit;
 }
@@ -472,12 +511,18 @@
 
 .zw-footer__list {
   list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--zw-space-2);
 }
 
-.zw-footer__list a {
+.zw-footer__list li { list-style: none; }
+
+.zw-footer__list a,
+.zw-footer__list a:link,
+.zw-footer__list a:visited {
   color: inherit;
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -509,6 +554,4 @@
   justify-content: space-between;
 }
 
-.zw-footer__copy {
-  margin: 0;
-}
+.zw-footer__copy { margin: 0; }
