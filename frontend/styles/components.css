@@ -1,4 +1,641 @@
 /* ============================================================================
+   SECTION 0 — SHELL
+   ----------------------------------------------------------------------------
+   Header, desktop nav, Shop dropdown, cart link, theme toggle,
+   mobile menu trigger, mobile nav drawer, footer, skip link.
+
+   PASTE THIS BLOCK at the very top of components.css, before Section 1 Buttons.
+   Then delete (or empty) shell.css — it was never imported and is now merged here.
+
+   All classes come directly from partials/header.html and partials/footer.html.
+   Do not rename any class without updating the HTML.
+
+   Class inventory (confirmed from header.html):
+     .zw-header .zw-header__inner .zw-header__brand .zw-display
+     .zw-header__nav .zw-hide-mobile .zw-nav .zw-nav__link
+     .zw-dropdown .zw-dropdown__trigger .zw-dropdown__chevron
+     .zw-dropdown__menu .zw-dropdown__item
+     .zw-header__actions .zw-cluster .zw-cluster-sm
+     .zw-header__cart .zw-header__cart-icon .zw-header__cart-label
+     .zw-header__cart-badge [data-zw-cart-badge]
+     .zw-theme-toggle .zw-theme-toggle__icon
+     .zw-theme-toggle__icon--sun .zw-theme-toggle__icon--moon
+     .zw-header__menu-trigger .zw-show-mobile .zw-header__menu-icon
+     .zw-drawer .zw-drawer__overlay .zw-drawer__panel
+     .zw-drawer__header .zw-drawer__title .zw-drawer__close
+     .zw-drawer__nav .zw-drawer__group-label .zw-drawer__subnav
+     .zw-footer .zw-footer__inner .zw-footer__brand .zw-footer__wordmark
+     .zw-footer__brand-link .zw-footer__tagline .zw-footer__heading
+     .zw-footer__list .zw-footer__bottom .zw-footer__bottom-inner
+     .zw-footer__copy
+   ============================================================================ */
+
+/* ─── SKIP LINK ─────────────────────────────────────────────────────────── */
+
+.zw-skip-link {
+  position: absolute;
+  top: var(--zw-space-3);
+  left: var(--zw-space-3);
+  z-index: calc(var(--zw-z-header) + 10);
+  padding: var(--zw-space-2) var(--zw-space-4);
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border: var(--zw-border-thick) solid var(--zw-border);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--zw-transition);
+}
+
+.zw-skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ─── HEADER ────────────────────────────────────────────────────────────── */
+
+.zw-header {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border-bottom: var(--zw-border-thick) solid var(--zw-border);
+  position: sticky;
+  top: 0;
+  z-index: var(--zw-z-header);
+}
+
+.zw-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zw-space-6);
+  /* Generous breathing room */
+  padding-block: var(--zw-space-6);
+  padding-inline: var(--zw-space-8);
+  max-width: var(--zw-container-max);
+  margin-inline: auto;
+}
+
+/* ─── BRAND ─────────────────────────────────────────────────────────────── */
+
+.zw-header__brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Bigger blackletter wordmark */
+.zw-header__brand .zw-display {
+  font-size: clamp(2rem, 4vw + 0.5rem, 3.25rem);
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.zw-header__brand:hover,
+.zw-header__brand:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
+}
+
+/* ─── DESKTOP NAV ────────────────────────────────────────────────────────── */
+
+.zw-header__nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.zw-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--zw-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.zw-nav li {
+  list-style: none;
+}
+
+/* Nav link — box on hover, no underline */
+.zw-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: var(--zw-space-2) var(--zw-space-4);
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-md);
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  background: none;
+  /* Invisible border keeps layout stable — no jump on hover */
+  border: var(--zw-border-width) solid transparent;
+  cursor: pointer;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  transition:
+    border-color var(--zw-transition),
+    background var(--zw-transition);
+}
+
+/* Box appears on hover and active page — no underline */
+.zw-nav__link:hover,
+.zw-nav__link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  border-color: var(--zw-border);
+  outline: none;
+}
+
+.zw-nav__link[aria-current="page"] {
+  border-color: var(--zw-border);
+}
+
+button.zw-nav__link {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  margin: 0;
+}
+
+/* ─── SHOP DROPDOWN ─────────────────────────────────────────────────────── */
+
+.zw-dropdown {
+  position: relative;
+}
+
+.zw-dropdown__chevron {
+  font-size: 0.65em;
+  opacity: 0.7;
+  transition: transform var(--zw-transition);
+}
+
+.zw-dropdown__trigger[aria-expanded="true"] .zw-dropdown__chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown content box — styled and prominent */
+.zw-dropdown__menu {
+  position: absolute;
+  top: calc(100% + var(--zw-space-3));
+  left: 0;
+  min-width: 13rem;
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border: var(--zw-border-thick) solid var(--zw-border);
+  box-shadow: var(--zw-shadow-lg);
+  list-style: none;
+  margin: 0;
+  padding: var(--zw-space-3) 0;
+  z-index: 50;
+}
+
+.zw-dropdown__menu li {
+  list-style: none;
+}
+
+/* Dropdown items — plain theme colours, box on hover */
+.zw-dropdown__item,
+.zw-dropdown__item:link,
+.zw-dropdown__item:visited {
+  display: block;
+  padding: var(--zw-space-3) var(--zw-space-6);
+  color: var(--zw-block-text);
+  text-decoration: none;
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-md);
+  font-weight: 600;
+  border-left: var(--zw-border-thick) solid transparent;
+  transition:
+    background var(--zw-transition),
+    border-color var(--zw-transition);
+}
+
+.zw-dropdown__item:hover,
+.zw-dropdown__item:focus-visible {
+  background: var(--zw-block-deep);
+  color: var(--zw-block-text);
+  border-left-color: var(--zw-border);
+  text-decoration: none;
+  outline: none;
+}
+
+/* ─── HEADER ACTIONS ─────────────────────────────────────────────────────── */
+
+.zw-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--zw-space-4);
+  flex-shrink: 0;
+}
+
+/* ─── CART LINK ──────────────────────────────────────────────────────────── */
+/*
+ * Cart shows as plain text: "Cart" or "Cart 3" when items present.
+ * No icon. No badge background. Same hover box as nav links.
+ * The .zw-header__cart-badge renders as plain inline text (no styling).
+ * cart-badge.js sets badge.textContent = "3" and removes [hidden].
+ * Result: "Cart" becomes "Cart 3" automatically.
+ */
+
+.zw-header__cart,
+.zw-header__cart:link,
+.zw-header__cart:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  padding: var(--zw-space-2) var(--zw-space-4);
+  color: inherit;
+  text-decoration: none;
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-md);
+  font-weight: 700;
+  border: var(--zw-border-width) solid transparent;
+  transition: border-color var(--zw-transition);
+}
+
+.zw-header__cart:hover,
+.zw-header__cart:focus-visible {
+  border-color: var(--zw-border);
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+/* Icon hidden — "Cart" text only */
+.zw-header__cart-icon {
+  display: none;
+}
+
+/* "Cart" label — always shown */
+.zw-header__cart-label {
+  display: inline;
+}
+
+/* Badge — plain text, no background, no border */
+.zw-header__cart-badge {
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+  line-height: inherit;
+}
+
+.zw-header__cart-badge[hidden] {
+  display: none;
+}
+
+/* ─── THEME TOGGLE ──────────────────────────────────────────────────────── */
+
+.zw-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: var(--zw-block-deep);
+  color: var(--zw-block-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  cursor: pointer;
+  font-size: 1.1rem;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: background var(--zw-transition);
+}
+
+.zw-theme-toggle:hover,
+.zw-theme-toggle:focus-visible {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
+}
+
+.zw-theme-toggle__icon {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--zw-transition), opacity var(--zw-transition);
+}
+
+/* Default (no data-theme set yet) = light: sun visible */
+.zw-theme-toggle__icon--sun  { opacity: 1; transform: translateY(0); }
+.zw-theme-toggle__icon--moon { opacity: 0; transform: translateY(120%); }
+
+[data-theme="light"] .zw-theme-toggle__icon--sun  { opacity: 1; transform: translateY(0); }
+[data-theme="light"] .zw-theme-toggle__icon--moon { opacity: 0; transform: translateY(120%); }
+
+[data-theme="dark"] .zw-theme-toggle__icon--sun   { opacity: 0; transform: translateY(-120%); }
+[data-theme="dark"] .zw-theme-toggle__icon--moon  { opacity: 1; transform: translateY(0); }
+
+/* ─── MOBILE MENU TRIGGER ───────────────────────────────────────────────── */
+
+.zw-header__menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: var(--zw-block-deep);
+  color: var(--zw-block-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.zw-header__menu-trigger:hover,
+.zw-header__menu-trigger:focus-visible {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
+}
+
+/* Hidden at desktop — !important beats zw-show-mobile utility */
+@media (min-width: 992px) {
+  .zw-header__menu-trigger { display: none !important; }
+}
+
+/* Hide desktop nav on tablet and below */
+@media (max-width: 991px) {
+  .zw-header__nav { display: none; }
+}
+
+/* ─── MOBILE DRAWER ─────────────────────────────────────────────────────── */
+
+.zw-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--zw-z-drawer);
+}
+
+.zw-drawer[hidden] { display: none; }
+
+.zw-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+.zw-drawer--open .zw-drawer__overlay { opacity: 1; }
+
+.zw-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(22rem, 88vw);
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border-left: var(--zw-border-thick) solid var(--zw-border);
+  padding: var(--zw-space-6);
+  transform: translateX(100%);
+  transition: transform 180ms ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-6);
+  overflow-y: auto;
+}
+
+.zw-drawer--open .zw-drawer__panel { transform: translateX(0); }
+
+.zw-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zw-drawer__title {
+  margin: 0;
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.zw-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: var(--zw-block-deep);
+  color: var(--zw-block-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  cursor: pointer;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.zw-drawer__close:hover,
+.zw-drawer__close:focus-visible {
+  background: var(--zw-block);
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
+}
+
+.zw-drawer__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-1);
+}
+
+.zw-drawer__nav li { list-style: none; }
+
+.zw-drawer__nav > li > a,
+.zw-drawer__nav > li > a:link,
+.zw-drawer__nav > li > a:visited {
+  display: block;
+  padding: var(--zw-space-3) var(--zw-space-3);
+  color: var(--zw-block-text);
+  text-decoration: none;
+  font-family: var(--zw-font-body);
+  font-weight: 700;
+  font-size: var(--zw-text-base);
+  border: var(--zw-border-width) solid transparent;
+  transition: border-color var(--zw-transition);
+}
+
+.zw-drawer__nav > li > a:hover,
+.zw-drawer__nav > li > a:focus-visible {
+  border-color: var(--zw-border);
+  color: var(--zw-block-text);
+  outline: none;
+}
+
+.zw-drawer__group-label {
+  display: block;
+  padding: var(--zw-space-4) var(--zw-space-3) var(--zw-space-1);
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--zw-block-text);
+  opacity: 0.6;
+}
+
+.zw-drawer__subnav {
+  list-style: none;
+  margin: 0;
+  padding-left: var(--zw-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-1);
+}
+
+.zw-drawer__subnav li { list-style: none; }
+
+.zw-drawer__subnav a,
+.zw-drawer__subnav a:link,
+.zw-drawer__subnav a:visited {
+  display: block;
+  padding: var(--zw-space-2) var(--zw-space-3);
+  color: var(--zw-block-text);
+  text-decoration: none;
+  font-size: var(--zw-text-md);
+  font-weight: 600;
+  border: var(--zw-border-width) solid transparent;
+  transition: border-color var(--zw-transition);
+}
+
+.zw-drawer__subnav a:hover,
+.zw-drawer__subnav a:focus-visible {
+  border-color: var(--zw-border);
+  color: var(--zw-block-text);
+  outline: none;
+}
+
+/* ─── FOOTER ────────────────────────────────────────────────────────────── */
+
+.zw-footer {
+  margin-top: var(--zw-space-16);
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border-top: var(--zw-border-thick) solid var(--zw-border);
+}
+
+.zw-footer__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--zw-space-8);
+  padding-block: var(--zw-space-10);
+  padding-inline: var(--zw-space-8);
+  max-width: var(--zw-container-max);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .zw-footer__inner {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+.zw-footer__brand    { max-width: 28rem; }
+.zw-footer__wordmark { font-size: 2.75rem; line-height: 1; }
+
+.zw-footer__brand-link,
+.zw-footer__brand-link:link,
+.zw-footer__brand-link:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+.zw-footer__brand-link:hover,
+.zw-footer__brand-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  outline: var(--zw-focus-ring);
+  outline-offset: var(--zw-focus-offset);
+}
+
+.zw-footer__tagline {
+  margin-top: var(--zw-space-4);
+  color: var(--zw-block-text);
+  opacity: 0.7;
+  font-size: var(--zw-text-md);
+  line-height: var(--zw-leading-normal);
+}
+
+.zw-footer__heading {
+  font-family: var(--zw-font-body);
+  font-size: var(--zw-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: var(--zw-space-4);
+  color: inherit;
+  opacity: 0.65;
+}
+
+.zw-footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-3);
+}
+
+.zw-footer__list li { list-style: none; }
+
+.zw-footer__list a,
+.zw-footer__list a:link,
+.zw-footer__list a:visited {
+  color: inherit;
+  text-decoration: none;
+  font-size: var(--zw-text-md);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--zw-transition);
+}
+
+.zw-footer__list a:hover,
+.zw-footer__list a:focus-visible {
+  color: inherit;
+  border-bottom-color: var(--zw-border);
+  outline: none;
+}
+
+.zw-footer__bottom {
+  border-top: var(--zw-border-width) solid var(--zw-border);
+  padding-block: var(--zw-space-5);
+  padding-inline: var(--zw-space-8);
+}
+
+.zw-footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--zw-container-max);
+  margin-inline: auto;
+  font-size: var(--zw-text-xs);
+  opacity: 0.6;
+}
+
+.zw-footer__copy { margin: 0; }
+
+/* ============================================================================
+   END SECTION 0 — SHELL
+   ============================================================================ */
+/* ============================================================================
    zazenware — components.css
    ----------------------------------------------------------------------------
    Reusable page and content components.
@@ -1187,4 +1824,879 @@
     white-space: normal;
     text-align: center;
   }
+}
+
+/* ============================================================================
+   zazenware — shell.css
+   ----------------------------------------------------------------------------
+   Site shell styles: header, footer, theme toggle, Shop dropdown, mobile
+   drawer, skip link visuals. Loaded after main.css.
+
+   Master Spec § 9.3 (Header), § 9.4 (Footer), § 9.12 (ThemeToggle).
+   ============================================================================ */
+
+/* ─── HEADER ────────────────────────────────────────────────────────────── */
+.zw-header {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  border-bottom: var(--zw-border-thick) solid var(--zw-border);
+  position: relative;
+  z-index: 10;
+}
+
+.zw-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zw-space-4);
+  padding-block: var(--zw-space-3);
+}
+
+.zw-header__brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.zw-header__brand .zw-display {
+  font-size: clamp(1.5rem, 3vw + 1rem, 2.25rem);
+  line-height: 1;
+}
+
+.zw-header__brand:hover,
+.zw-header__brand:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.zw-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--zw-space-3);
+}
+
+/* Primary nav (desktop) */
+.zw-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--zw-space-5);
+  list-style: none;
+}
+
+.zw-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  padding: var(--zw-space-2) 0;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--zw-font-body);
+  font-size: 1rem;
+  position: relative;
+}
+
+.zw-nav__link:hover {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 3px;
+}
+
+.zw-nav__link[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--zw-border);
+}
+
+/* ─── SHOP DROPDOWN ─────────────────────────────────────────────────────── */
+.zw-dropdown {
+  position: relative;
+}
+
+.zw-dropdown__chevron {
+  font-size: 0.75em;
+  transition: transform var(--zw-transition);
+}
+
+.zw-dropdown__trigger[aria-expanded="true"] .zw-dropdown__chevron {
+  transform: rotate(180deg);
+}
+
+.zw-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 12rem;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  box-shadow: var(--zw-shadow);
+  list-style: none;
+  padding: var(--zw-space-2) 0;
+  margin: 0;
+  z-index: 50;
+}
+
+.zw-dropdown__item {
+  display: block;
+  padding: var(--zw-space-2) var(--zw-space-4);
+  color: var(--zw-text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.zw-dropdown__item:hover,
+.zw-dropdown__item:focus-visible {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  text-decoration: none;
+}
+
+/* ─── CART LINK + BADGE ─────────────────────────────────────────────────── */
+.zw-header__cart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: var(--zw-space-2) var(--zw-space-3);
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+  border: var(--zw-border-width) solid transparent;
+  font-family: var(--zw-font-body);
+}
+
+.zw-header__cart:hover,
+.zw-header__cart:focus-visible {
+  border-color: var(--zw-border);
+  color: inherit;
+  text-decoration: none;
+}
+
+.zw-header__cart-icon {
+  font-size: 1.1em;
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+.zw-header__cart-label {
+  /* Hidden on small screens, shown on tablet+ */
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .zw-header__cart-label { display: inline; }
+}
+
+.zw-header__cart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4em;
+  height: 1.4em;
+  padding: 0 0.3em;
+  background: var(--zw-accent);
+  color: var(--zw-accent-text);
+  font-size: 0.8em;
+  font-weight: 700;
+  border: var(--zw-border-width) solid var(--zw-border);
+  line-height: 1;
+}
+
+/* ─── THEME TOGGLE ──────────────────────────────────────────────────────── */
+.zw-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  cursor: pointer;
+  font-size: 1.1rem;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--zw-transition);
+}
+
+.zw-theme-toggle:hover,
+.zw-theme-toggle:focus-visible {
+  background: var(--zw-block-deep);
+  color: var(--zw-block-text);
+}
+
+/* Show sun in light, moon in dark */
+.zw-theme-toggle__icon {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--zw-transition), opacity var(--zw-transition);
+}
+
+[data-theme="light"] .zw-theme-toggle__icon--sun  { opacity: 1; transform: translateY(0); }
+[data-theme="light"] .zw-theme-toggle__icon--moon { opacity: 0; transform: translateY(120%); }
+
+[data-theme="dark"]  .zw-theme-toggle__icon--sun  { opacity: 0; transform: translateY(-120%); }
+[data-theme="dark"]  .zw-theme-toggle__icon--moon { opacity: 1; transform: translateY(0); }
+
+/* ─── MOBILE MENU TRIGGER ───────────────────────────────────────────────── */
+.zw-header__menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.zw-header__menu-trigger:hover,
+.zw-header__menu-trigger:focus-visible {
+  background: var(--zw-block-deep);
+  color: var(--zw-block-text);
+}
+
+/* Hide on desktop */
+@media (min-width: 992px) {
+  .zw-header__menu-trigger { display: none; }
+}
+
+/* On tablet and below, swap nav visibility */
+@media (max-width: 991px) {
+  .zw-header__nav { display: none; }
+}
+
+.zw-nav > li {
+  display: flex;
+  align-items: center;
+}
+
+.zw-nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0 var(--zw-space-2);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+button.zw-nav__link {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  font: inherit;
+}
+
+/* ─── MOBILE DRAWER ─────────────────────────────────────────────────────── */
+.zw-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.zw-drawer[hidden] {
+  display: none;
+}
+
+.zw-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+.zw-drawer--open .zw-drawer__overlay {
+  opacity: 1;
+}
+
+.zw-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(20rem, 85vw);
+  background: var(--zw-bg);
+  color: var(--zw-text);
+  border-left: var(--zw-border-thick) solid var(--zw-border);
+  padding: var(--zw-space-5);
+  transform: translateX(100%);
+  transition: transform 180ms ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-5);
+  overflow-y: auto;
+}
+
+.zw-drawer--open .zw-drawer__panel {
+  transform: translateX(0);
+}
+
+.zw-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zw-drawer__title {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.zw-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.zw-drawer__close:hover,
+.zw-drawer__close:focus-visible {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+}
+
+.zw-drawer__nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-2);
+}
+
+.zw-drawer__nav > li > a {
+  display: block;
+  padding: var(--zw-space-3) var(--zw-space-2);
+  color: var(--zw-text);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-bottom: var(--zw-border-width) solid transparent;
+}
+
+.zw-drawer__nav a:hover,
+.zw-drawer__nav a:focus-visible {
+  border-bottom-color: var(--zw-border);
+  color: var(--zw-text);
+}
+
+.zw-drawer__group-label {
+  display: block;
+  padding: var(--zw-space-3) var(--zw-space-2) var(--zw-space-1);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--zw-text-muted);
+  font-weight: 700;
+}
+
+.zw-drawer__subnav {
+  list-style: none;
+  padding-left: var(--zw-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-1);
+}
+
+.zw-drawer__subnav a {
+  display: block;
+  padding: var(--zw-space-2);
+  color: var(--zw-text);
+  text-decoration: none;
+}
+
+.zw-drawer__subnav a:hover,
+.zw-drawer__subnav a:focus-visible {
+  text-decoration: underline;
+}
+
+/* ─── FOOTER ────────────────────────────────────────────────────────────── */
+.zw-footer {
+  margin-top: var(--zw-space-8);
+  background: var(--zw-block);
+  color: var(--zw-text);
+  border-top: var(--zw-border-thick) solid var(--zw-border);
+}
+
+[data-theme="dark"] .zw-footer {
+  background: var(--zw-block-deep);   /* Blood Maroon */
+  color: var(--zw-block-text);
+}
+
+.zw-footer__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--zw-space-6);
+  padding-block: var(--zw-space-7);
+}
+
+@media (min-width: 768px) {
+  .zw-footer__inner {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+.zw-footer__brand {
+  max-width: 28rem;
+}
+
+.zw-footer__wordmark {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.zw-footer__brand-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.zw-footer__brand-link:hover,
+.zw-footer__brand-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.zw-footer__tagline {
+  margin-top: var(--zw-space-3);
+  color: var(--zw-text-muted);
+  font-size: 0.95rem;
+}
+
+[data-theme="dark"] .zw-footer__tagline {
+  color: var(--zw-block-text);
+  opacity: 0.85;
+}
+
+.zw-footer__heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--zw-space-3);
+  color: inherit;
+}
+
+.zw-footer__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-2);
+}
+
+.zw-footer__list a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.zw-footer__list a:hover,
+.zw-footer__list a:focus-visible {
+  color: var(--zw-accent);
+  text-decoration-thickness: 2px;
+}
+
+[data-theme="dark"] .zw-footer__list a:hover,
+[data-theme="dark"] .zw-footer__list a:focus-visible {
+  color: var(--zw-accent);
+}
+
+.zw-footer__bottom {
+  border-top: var(--zw-border-width) solid var(--zw-border);
+  padding-block: var(--zw-space-4);
+  color: var(--zw-text-muted);
+  font-size: 0.85rem;
+}
+
+[data-theme="dark"] .zw-footer__bottom {
+  border-top-color: var(--zw-block-text);
+  color: var(--zw-block-text);
+  opacity: 0.8;
+}
+
+.zw-footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zw-footer__copy {
+  margin: 0;
+}
+
+/* ============================================================================
+   zazenware — cart.css
+   ----------------------------------------------------------------------------
+   Styles for the Cart page: CartItem layout, order summary table, form
+   fields, honeypot, error states.
+   ============================================================================ */
+
+/* ─── Cart item list ────────────────────────────────────────────────────── */
+.zw-cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-4);
+}
+
+.zw-cart-item {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  grid-template-areas:
+    "image body  total"
+    "image qty   remove";
+  gap: var(--zw-space-3) var(--zw-space-4);
+  padding: var(--zw-space-3);
+  background: var(--zw-surface);
+  border: var(--zw-border-width) solid var(--zw-border);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .zw-cart-item {
+    grid-template-columns: 120px 1fr auto auto auto;
+    grid-template-areas: "image body qty total remove";
+  }
+}
+
+.zw-cart-item__image {
+  grid-area: image;
+  width: 96px;
+  height: 96px;
+}
+
+@media (min-width: 768px) {
+  .zw-cart-item__image {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.zw-cart-item__body  { grid-area: body; }
+.zw-cart-item__qty   { grid-area: qty; }
+.zw-cart-item__total { grid-area: total; text-align: right; font-size: 1.125rem; }
+.zw-cart-item__remove{ grid-area: remove; }
+
+.zw-cart-item__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.zw-cart-item__meta {
+  margin: 0;
+}
+
+.zw-cart-item__price {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--zw-text-muted);
+}
+
+.zw-cart-item__qty-input {
+  width: 3.5rem;
+  text-align: center;
+  padding: var(--zw-space-2);
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  font-family: var(--zw-font-body);
+  -moz-appearance: textfield;
+}
+
+.zw-cart-item__qty-input::-webkit-outer-spin-button,
+.zw-cart-item__qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ─── Order summary table ───────────────────────────────────────────────── */
+.zw-order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: var(--zw-space-4) 0;
+  padding: var(--zw-space-4);
+  border: var(--zw-border-width) solid var(--zw-border);
+  background: var(--zw-surface);
+}
+
+.zw-order-summary__line {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--zw-space-4);
+  padding: var(--zw-space-2) 0;
+  border-bottom: 1px dashed var(--zw-border);
+}
+
+.zw-order-summary__line:last-child {
+  border-bottom: none;
+}
+
+.zw-order-summary__line dt,
+.zw-order-summary__line dd {
+  margin: 0;
+}
+
+.zw-order-summary__line dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.zw-order-summary__total {
+  font-size: 1.15rem;
+  padding-top: var(--zw-space-3);
+  margin-top: var(--zw-space-2);
+  border-top: var(--zw-border-width) solid var(--zw-border);
+}
+
+/* ─── Checkout form ─────────────────────────────────────────────────────── */
+.zw-checkout-form {
+  margin-top: var(--zw-space-5);
+  padding: var(--zw-space-5);
+  background: var(--zw-surface);
+  border: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-checkout-form__summary {
+  background: var(--zw-error-bg);
+  color: var(--zw-error);
+  border: var(--zw-border-width) solid var(--zw-error);
+  padding: var(--zw-space-3) var(--zw-space-4);
+}
+
+.zw-checkout-form__summary-list {
+  margin: var(--zw-space-2) 0 0;
+  padding-left: var(--zw-space-5);
+}
+
+/* ─── Form field ────────────────────────────────────────────────────────── */
+.zw-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-1);
+  margin-bottom: var(--zw-space-3);
+}
+
+.zw-field__label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.zw-field__input {
+  padding: var(--zw-space-3);
+  background: var(--zw-bg);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  font-family: var(--zw-font-body);
+  font-size: 1rem;
+  min-height: 44px;
+  width: 100%;
+}
+
+.zw-field__input:focus-visible {
+  outline: 3px solid var(--zw-focus);
+  outline-offset: 1px;
+}
+
+textarea.zw-field__input {
+  resize: vertical;
+  min-height: 88px;
+  font-family: var(--zw-font-body);
+}
+
+.zw-field__input[aria-invalid="true"] {
+  border-color: var(--zw-error);
+  border-width: var(--zw-border-thick);
+}
+
+.zw-field__helper {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--zw-text-muted);
+}
+
+.zw-field__error {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--zw-error);
+}
+
+/* ─── Honeypot ──────────────────────────────────────────────────────────── */
+.zw-honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   zazenware — cards.css
+   ----------------------------------------------------------------------------
+   Component-level styling for DesignCard, ShirtCard, PatchCard, PrintCard.
+   Loaded after main.css via shell.css? No — added to main.css @imports list.
+   ============================================================================ */
+
+/* ─── Base card ─────────────────────────────────────────────────────────── */
+.zw-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  border: var(--zw-border-width) solid var(--zw-border);
+  box-shadow: var(--zw-shadow);
+  overflow: hidden;
+  transition: transform var(--zw-transition), box-shadow var(--zw-transition);
+}
+
+.zw-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--zw-border);
+}
+
+.zw-card__image {
+  width: 100%;
+  background: var(--zw-bg);
+  border: none;
+  border-bottom: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-card__image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.zw-card__body {
+  padding: var(--zw-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-3);
+  flex: 1;
+}
+
+.zw-card__title {
+  font-size: 1.5rem;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.zw-card__meta {
+  font-size: 0.875rem;
+  color: var(--zw-text-muted);
+  margin: 0;
+}
+
+.zw-card__price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--zw-text);
+}
+
+.zw-card__helper {
+  margin: 0;
+}
+
+.zw-card__actions {
+  margin-top: auto;
+}
+
+.zw-card__status {
+  /* status messages live here when an item is added or fails to add */
+  min-height: 0;
+}
+
+.zw-card__status:empty {
+  display: none;
+}
+
+/* ─── DesignCard cluster of view-X buttons ──────────────────────────────── */
+.zw-design-card .zw-card__actions {
+  flex-wrap: wrap;
+}
+
+/* ─── Variants (shirt size + colour pickers) ────────────────────────────── */
+.zw-card__variants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zw-space-3);
+}
+
+.zw-variant-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.zw-variant-legend {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--zw-space-2);
+  color: var(--zw-text);
+  padding: 0;
+}
+
+.zw-variant-btn {
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  min-width: 2.5rem;
+  border: var(--zw-border-width) solid var(--zw-border);
+}
+
+.zw-variant-btn[aria-pressed="true"] {
+  background: var(--zw-block);
+  color: var(--zw-block-text);
+  box-shadow: 2px 2px 0 0 var(--zw-border);
+}
+
+/* ─── Status messages inside cards ──────────────────────────────────────── */
+.zw-card__status .zw-status {
+  margin-top: var(--zw-space-3);
+  padding: var(--zw-space-2) var(--zw-space-3);
+  font-size: 0.875rem;
+}
+
+/* ─── Grids ─────────────────────────────────────────────────────────────── */
+.zw-grid {
+  /* Already defined in utilities.css. Override gap for product density. */
+  gap: var(--zw-space-5);
+}
+
+/* ─── Empty / loading panels inside grids ───────────────────────────────── */
+.zw-grid > .zw-panel {
+  grid-column: 1 / -1;
 }
