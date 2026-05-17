@@ -17,6 +17,9 @@
     <nav class="zw-header__nav zw-hide-mobile" aria-label="Primary">
       <ul class="zw-nav" role="list">
         <li>
+          <a href="/" class="zw-nav__link" data-nav="home">Home</a>
+        </li>
+        <li>
           <a href="/art.html" class="zw-nav__link" data-nav="art">Art</a>
         </li>
 
@@ -41,13 +44,13 @@
             data-zw-dropdown-menu
           >
             <li role="none">
-              <a href="/shop.html#shirts" class="zw-dropdown__item" role="menuitem">Shirts</a>
+              <a href="/shop.html#shirts"  class="zw-dropdown__item" role="menuitem">Shirts</a>
             </li>
             <li role="none">
               <a href="/shop.html#patches" class="zw-dropdown__item" role="menuitem">Patches</a>
             </li>
             <li role="none">
-              <a href="/shop.html#prints" class="zw-dropdown__item" role="menuitem">Prints</a>
+              <a href="/shop.html#prints"  class="zw-dropdown__item" role="menuitem">Prints</a>
             </li>
           </ul>
         </li>
@@ -60,11 +63,23 @@
 
     <!-- Header actions: cart + theme toggle + mobile menu trigger -->
     <div class="zw-header__actions zw-cluster zw-cluster-sm">
-      <!-- Cart link with badge -->
-      <a href="/cart.html" class="zw-header__cart" data-nav="cart" aria-label="Cart, 0 items">
-        <span class="zw-header__cart-icon" aria-hidden="true"></span>
+
+      <!-- Cart link — badge starts hidden; cart-badge.js shows it when qty ≥ 1 -->
+      <a
+        href="/cart.html"
+        class="zw-header__cart"
+        data-nav="cart"
+        aria-label="Cart"
+      >
+        <span class="zw-header__cart-icon" aria-hidden="true">⌫</span>
         <span class="zw-header__cart-label">Cart</span>
-        <span class="zw-header__cart-badge" data-zw-cart-badge hidden>0</span>
+        <!-- hidden attribute removed by cart-badge.js when qty ≥ 1 -->
+        <span
+          class="zw-header__cart-badge"
+          data-zw-cart-badge
+          hidden
+          aria-hidden="true"
+        ></span>
       </a>
 
       <!-- Theme toggle -->
@@ -75,7 +90,7 @@
         aria-label="Switch to dark theme"
         data-zw-theme-toggle
       >
-        <span class="zw-theme-toggle__icon zw-theme-toggle__icon--sun" aria-hidden="true">☀</span>
+        <span class="zw-theme-toggle__icon zw-theme-toggle__icon--sun"  aria-hidden="true">☀</span>
         <span class="zw-theme-toggle__icon zw-theme-toggle__icon--moon" aria-hidden="true">☾</span>
       </button>
 
@@ -125,8 +140,8 @@
     </div>
     <nav aria-label="Mobile primary">
       <ul class="zw-drawer__nav" role="list">
-        <li><a href="/" data-nav="home">Home</a></li>
-        <li><a href="/art.html" data-nav="art">Art</a></li>
+        <li><a href="/"            data-nav="home">Home</a></li>
+        <li><a href="/art.html"    data-nav="art">Art</a></li>
         <li>
           <span class="zw-drawer__group-label">Shop</span>
           <ul class="zw-drawer__subnav" role="list">
@@ -135,7 +150,7 @@
             <li><a href="/shop.html#prints">Prints</a></li>
           </ul>
         </li>
-        <li><a href="/cart.html" data-nav="cart">Cart</a></li>
+        <li><a href="/cart.html"    data-nav="cart">Cart</a></li>
         <li><a href="/contact.html" data-nav="contact">Contact</a></li>
       </ul>
     </nav>

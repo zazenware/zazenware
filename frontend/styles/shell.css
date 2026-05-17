@@ -4,7 +4,11 @@
    Site shell styles: header, footer, theme toggle, Shop dropdown, mobile
    drawer, skip link visuals. Loaded after main.css.
 
-   Master Spec § 9.3 (Header), § 9.4 (Footer), § 9.12 (ThemeToggle).
+   Changes from E-03:
+   - Cart badge: no accent colour — uses --zw-border / --zw-bg / --zw-text
+   - Cart badge: hidden by default (shown by cart-badge.js when qty ≥ 1)
+   - Dropdown menu: no accent on hover — uses plain --zw-block / --zw-block-text
+   - Removed all --zw-accent references from header-area rules
    ============================================================================ */
 
 /* ─── HEADER ────────────────────────────────────────────────────────────── */
@@ -48,7 +52,7 @@
   gap: var(--zw-space-3);
 }
 
-/* Primary nav (desktop) */
+/* ─── PRIMARY NAV (DESKTOP) ─────────────────────────────────────────────── */
 .zw-nav {
   display: flex;
   align-items: center;
@@ -100,34 +104,38 @@
   transform: rotate(180deg);
 }
 
+/* Menu panel — theme surface, solid border, no shadow tricks */
 .zw-dropdown__menu {
   position: absolute;
-  top: calc(100% + 0.5rem);
+  top: calc(100% + 0.4rem);
   left: 0;
-  min-width: 12rem;
-  background: var(--zw-surface);
+  min-width: 10rem;
+  background: var(--zw-bg);
   color: var(--zw-text);
   border: var(--zw-border-width) solid var(--zw-border);
-  box-shadow: var(--zw-shadow);
   list-style: none;
-  padding: var(--zw-space-2) 0;
+  padding: var(--zw-space-1) 0;
   margin: 0;
   z-index: 50;
 }
 
+/* Each item — plain theme colours, no accent on hover */
 .zw-dropdown__item {
   display: block;
   padding: var(--zw-space-2) var(--zw-space-4);
   color: var(--zw-text);
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .zw-dropdown__item:hover,
 .zw-dropdown__item:focus-visible {
-  background: var(--zw-block);
-  color: var(--zw-block-text);
-  text-decoration: none;
+  background: var(--zw-surface);
+  color: var(--zw-text);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  outline: none;
 }
 
 /* ─── CART LINK + BADGE ─────────────────────────────────────────────────── */
@@ -157,8 +165,8 @@
   transform: scaleX(-1);
 }
 
+/* "Cart" label — hidden on mobile, shown on tablet+ */
 .zw-header__cart-label {
-  /* Hidden on small screens, shown on tablet+ */
   display: none;
 }
 
@@ -166,19 +174,32 @@
   .zw-header__cart-label { display: inline; }
 }
 
+/*
+ * Badge — hidden until cart-badge.js sets it visible (qty ≥ 1).
+ * No accent colour: uses the same border and background as the theme,
+ * inverted so it reads clearly on the header block.
+ */
 .zw-header__cart-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.4em;
-  height: 1.4em;
-  padding: 0 0.3em;
-  background: var(--zw-accent);
-  color: var(--zw-accent-text);
-  font-size: 0.8em;
+  min-width: 1.35em;
+  height: 1.35em;
+  padding: 0 0.25em;
+
+  /* Plain theme colours — border colour as bg, theme bg as text */
+  background: var(--zw-block-text);
+  color: var(--zw-block);
+  border: var(--zw-border-width) solid var(--zw-block-text);
+
+  font-size: 0.78em;
   font-weight: 700;
-  border: var(--zw-border-width) solid var(--zw-border);
   line-height: 1;
+}
+
+/* When hidden attribute is present, ensure it's truly invisible */
+.zw-header__cart-badge[hidden] {
+  display: none;
 }
 
 /* ─── THEME TOGGLE ──────────────────────────────────────────────────────── */
@@ -248,31 +269,9 @@
   .zw-header__menu-trigger { display: none; }
 }
 
-/* On tablet and below, swap nav visibility */
+/* On tablet and below, hide desktop nav */
 @media (max-width: 991px) {
   .zw-header__nav { display: none; }
-}
-
-.zw-nav > li {
-  display: flex;
-  align-items: center;
-}
-
-.zw-nav__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.5rem;
-  padding: 0 var(--zw-space-2);
-  line-height: 1;
-  vertical-align: middle;
-}
-
-button.zw-nav__link {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
-  font: inherit;
 }
 
 /* ─── MOBILE DRAWER ─────────────────────────────────────────────────────── */
@@ -408,13 +407,13 @@ button.zw-nav__link {
 /* ─── FOOTER ────────────────────────────────────────────────────────────── */
 .zw-footer {
   margin-top: var(--zw-space-8);
-  background: var(--zw-block);
+  background: var(--zw-bg);
   color: var(--zw-text);
   border-top: var(--zw-border-thick) solid var(--zw-border);
 }
 
 [data-theme="dark"] .zw-footer {
-  background: var(--zw-block-deep);   /* Blood Maroon */
+  background: var(--zw-block-deep);
   color: var(--zw-block-text);
 }
 
@@ -487,13 +486,8 @@ button.zw-nav__link {
 
 .zw-footer__list a:hover,
 .zw-footer__list a:focus-visible {
-  color: var(--zw-accent);
+  color: inherit;
   text-decoration-thickness: 2px;
-}
-
-[data-theme="dark"] .zw-footer__list a:hover,
-[data-theme="dark"] .zw-footer__list a:focus-visible {
-  color: var(--zw-accent);
 }
 
 .zw-footer__bottom {
