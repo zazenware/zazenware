@@ -2132,8 +2132,8 @@ button.zw-nav__link {
   right: 0;
   bottom: 0;
   width: min(20rem, 85vw);
-  background: var(--zw-bg);
-  color: var(--zw-text);
+  background: var(--zw-block);     /* ← Stronger background */
+  color: var(--zw-block-text);     /* ← Stronger text */
   border-left: var(--zw-border-thick) solid var(--zw-border);
   padding: var(--zw-space-5);
   transform: translateX(100%);
@@ -2142,6 +2142,16 @@ button.zw-nav__link {
   flex-direction: column;
   gap: var(--zw-space-5);
   overflow-y: auto;
+}
+
+.zw-drawer__nav > li > a {
+  display: block;
+  padding: var(--zw-space-3) var(--zw-space-2);
+  color: var(--zw-block-text);     /* ← Stronger */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-bottom: var(--zw-border-width) solid transparent;
 }
 
 .zw-drawer--open .zw-drawer__panel {
