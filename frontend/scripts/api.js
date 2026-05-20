@@ -1,55 +1,116 @@
 /* ============================================================================
-   zazenware — api.js
+   zazenware — frontend/assets/scripts/api.js
    ----------------------------------------------------------------------------
    Thin fetch() wrapper used by every page script that talks to the backend.
 
-   Configuration:
-     - In dev, the backend lives at http://localhost:4000.
-     - In production, it lives at https://api.zazenware.com.
-     - The page may override via window.ZW_CONFIG.apiBaseUrl set before
-       this module loads.
+   Environment behavior:
+     - Local frontend uses local backend:
+       http://localhost:5173 → http://localhost:4000
 
-   Errors:
-     The backend always returns { error: { code, message, fields? } } on
-     non-2xx. This wrapper throws an ApiError with those fields populated.
+     - Deployed frontend uses Railway backend:
+       Netlify / custom domain → Railway API
+
+     - Optional page override:
+       window.ZW_CONFIG = { apiBaseUrl: "https://example.com" }
+
+   Important:
+     This file contains only public frontend URLs.
+     Never put DATABASE_URL, RESEND_API_KEY, passwords, or secrets here.
    ============================================================================ */
-const DEFAULT_BASE =
-  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://localhost:4000"
-    : "https://zazenware-production-2f30.up.railway.app";
+
+const LOCAL_API_BASE_URL = "http://localhost:4000";
+
+// Current Railway backend.
+// If your Railway URL changes, update this one line.
+const PRODUCTION_API_BASE_URL = "https://zazenware-production-2f30.up.railway.app";
+
+const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1"]);
+
+function stripTrailingSlash(value) {
+  return String(value || "").replace(/\/$/, "");
+}
 
 function getBase() {
   if (typeof window !== "undefined" && window.ZW_CONFIG?.apiBaseUrl) {
-    return String(window.ZW_CONFIG.apiBaseUrl).replace(/\/$/, "");
+    return stripTrailingSlash(window.ZW_CONFIG.apiBaseUrl);
   }
-  return DEFAULT_BASE;
+
+  if (typeof window !== "undefined" && LOCAL_HOSTS.has(window.location.hostname)) {
+    return LOCAL_API_BASE_URL;
+  }
+
+  return PRODUCTION_API_BASE_URL;
 }
 
+export const API_BASE_URL = getBase();
+
 export class ApiError extends Error {
-  constructor({ status, code, message, fields }) {
+  constructor({ status, code, message, fields, details }) {
     super(message || `API error ${status}`);
+
+    this.name = "ApiError";
     this.status = status;
     this.code = code || "unknown";
     this.fields = fields;
+    this.details = details;
   }
 }
 
-async function request(path, { method = "GET", body, headers, signal } = {}) {
-  const url = getBase() + path;
-  const opts = {
-    method,
-    headers: { Accept: "application/json", ...(headers || {}) },
-    signal,
-  };
-  if (body !== undefined) {
-    opts.headers["Content-Type"] = "application/json";
-    opts.body = JSON.stringify(body);
+function normalizeApiError(status, statusText, data) {
+  // Preferred backend shape:
+  // { error: { code, message, fields? } }
+  if (data?.error && typeof data.error === "object") {
+    return {
+      status,
+      code: data.error.code || `http_${status}`,
+      message: data.error.message || statusText,
+      fields: data.error.fields,
+      details: data,
+    };
   }
 
-  let res;
+  // Alternate backend shape:
+  // { error: "Server Error", message: "Something went wrong." }
+  if (data?.error || data?.message) {
+    return {
+      status,
+      code: `http_${status}`,
+      message: data.message || data.error || statusText,
+      fields: data.fields,
+      details: data,
+    };
+  }
+
+  return {
+    status,
+    code: `http_${status}`,
+    message: statusText || `Request failed with status ${status}`,
+    details: data,
+  };
+}
+
+async function request(path, { method = "GET", body, headers, signal } = {}) {
+  const url = `${API_BASE_URL}${path}`;
+
+  const options = {
+    method,
+    headers: {
+      Accept: "application/json",
+      ...(headers || {}),
+    },
+    signal,
+  };
+
+  if (body !== undefined) {
+    options.headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(body);
+  }
+
+  let response;
+
   try {
-    res = await fetch(url, opts);
-  } catch (err) {
+    response = await fetch(url, options);
+  } catch (_error) {
     throw new ApiError({
       status: 0,
       code: "network_error",
@@ -57,44 +118,58 @@ async function request(path, { method = "GET", body, headers, signal } = {}) {
     });
   }
 
-  // 204 No Content
-  if (res.status === 204) return null;
-
-  let data = null;
-  try {
-    data = await res.json();
-  } catch (_) {
-    /* Non-JSON response */
+  if (response.status === 204) {
+    return null;
   }
 
-  if (!res.ok) {
-    const err = data?.error || {};
-    throw new ApiError({
-      status: res.status,
-      code: err.code || "http_" + res.status,
-      message: err.message || res.statusText,
-      fields: err.fields,
-    });
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+
+  const data = isJson ? await response.json().catch(() => null) : null;
+
+  if (!response.ok) {
+    throw new ApiError(normalizeApiError(response.status, response.statusText, data));
   }
 
   return data;
 }
 
 export const api = {
+  /** GET /api/health */
+  health(options) {
+    return request("/api/health", options);
+  },
+
   /** GET /api/designs → { designs: [...] } */
-  listDesigns(opts) {
-    return request("/api/designs", opts);
+  listDesigns(options) {
+    return request("/api/designs", options);
   },
+
   /** GET /api/designs/:slug → { design: {...} } */
-  getDesign(slug, opts) {
-    return request(`/api/designs/${encodeURIComponent(slug)}`, opts);
+  getDesign(slug, options) {
+    return request(`/api/designs/${encodeURIComponent(slug)}`, options);
   },
+
+  /** POST /api/orders */
+  createOrder(orderPayload, options) {
+    return request("/api/orders", {
+      method: "POST",
+      body: orderPayload,
+      ...(options || {}),
+    });
+  },
+
   /** GET /api/orders/:order_number → { order: {...} } */
-  getOrder(orderNumber, opts) {
-    return request(`/api/orders/${encodeURIComponent(orderNumber)}`, opts);
+  getOrder(orderNumber, options) {
+    return request(`/api/orders/${encodeURIComponent(orderNumber)}`, options);
   },
-  /** GET /api/health → { status, db, version, uptime, timestamp } */
-  health(opts) {
-    return request("/api/health", opts);
+
+  /** POST /api/contact */
+  sendContactMessage(contactPayload, options) {
+    return request("/api/contact", {
+      method: "POST",
+      body: contactPayload,
+      ...(options || {}),
+    });
   },
 };

@@ -10,9 +10,13 @@ const PORT = Number(process.env.PORT) || 4000;
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 const server = app.listen(PORT, () => {
-  console.log(`[zw] zazenware backend listening on http://localhost:${PORT}`);
+  console.log(`[zw] zazenware backend listening on port ${PORT}`);
   console.log(`[zw] NODE_ENV=${NODE_ENV}`);
-  console.log(`[zw] Health: http://localhost:${PORT}/api/health`);
+
+  if (NODE_ENV !== "production") {
+    console.log(`[zw] Local API: http://localhost:${PORT}/api`);
+    console.log(`[zw] Local health: http://localhost:${PORT}/api/health`);
+  }
 });
 
 let shuttingDown = false;
