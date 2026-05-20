@@ -22,7 +22,7 @@ const LOCAL_API_BASE_URL = "http://localhost:4000";
 
 // Current Railway backend.
 // If your Railway URL changes, update this one line.
-const PRODUCTION_API_BASE_URL = "https://zazenware-production-2f30.up.railway.app";
+const PRODUCTION_API_BASE_URL = "https://zazenware-api.onrender.com";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1"]);
 

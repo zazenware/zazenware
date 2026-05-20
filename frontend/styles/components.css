@@ -2118,7 +2118,7 @@ button.zw-nav__link {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  opacity: 0;
+  opacity: 90;
   transition: opacity 180ms ease-out;
 }
 
