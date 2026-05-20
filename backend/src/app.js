@@ -93,14 +93,21 @@ app.get("/api", (_req, res) => {
   });
 });
 
-// ─── Routes ───────────────────────────────────────────────────────────────
+// ─── Routes ───────────────────────────────────────────────────────────
 
 app.use("/api", healthRouter);
 app.use("/api", designsRouter);
 app.use("/api", ordersRouter);
 app.use("/api", contactRouter);
 
-// ─── Error handlers ───────────────────────────────────────────────────────
+// ─── Diagnostic logging ───────────────────────────────────────────────
+console.log("[zw] Routes registered:");
+console.log("[zw]   - /api/health");
+console.log("[zw]   - /api/designs");
+console.log("[zw]   - /api/orders");
+console.log("[zw]   - /api/contact");
+
+// ─── Error handlers ───────────────────────────────────────────────────
 
 app.use(notFound);
 app.use(errorHandler);
