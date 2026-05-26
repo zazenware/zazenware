@@ -1,0 +1,20 @@
+ services:
+  - type: web
+    name: zazenware
+    env: node
+    buildCommand: npm install --prefix backend
+    startCommand: node backend/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: PORT
+        value: 4000
+
+  - type: pgsql
+    name: zazenware-db
+    plan: basic-256mb
+    region: ohio

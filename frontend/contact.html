@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — zazenware</title>
-  <meta name="description" content="Get in touch with zazenware about an order, a custom design, or local merch help." />
+  <meta name="description" content="Get in touch with zazenware about custom work, collaborations, or questions." />
 
   <script src="/scripts/theme-init.js"></script>
 
@@ -22,7 +22,7 @@
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
 
-  <!-- Contact page script — renders the form and handles POST /api/contact -->
+  <!-- Contact page script -->
   <script type="module" src="/scripts/contact.js"></script>
 </head>
 <body>
@@ -31,31 +31,99 @@
 
   <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
 
+    <!-- HERO -->
     <section class="zw-hero">
-      <div class="zw-hero__eyebrow">Talk to me</div>
+      <div class="zw-hero__eyebrow">Get in touch</div>
       <h1 class="zw-hero__title zw-display">contact</h1>
       <p class="zw-hero__sub">
-        Order questions, custom design inquiries, band merch help, or anything else. Replies come from contact@zazenware.com.
+        Questions, custom work requests, or just want to say hello? Send a message and I'll get back to you soon.
       </p>
     </section>
 
-    <!-- Inquiry types reference -->
-    <section class="zw-stack zw-prose">
-      <h2 class="zw-display" style="font-size: 1.75rem;">what to message about</h2>
-      <ul>
-        <li><strong>Order question</strong> — about an existing or potential order.</li>
-        <li><strong>Custom design inquiry</strong> — band or artist looking for original design work.</li>
-        <li><strong>Band merch / local project inquiry</strong> — merch help for a local project.</li>
-        <li><strong>Print my existing design</strong> — you already have artwork and want it printed (you'll be asked to confirm you have rights to it).</li>
-        <li><strong>General question</strong> — anything that doesn't fit above.</li>
-      </ul>
-    </section>
+    <!-- INTRO TEXT — wrapped in panel -->
+    <article class="zw-panel zw-prose">
+      <p>
+        I respond to all messages, usually within a day or two. For custom work (band merch, event designs, etc.), let me know what you have in mind and we can talk details.
+      </p>
+    </article>
 
-    <!-- Mount node for contact.js to render the form into -->
-    <section class="zw-stack" aria-labelledby="contact-form-heading">
-      <h2 id="contact-form-heading" class="zw-display" style="font-size: 1.75rem;">send a message</h2>
-      <div id="contact-form-mount"></div>
-    </section>
+    <!-- CONTACT FORM — wrapped in panel -->
+    <article class="zw-panel">
+      <form id="contact-form" class="zw-form">
+
+        <!-- Name field -->
+        <div class="zw-form-group">
+          <label for="contact-name" class="zw-label zw-label--required">Name</label>
+          <input
+            id="contact-name"
+            type="text"
+            name="name"
+            class="zw-input"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <!-- Email field -->
+        <div class="zw-form-group">
+          <label for="contact-email" class="zw-label zw-label--required">Email</label>
+          <input
+            id="contact-email"
+            type="email"
+            name="email"
+            class="zw-input"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <!-- Subject field -->
+        <div class="zw-form-group">
+          <label for="contact-subject" class="zw-label zw-label--required">Subject</label>
+          <input
+            id="contact-subject"
+            type="text"
+            name="subject"
+            class="zw-input"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <!-- Message field -->
+        <div class="zw-form-group">
+          <label for="contact-message" class="zw-label zw-label--required">Message</label>
+          <textarea
+            id="contact-message"
+            name="message"
+            class="zw-textarea"
+            required
+            aria-required="true"
+          ></textarea>
+        </div>
+
+        <!-- Honeypot (spam protection) -->
+        <div class="zw-honeypot">
+          <input type="text" name="zw_hp" tabindex="-1" />
+          <input type="hidden" name="zw_t" />
+        </div>
+
+        <!-- Status message -->
+        <div id="contact-status" class="zw-form-group"></div>
+
+        <!-- Submit button -->
+        <div class="zw-form-group">
+          <button
+            type="submit"
+            id="contact-submit"
+            class="zw-btn zw-btn--primary zw-btn--large"
+          >
+            Send Message
+          </button>
+        </div>
+
+      </form>
+    </article>
 
   </main>
 
