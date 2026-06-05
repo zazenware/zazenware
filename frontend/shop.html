@@ -1,21 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-CA">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Shop — zazenware</title>
-  <meta name="description" content="Shop all zazenware shirts, back patches, and paper prints. Bundle any three for $5 off." />
+  <meta
+    name="description"
+    content="Shop zazenware shirts, back patches, and paper prints. Bundle one shirt, one patch, and one print for $5 off."
+  >
 
   <script src="/scripts/theme-init.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
     rel="stylesheet"
-  />
+  >
 
-  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/main.css">
 
   <script type="module" src="/scripts/partials.js"></script>
   <script type="module" src="/scripts/theme.js"></script>
@@ -25,62 +29,110 @@
   <!-- Shop page script — fetches /api/designs and renders Shirt/Patch/Print cards -->
   <script type="module" src="/scripts/shop.js"></script>
 </head>
-<body>
 
+<body>
   <div id="site-header"></div>
 
-  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: var(--zw-space-8);">
 
-    <section class="zw-hero">
-      <div class="zw-hero__eyebrow">Everything in one place</div>
-      <h1 class="zw-hero__title zw-display">shop</h1>
-      <p class="zw-hero__sub">
-        Shirts $25 CAD · patches $10 · prints $10. Mix any three (one shirt + one patch + one print) and the bundle takes $5 off.
-      </p>
+    <!-- HERO -->
+    <section aria-labelledby="shop-title">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <p class="zw-text-small zw-text-muted">everything in one place</p>
+
+          <h1 id="shop-title" class="zw-display">shop</h1>
+
+          <p>
+            Shirts are $25 CAD, back patches are $10 CAD, and paper prints are $10 CAD.
+            Bundle one shirt, one patch, and one print to take $5 off the order.
+          </p>
+
+          <p class="zw-text-muted zw-text-small">
+            Not every design is available in every format. Some designs may be art, shirt, and patch only.
+          </p>
+        </div>
+      </article>
     </section>
 
-    <!-- Jump nav -->
-    <nav aria-label="Shop sections" class="zw-cluster">
-      <a href="#shirts" class="zw-btn zw-btn--primary zw-btn--small">Shirts</a>
-      <a href="#patches" class="zw-btn zw-btn--primary zw-btn--small">Patches</a>
-      <a href="#prints" class="zw-btn zw-btn--primary zw-btn--small">Prints</a>
-    </nav>
+    <!-- JUMP NAV -->
+    <section aria-labelledby="shop-nav-heading">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack-sm">
+          <h2 id="shop-nav-heading" class="zw-card__title zw-display">jump to section</h2>
+
+          <nav aria-label="Shop sections" class="zw-cluster">
+            <a href="#shirts" class="zw-btn zw-btn--primary zw-btn--small">Shirts</a>
+            <a href="#patches" class="zw-btn zw-btn--primary zw-btn--small">Patches</a>
+            <a href="#prints" class="zw-btn zw-btn--primary zw-btn--small">Prints</a>
+          </nav>
+        </div>
+      </article>
+    </section>
 
     <!-- SHIRTS -->
     <section id="shirts" class="zw-shop-section zw-stack" aria-labelledby="shirts-heading">
-      <h2 id="shirts-heading" class="zw-display" style="font-size: 2rem;">shirts</h2>
-      <article class="zw-panel zw-prose">
-        <p>$25 CAD each. Size and colour required before adding to cart.</p>
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack-sm">
+          <p class="zw-text-small zw-text-muted">wearable art</p>
+          <h2 id="shirts-heading" class="zw-card__title zw-display">shirts</h2>
+          <p>
+            $25 CAD each. Select a size and colour before adding a shirt to cart.
+          </p>
+        </div>
       </article>
+
       <div id="shirts-grid" class="zw-grid" data-shop-grid="shirts" aria-label="Shirts">
-        <article class="zw-panel" aria-busy="true">
-          <p class="zw-text-muted zw-text-small">Loading shirts…</p>
+        <article class="zw-card" aria-busy="true">
+          <div class="zw-card__body">
+            <p class="zw-text-muted zw-text-small">Loading shirts…</p>
+          </div>
         </article>
       </div>
     </section>
 
     <!-- PATCHES -->
     <section id="patches" class="zw-shop-section zw-stack" aria-labelledby="patches-heading">
-      <h2 id="patches-heading" class="zw-display" style="font-size: 2rem;">patches</h2>
-      <article class="zw-panel zw-prose">
-        <p>$10 CAD each. Add directly — no size or colour selection.</p>
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack-sm">
+          <p class="zw-text-small zw-text-muted">jackets · bags · battle vests</p>
+          <h2 id="patches-heading" class="zw-card__title zw-display">patches</h2>
+          <p>
+            $10 CAD each. Back patches add directly to cart with no size or colour selection.
+          </p>
+        </div>
       </article>
+
       <div id="patches-grid" class="zw-grid" data-shop-grid="patches" aria-label="Patches">
-        <article class="zw-panel" aria-busy="true">
-          <p class="zw-text-muted zw-text-small">Loading patches…</p>
+        <article class="zw-card" aria-busy="true">
+          <div class="zw-card__body">
+            <p class="zw-text-muted zw-text-small">Loading patches…</p>
+          </div>
         </article>
       </div>
     </section>
 
     <!-- PRINTS -->
     <section id="prints" class="zw-shop-section zw-stack" aria-labelledby="prints-heading">
-      <h2 id="prints-heading" class="zw-display" style="font-size: 2rem;">prints</h2>
-      <article class="zw-panel zw-prose">
-        <p>$10 CAD each. Add directly — no variants.</p>
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack-sm">
+          <p class="zw-text-small zw-text-muted">paper versions</p>
+          <h2 id="prints-heading" class="zw-card__title zw-display">prints</h2>
+          <p>
+            $10 CAD each. Paper prints add directly to cart with no variants.
+          </p>
+
+          <p class="zw-text-muted zw-text-small">
+            Only designs with an active print option appear in this section.
+          </p>
+        </div>
       </article>
+
       <div id="prints-grid" class="zw-grid" data-shop-grid="prints" aria-label="Prints">
-        <article class="zw-panel" aria-busy="true">
-          <p class="zw-text-muted zw-text-small">Loading prints…</p>
+        <article class="zw-card" aria-busy="true">
+          <div class="zw-card__body">
+            <p class="zw-text-muted zw-text-small">Loading prints…</p>
+          </div>
         </article>
       </div>
     </section>
@@ -88,6 +140,5 @@
   </main>
 
   <div id="site-footer"></div>
-
 </body>
 </html>
