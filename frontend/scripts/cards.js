@@ -13,6 +13,11 @@
      - Each product card includes a "Go to cart" link.
      - It is hidden while the cart is empty.
      - It appears on all product cards once the cart contains at least one item.
+
+   Image oracle:
+     - Design / patch / print: /assets/images/{slug}/{slug}-design.png
+     - Shirt black default:    stored in shirts.image_url
+     - Shirt white variant:    /assets/images/{slug}/{slug}-shirt-white.png
    ============================================================================ */
 
 import { el, formatMoney } from "./format.js";
@@ -23,22 +28,76 @@ const SHIRT_COLORS = ["Black", "White"];
 
 const CART_HREF = "/cart.html";
 
-/* ─── Shared helpers ──────────────────────────────────────────────────── */
+/* ─── Shared image helpers ────────────────────────────────────────────── */
 
-function shirtImageUrl(slug, color) {
-  return `/images/${slug}/${slug}-shirt-${String(color).toLowerCase()}.png`;
+function designImageUrl(design) {
+  return cleanPath(
+    design?.image_url ||
+    `/assets/images/${design?.slug}/${design?.slug}-design.png`
+  );
 }
 
-function cardImage(src, alt) {
+function productImage(product, fallback = "") {
+  return cleanPath(product?.image_url || product?.image || fallback || "");
+}
+
+function shirtImageUrl(design, shirt, color) {
+  const c = String(color || "Black").trim().toLowerCase();
+
+  if (c === "black") {
+    return productImage(
+      shirt,
+      `/assets/images/${design.slug}/${design.slug}-shirt-black.png`,
+    );
+  }
+
+  if (c === "white") {
+    return cleanPath(
+      shirt?.white_image_url ||
+      shirt?.image_url_white ||
+      shirt?.shirt_white_image_url ||
+      `/assets/images/${design.slug}/${design.slug}-shirt-white.png`,
+    );
+  }
+
+  return productImage(shirt, designImageUrl(design));
+}
+
+/**
+ * Normalize older bad paths if they sneak in from stale data.
+ * Oracle path is /assets/images/...
+ */
+function cleanPath(path) {
+  const p = String(path || "").trim();
+
+  if (p.startsWith("/images/")) {
+    return p.replace("/images/", "/assets/images/");
+  }
+
+  return p;
+}
+
+function cardImage(src, alt, fallbackSrc = "") {
+  const safeSrc = cleanPath(src);
+  const safeFallback = cleanPath(fallbackSrc);
+
   return el("div", { class: "zw-card__image zw-img-frame zw-aspect-square" }, [
     el("img", {
-      src: src || "",
+      src: safeSrc,
       alt: alt || "",
       loading: "lazy",
       decoding: "async",
+      onError: (event) => {
+        if (!safeFallback) return;
+        if (event.currentTarget.src.endsWith(safeFallback)) return;
+
+        event.currentTarget.src = safeFallback;
+      },
     }),
   ]);
 }
+
+/* ─── Shared product helpers ──────────────────────────────────────────── */
 
 function productId(product) {
   return Number(product?.id ?? product?.product_id);
@@ -48,8 +107,8 @@ function priceCents(product) {
   return Number(product?.unit_price_cents ?? product?.price_cents);
 }
 
-function productImage(product, fallback = "") {
-  return product?.image_url || product?.image || fallback || "";
+function productName(design, label) {
+  return `${design.name} — ${label}`;
 }
 
 function cartHasItems() {
@@ -96,7 +155,6 @@ function flashStatus(statusEl, text, variant = "success") {
   }, 4000);
 }
 
-/* Keep all card-level Go to Cart links synced with cart state. */
 document.addEventListener("zw:cart-updated", syncGoToCartLinks);
 
 window.addEventListener("storage", (event) => {
@@ -139,7 +197,11 @@ export function renderDesignCard(design) {
     class: "zw-card zw-design-card",
     dataset: { slug: design.slug },
   }, [
-    cardImage(design.image_url, design.alt_text),
+    cardImage(
+      designImageUrl(design),
+      design.alt_text,
+      "",
+    ),
 
     el("div", { class: "zw-card__body zw-stack" }, [
       el("h3", { class: "zw-card__title zw-display" }, [design.name]),
@@ -167,10 +229,13 @@ export function renderShirtCard(design) {
   let selectedColor = null;
 
   const helperId = `shirt-helper-${design.slug}`;
+  const fallbackImg = designImageUrl(design);
+  const initialShirtImg = shirtImageUrl(design, shirt, "Black");
 
   const cardImg = cardImage(
-    shirtImageUrl(design.slug, "Black"),
-    `${design.name} shirt`,
+    initialShirtImg,
+    shirt.alt_text || `${design.name} shirt`,
+    fallbackImg,
   );
 
   const imgEl = cardImg.querySelector("img");
@@ -212,7 +277,7 @@ export function renderShirtCard(design) {
         updatePressed(event.currentTarget, colorButtons);
 
         if (imgEl) {
-          imgEl.src = shirtImageUrl(design.slug, color);
+          imgEl.src = shirtImageUrl(design, shirt, color);
           imgEl.alt = `${design.name} shirt in ${color}`;
         }
 
@@ -310,8 +375,9 @@ export function renderPatchCard(design) {
     },
   }, [
     cardImage(
-      productImage(patch, design.image_url),
+      productImage(patch, designImageUrl(design)),
       patch.alt_text || `${design.name} patch`,
+      designImageUrl(design),
     ),
 
     el("div", { class: "zw-card__body zw-stack" }, [
@@ -363,8 +429,9 @@ export function renderPrintCard(design) {
     },
   }, [
     cardImage(
-      productImage(print, design.image_url),
+      productImage(print, designImageUrl(design)),
       print.alt_text || `${design.name} print`,
+      designImageUrl(design),
     ),
 
     el("div", { class: "zw-card__body zw-stack" }, [
@@ -408,10 +475,10 @@ function handleAddShirt(design, shirt, size, color, statusEl) {
       product_id: productId(shirt),
       product_type: "shirt",
       design_slug: design.slug,
-      name: `${design.name} — Shirt`,
+      name: productName(design, "Shirt"),
       unit_price_cents: priceCents(shirt),
       quantity: 1,
-      image_url: shirtImageUrl(design.slug, color),
+      image_url: shirtImageUrl(design, shirt, color),
       size,
       color,
     });
@@ -435,10 +502,10 @@ function handleAddSimple(design, product, type, label, statusEl) {
       product_id: productId(product),
       product_type: type,
       design_slug: design.slug,
-      name: `${design.name} — ${label}`,
+      name: productName(design, label),
       unit_price_cents: priceCents(product),
       quantity: 1,
-      image_url: productImage(product, design.image_url),
+      image_url: productImage(product, designImageUrl(design)),
     });
 
     syncGoToCartLinks();
