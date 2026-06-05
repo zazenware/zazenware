@@ -370,9 +370,67 @@ VALUES (
   'Zazen Tree Roots design as a paper print.'
 );
 
+-- =============================================================================
+-- DESIGN 11 — Turtle Island
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'turtle-island',
+  'Turtle Island',
+  'Cracked shell, forest ring, and lavender earth.',
+  '/assets/images/turtle-island/turtle-island-design.png',
+  'Turtle Island painting with a cracked circular black shell form, lavender background, dotted border, and surrounding tree silhouettes.',
+  5
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'turtle-island'),
+  '/assets/images/turtle-island/turtle-island-shirt-black.png',
+  'Turtle Island design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'turtle-island'),
+  '/assets/images/turtle-island/turtle-island-design.png',
+  'Turtle Island design as a back patch.'
+);
+
+-- No print row for Turtle Island.
+
 
 -- =============================================================================
--- Health summary (run verify.sql to see this in full)
+-- DESIGN 12 — Sunset Pines
+-- =============================================================================
+INSERT INTO designs (slug, name, short_description, image_url, alt_text, display_order)
+VALUES (
+  'sunset-pines',
+  'Sunset Pines',
+  'Orange sky, dotted stars, black earth forms, and northern trees.',
+  '/assets/images/sunset-pines/sunset-pines-design.png',
+  'Sunset Pines painting with an orange and purple sunset sky, dotted stars, black land forms, and pine tree silhouettes.',
+  6
+);
+
+INSERT INTO shirts (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'sunset-pines'),
+  '/assets/images/sunset-pines/sunset-pines-shirt-black.png',
+  'Sunset Pines design on a black t-shirt.'
+);
+
+INSERT INTO patches (design_id, image_url, alt_text)
+VALUES (
+  (SELECT id FROM designs WHERE slug = 'sunset-pines'),
+  '/assets/images/sunset-pines/sunset-pines-design.png',
+  'Sunset Pines design as a back patch.'
+);
+
+-- No print row for Sunset Pines.
+
+-- =============================================================================
+-- OUTDATED OUTDATED OUTDATED Health summary (run verify.sql to see this in full)
 -- =============================================================================
 -- Expected after this script:
 --   designs:  10 rows (all is_active = true)
