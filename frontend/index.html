@@ -1,229 +1,422 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en-CA" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>zazenware | underground art, shirts, patches, and prints</title>
+
+  <title>zazenware — artist-run art, shirts, patches, prints, and music-linked design</title>
   <meta
     name="description"
-    content="zazenware is an independent art shop for original visual art, shirts, back patches, prints, and local design work.">
+    content="zazenware is an artist-run shop for original visual art, shirts, back patches, paper prints, local design work, and connected music projects including Sibling and Dirtfight."
+  >
 
+  <link rel="icon" href="/assets/images/ui/favicon.png">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturCook:wght@700&display=swap"
-    rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
+    rel="stylesheet"
+  >
 
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/home.css">
+  <!-- Shared CSS only. No home.css. -->
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/utilities.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/main.css">
 </head>
 
 <body>
   <div id="site-header"></div>
 
   <main id="main-content" tabindex="-1">
-    <section class="zw-section zw-home-hero" aria-labelledby="home-title">
+    <!-- HERO -->
+    <section class="zw-section">
       <div class="zw-container">
-        <div class="zw-hero zw-home-hero__panel zw-reveal">
-          <div class="zw-home-hero__copy zw-flow">
-            <span class="zw-kicker">independent art shop</span>
+        <div class="zw-block-accent zw-stack">
+          <p class="zw-text-small zw-text-muted">
+            artist-run merch · original art · music-linked design · canada only for now
+          </p>
 
-            <h1 id="home-title" class="zw-home-hero__title">
-              wear the signal.
-            </h1>
+          <h1 class="zw-display">zazenware</h1>
 
-            <p class="zw-home-hero__lead">
-              zazenware is a small underground art project for shirts, back patches,
-              prints, and strange visual work with punk, metal, folk, and hip hop energy.
-            </p>
+          <p class="zw-lead">
+            original visual art turned into shirts, back patches, and paper prints.
+            small-run, independent, handmade-minded work for people drawn to strange symbols,
+            underground music, punk edges, metal grit, folk horror, and human-made objects.
+          </p>
 
-            <div class="zw-hero__actions" aria-label="Primary homepage actions">
-              <a class="zw-button zw-button--primary" href="/shop.html">enter shop</a>
-              <a class="zw-button zw-button--secondary" href="/art.html">view art</a>
-              <a class="zw-button zw-button--ghost" href="/contact.html">request design work</a>
-            </div>
+          <div class="zw-cluster">
+            <a class="zw-btn zw-btn--primary" href="/shop.html">Shop now</a>
+            <a class="zw-btn zw-btn--secondary" href="/art.html">View art archive</a>
+            <a class="zw-btn zw-btn--secondary" href="/contact.html">Contact</a>
           </div>
-
-          <aside class="zw-signal-console" aria-label="zazenware signal selector">
-            <p class="zw-signal-console__eyebrow">current signal</p>
-
-            <div class="zw-signal-console__screen" aria-live="polite">
-              <h2 id="signal-title">shop wall</h2>
-              <p id="signal-copy">
-                browse shirts, patches, and prints from the same design families.
-              </p>
-              <a id="signal-link" href="/shop.html">follow signal</a>
-            </div>
-
-            <div class="zw-signal-console__controls" role="group" aria-label="Change homepage signal">
-              <button class="zw-signal-button is-active" type="button" data-zw-signal="shop">
-                shop
-              </button>
-              <button class="zw-signal-button" type="button" data-zw-signal="art">
-                art
-              </button>
-              <button class="zw-signal-button" type="button" data-zw-signal="bands">
-                bands
-              </button>
-              <button class="zw-signal-button" type="button" data-zw-signal="support">
-                support
-              </button>
-            </div>
-          </aside>
         </div>
       </div>
     </section>
 
-    <section class="zw-section zw-section--tight" aria-labelledby="home-paths-title">
+    <!-- WHAT THIS IS -->
+    <section class="zw-section">
       <div class="zw-container">
-        <div class="zw-home-section-heading zw-reveal">
-          <span class="zw-kicker">choose a door</span>
-          <h2 id="home-paths-title">start where the signal catches.</h2>
+        <div class="zw-section-heading zw-stack-sm">
+          <h2 class="zw-display">what this is</h2>
           <p>
-            zazenware keeps the front door simple: art first, shop second,
-            custom design work when it makes sense.
+            zazenware is a small artist-run shop and design project. The work begins as visual art,
+            then branches into wearable, printable, and music-adjacent forms.
           </p>
         </div>
 
-        <div class="zw-grid zw-card-grid zw-home-paths">
-          <a class="zw-home-path zw-link-card zw-tilt-card zw-reveal" href="/art.html">
-            <span class="zw-home-path__number">01</span>
-            <h3>art archive</h3>
-            <p>view the visual work before choosing a shirt, patch, or print.</p>
-            <span class="zw-home-path__action">view art →</span>
-          </a>
+        <div class="zw-card-grid">
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title zw-display">art first</h3>
+              <p>
+                The art archive shows the parent designs before they become products.
+                It is the visual root of the project.
+              </p>
+              <p>
+                <a class="zw-btn zw-btn--secondary zw-btn--small" href="/art.html">Browse art</a>
+              </p>
+            </div>
+          </article>
 
-          <a class="zw-home-path zw-link-card zw-tilt-card zw-reveal" href="/shop.html">
-            <span class="zw-home-path__number">02</span>
-            <h3>shop wall</h3>
-            <p>browse available shirts, back patches, and paper prints.</p>
-            <span class="zw-home-path__action">enter shop →</span>
-          </a>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title zw-display">merch second</h3>
+              <p>
+                Shirts, patches, and prints are treated as design-family branches,
+                not disposable products.
+              </p>
+              <p>
+                <a class="zw-btn zw-btn--secondary zw-btn--small" href="/shop.html">Browse shop</a>
+              </p>
+            </div>
+          </article>
 
-          <a class="zw-home-path zw-link-card zw-tilt-card zw-reveal" href="/contact.html">
-            <span class="zw-home-path__number">03</span>
-            <h3>local work</h3>
-            <p>ask about artwork, band designs, printing, or order questions.</p>
-            <span class="zw-home-path__action">contact →</span>
-          </a>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title zw-display">music connected</h3>
+              <p>
+                The visual world overlaps with Sibling, Dirtfight, local bands,
+                underground scenes, and project-based design work.
+              </p>
+              <p>
+                <a class="zw-btn zw-btn--secondary zw-btn--small" href="#music">Music section</a>
+              </p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="zw-section zw-home-feature" aria-labelledby="home-feature-title">
+    <!-- SHOP PATHS -->
+    <section class="zw-section">
       <div class="zw-container">
-        <div class="zw-home-feature__panel zw-reveal">
-          <div class="zw-home-feature__copy zw-flow">
-            <span class="zw-kicker">one design, many forms</span>
-            <h2 id="home-feature-title">shirts, patches, prints.</h2>
-            <p>
-              Each zazenware design can live as wearable art, back-patch energy,
-              or a paper print. The backend remains the source of truth, so the
-              homepage points visitors toward the real shop data.
-            </p>
-          </div>
+        <div class="zw-section-heading zw-stack-sm">
+          <h2 class="zw-display">shop paths</h2>
+          <p>
+            The shop is split into three simple sections. Shirts require size and colour before
+            adding to cart. Patches and prints add directly.
+          </p>
+        </div>
 
-          <div class="zw-home-format-grid" aria-label="zazenware product formats">
-            <a class="zw-home-format zw-reveal" href="/shop.html#shirts">
-              <span>shirt</span>
-              <strong>$25</strong>
-            </a>
+        <div class="zw-card-grid">
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title zw-display">shirts</h3>
+              <p>
+                $25 CAD each. Select size and colour before adding to cart.
+              </p>
+              <p>
+                <a class="zw-btn zw-btn--primary zw-btn--small" href="/shop.html#shirts">View shirts</a>
+              </p>
+            </div>
+          </article>
 
-            <a class="zw-home-format zw-reveal" href="/shop.html#patches">
-              <span>back patch</span>
-              <strong>$10</strong>
-            </a>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title zw-display">patches</h3>
+              <p>
+                $10 CAD each. Direct add-to-cart. No size or colour variants.
+              </p>
+              <p>
+                <a class="zw-btn zw-btn--primary zw-btn--small" href="/shop.html#patches">View patches</a>
+              </p>
+            </div>
+          </article>
 
-            <a class="zw-home-format zw-reveal" href="/shop.html#prints">
-              <span>paper print</span>
-              <strong>$10</strong>
-            </a>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title zw-display">prints</h3>
+              <p>
+                $10 CAD each. Paper versions of selected designs.
+              </p>
+              <p>
+                <a class="zw-btn zw-btn--primary zw-btn--small" href="/shop.html#prints">View prints</a>
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN FAMILY MODEL -->
+    <section class="zw-section">
+      <div class="zw-container">
+        <div class="zw-block zw-stack">
+          <p class="zw-text-small zw-text-muted">design-family model</p>
+
+          <h2 class="zw-display">one image, many forms</h2>
+
+          <p>
+            A zazenware design can exist as a parent artwork, a shirt graphic, a back patch,
+            and a paper print. The art page shows the archive side. The shop page shows
+            what can currently be ordered.
+          </p>
+
+          <div class="zw-cluster">
+            <a class="zw-btn zw-btn--primary" href="/art.html">View parent artwork</a>
+            <a class="zw-btn zw-btn--secondary" href="/shop.html">View available products</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="zw-section zw-section--tight" aria-labelledby="home-process-title">
+    <!-- ORDERING FLOW -->
+    <section class="zw-section">
       <div class="zw-container">
-        <div class="zw-home-process zw-reveal">
-          <div class="zw-home-section-heading">
-            <span class="zw-kicker">how it works</span>
-            <h2 id="home-process-title">small shop rhythm.</h2>
-            <p>
-              Simple browsing, direct checkout, human follow-up, and no fake storefront noise.
-            </p>
-          </div>
+        <div class="zw-section-heading zw-stack-sm">
+          <h2 class="zw-display">how ordering works</h2>
+          <p>
+            The checkout flow is intentionally simple. Orders are submitted through the site,
+            then paid manually by Interac e-transfer.
+          </p>
+        </div>
 
-          <ol class="zw-home-steps" role="list">
-            <li class="zw-home-step zw-reveal">
-              <span>browse</span>
-              <p>look through the art and shop pages.</p>
-            </li>
+        <div class="zw-card-grid">
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title">1. choose items</h3>
+              <p>
+                Add shirts, patches, or prints to cart. Shirts need size and colour first.
+              </p>
+            </div>
+          </article>
 
-            <li class="zw-home-step zw-reveal">
-              <span>cart</span>
-              <p>choose your product format, size, and colour where needed.</p>
-            </li>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title">2. submit order</h3>
+              <p>
+                Enter customer details and a Canadian shipping address. The backend confirms
+                the final total.
+              </p>
+            </div>
+          </article>
 
-            <li class="zw-home-step zw-reveal">
-              <span>order</span>
-              <p>submit the order and receive payment instructions.</p>
-            </li>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title">3. send payment</h3>
+              <p>
+                Send an Interac e-transfer to <strong>payments@zazenware.com</strong> and include
+                the order number.
+              </p>
+            </div>
+          </article>
 
-            <li class="zw-home-step zw-reveal">
-              <span>confirm</span>
-              <p>orders are handled directly and fulfilled with care.</p>
-            </li>
-          </ol>
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack-sm">
+              <h3 class="zw-card__title">4. order is matched</h3>
+              <p>
+                Once payment is matched manually, the order can move from pending payment toward
+                production and fulfillment.
+              </p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="zw-section zw-section--tight zw-sibling-band" aria-labelledby="sibling-title">
+    <!-- SHIPPING / POLICIES -->
+    <section class="zw-section">
       <div class="zw-container">
-        <div class="zw-sibling-banner zw-reveal">
-          <div class="zw-sibling-banner__mark" aria-hidden="true">
-            sibling
-          </div>
+        <div class="zw-card">
+          <div class="zw-card__body zw-stack">
+            <h2 class="zw-display">pricing, shipping, and policies</h2>
 
-          <div class="zw-sibling-banner__copy">
-            <span class="zw-kicker">connected project</span>
-            <h2 id="sibling-title">from zazenware to sibling.</h2>
-            <p>
-              zazenware is the shop signal. sibling is the broader art and music identity:
-              songs, visual work, process, archive, and future creative releases.
-            </p>
-          </div>
+            <div class="zw-card-grid">
+              <div class="zw-stack-sm">
+                <h3>canada only</h3>
+                <p>
+                  Orders are currently Canada only. Country is fixed to CA during checkout.
+                </p>
+              </div>
 
-          <a class="zw-button zw-button--secondary" href="https://siblingart.com" rel="me">
-            visit sibling
-          </a>
+              <div class="zw-stack-sm">
+                <h3>ontario shipping</h3>
+                <p>
+                  Ontario shipping is free.
+                </p>
+              </div>
+
+              <div class="zw-stack-sm">
+                <h3>other provinces</h3>
+                <p>
+                  Other Canadian provinces and territories use flat-rate shipping.
+                </p>
+              </div>
+
+              <div class="zw-stack-sm">
+                <h3>manual payment</h3>
+                <p>
+                  Payment is matched manually after e-transfer. Orders begin as pending payment.
+                </p>
+              </div>
+            </div>
+
+            <div class="zw-cluster">
+              <a class="zw-btn zw-btn--secondary" href="/shipping.html">Shipping policy</a>
+              <a class="zw-btn zw-btn--secondary" href="/returns.html">Returns</a>
+              <a class="zw-btn zw-btn--secondary" href="/terms.html">Terms of Sale</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="zw-section zw-home-video-section" aria-labelledby="home-video-title">
+    <!-- LOCAL DESIGN WORK -->
+    <section class="zw-section">
       <div class="zw-container">
-        <div class="zw-video-card zw-reveal">
-          <div class="zw-video-card__body">
-            <span class="zw-kicker">watch</span>
-            <h2 id="home-video-title">sibling signal.</h2>
-            <p>
-              A video window into the connected art and music world behind the shop.
-            </p>
-          </div>
+        <div class="zw-block-accent zw-stack">
+          <p class="zw-text-small zw-text-muted">bands · artists · small projects</p>
 
-          <div
-            class="zw-video-loader"
-            data-zw-youtube="Hw0PJMLIXQM"
-            data-zw-youtube-title="sibling video">
-            <button class="zw-video-loader__button" type="button">
-              <span class="zw-video-loader__play" aria-hidden="true">▶</span>
-              <span class="zw-video-loader__text">
-                play sibling video
-              </span>
-            </button>
+          <h2 class="zw-display">local design work</h2>
+
+          <p>
+            zazenware can also be a contact point for local bands, artists, and small projects
+            looking for artwork, shirt graphics, patch concepts, logo-like symbols, poster art,
+            or help adapting an existing design into a printable format.
+          </p>
+
+          <p>
+            Use the contact page for custom work questions, order issues, collaboration ideas,
+            or general project inquiries.
+          </p>
+
+          <div class="zw-cluster">
+            <a class="zw-btn zw-btn--primary" href="/contact.html">Start contact</a>
+            <a class="zw-btn zw-btn--secondary" href="/art.html">View visual style</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MUSIC SECTION -->
+    <section class="zw-section" id="music">
+      <div class="zw-container">
+        <div class="zw-section-heading zw-stack-sm">
+          <p class="zw-text-small zw-text-muted">connected music projects</p>
+          <h2 class="zw-display">music signals</h2>
+          <p>
+            zazenware connects back to music, performance, design, and local creative work.
+            These two projects are part of that wider world.
+          </p>
+        </div>
+
+        <div class="zw-card-grid">
+          <!-- SIBLING -->
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack">
+              <div class="zw-stack-sm">
+                <p class="zw-text-small zw-text-muted">project one</p>
+                <h3 class="zw-card__title zw-display">sibling</h3>
+                <p>
+                  Sibling is the wider art and music identity connected to zazenware.
+                  zazenware focuses on visual art objects and merch, while Sibling holds
+                  more of the broader creative signal.
+                </p>
+              </div>
+
+              <div
+                class="zw-img-frame"
+                style="aspect-ratio: 16 / 9; width: 100%; overflow: hidden;"
+              >
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/Hw0PJMLIXQM"
+                  title="Sibling video"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  style="width: 100%; height: 100%; border: 0;"
+                ></iframe>
+              </div>
+
+              <div class="zw-cluster">
+                <a
+                  class="zw-btn zw-btn--primary zw-btn--small"
+                  href="https://www.youtube.com/@sibbythehuman"
+                  rel="noopener noreferrer"
+                >
+                  Sibling channel ↗
+                </a>
+
+                <a
+                  class="zw-btn zw-btn--secondary zw-btn--small"
+                  href="https://www.youtube.com/watch?v=Hw0PJMLIXQM"
+                  rel="noopener noreferrer"
+                >
+                  Open video ↗
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- DIRTFIGHT -->
+          <article class="zw-card">
+            <div class="zw-card__body zw-stack">
+              <div class="zw-stack-sm">
+                <p class="zw-text-small zw-text-muted">project two</p>
+                <h3 class="zw-card__title zw-display">dirtfight</h3>
+                <p>
+                  Dirtfight is another music project connected to the broader underground,
+                  local, heavy, noisy, human-made side of the zazenware world.
+                </p>
+              </div>
+
+              <div
+                class="zw-img-frame"
+                style="aspect-ratio: 16 / 9; width: 100%; overflow: hidden;"
+              >
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/XY2q7RBDtFM"
+                  title="Dirtfight video"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  style="width: 100%; height: 100%; border: 0;"
+                ></iframe>
+              </div>
+
+              <div class="zw-cluster">
+                <a
+                  class="zw-btn zw-btn--primary zw-btn--small"
+                  href="https://www.youtube.com/@dirtfight2882"
+                  rel="noopener noreferrer"
+                >
+                  Dirtfight channel ↗
+                </a>
+
+                <a
+                  class="zw-btn zw-btn--secondary zw-btn--small"
+                  href="https://www.youtube.com/watch?v=XY2q7RBDtFM"
+                  rel="noopener noreferrer"
+                >
+                  Open video ↗
+                </a>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -231,9 +424,10 @@
 
   <div id="site-footer"></div>
 
-  <script src="/assets/scripts/partials.js" defer></script>
-  <script src="/assets/scripts/theme.js" defer></script>
-  <script src="/assets/scripts/nav.js" defer></script>
-  <script src="/assets/scripts/home.js" defer></script>
+  <!-- Shared scripts only. No home.js. -->
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
 </body>
 </html>
