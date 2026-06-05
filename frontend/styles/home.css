@@ -1,0 +1,432 @@
+/* ============================================================================
+   zazenware — home.css
+   ----------------------------------------------------------------------------
+   Homepage-only polish for the redesigned interactive index page.
+============================================================================ */
+
+.zw-home-hero {
+  padding-top: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.zw-home-hero__panel {
+  display: grid;
+  gap: var(--zw-space-7);
+}
+
+@media (min-width: 920px) {
+  .zw-home-hero__panel {
+    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.75fr);
+    align-items: center;
+  }
+}
+
+.zw-home-hero__title {
+  max-width: 9ch;
+  text-transform: lowercase;
+}
+
+.zw-home-hero__lead {
+  max-width: 58ch;
+  color: var(--zw-text-soft);
+  font-size: var(--zw-step-1);
+}
+
+.zw-signal-console {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: var(--zw-space-5);
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-xl);
+  background:
+    radial-gradient(circle at 80% 10%, rgb(200 182 255 / 0.28), transparent 14rem),
+    var(--zw-gradient-dark-band);
+  color: var(--zw-cream);
+  box-shadow: var(--zw-shadow-lg);
+}
+
+.zw-signal-console::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(90deg, rgb(245 236 217 / 0.16) 1px, transparent 1px),
+    linear-gradient(0deg, rgb(245 236 217 / 0.16) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.zw-signal-console > * {
+  position: relative;
+  z-index: 1;
+}
+
+.zw-signal-console__eyebrow {
+  margin: 0 0 var(--zw-space-3);
+  color: rgb(245 236 217 / 0.72);
+  font-size: var(--zw-step--1);
+  text-transform: lowercase;
+}
+
+.zw-signal-console__screen {
+  min-height: 16rem;
+  padding: var(--zw-space-5);
+  border: var(--zw-border-size) solid rgb(245 236 217 / 0.84);
+  border-radius: var(--zw-radius-lg);
+  background: rgb(0 0 0 / 0.32);
+  box-shadow: inset 0 0 40px rgb(200 182 255 / 0.12);
+}
+
+.zw-signal-console__screen h2 {
+  color: var(--zw-cream);
+  font-size: var(--zw-step-3);
+}
+
+.zw-signal-console__screen p {
+  margin-top: var(--zw-space-3);
+  color: rgb(245 236 217 / 0.82);
+}
+
+.zw-signal-console__screen a {
+  display: inline-flex;
+  margin-top: var(--zw-space-5);
+  color: var(--zw-lavender);
+  font-weight: 700;
+}
+
+.zw-signal-console__controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--zw-space-3);
+  margin-top: var(--zw-space-4);
+}
+
+.zw-signal-button {
+  min-height: 42px;
+  border: var(--zw-border-size) solid rgb(245 236 217 / 0.82);
+  border-radius: var(--zw-radius-pill);
+  background: transparent;
+  color: var(--zw-cream);
+  text-transform: lowercase;
+  transition:
+    transform var(--zw-speed-1) var(--zw-ease),
+    background-color var(--zw-speed-2) var(--zw-ease),
+    color var(--zw-speed-2) var(--zw-ease);
+}
+
+.zw-signal-button:hover,
+.zw-signal-button.is-active {
+  background: var(--zw-lavender);
+  color: var(--zw-black);
+  transform: translateY(-2px);
+}
+
+.zw-home-section-heading {
+  display: grid;
+  gap: var(--zw-space-4);
+  max-width: 58rem;
+  margin-bottom: var(--zw-space-7);
+}
+
+.zw-home-section-heading p {
+  max-width: 64ch;
+  color: var(--zw-text-soft);
+  font-size: var(--zw-step-1);
+}
+
+.zw-home-path {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+
+  display: grid;
+  min-height: 18rem;
+  gap: var(--zw-space-4);
+  align-content: end;
+  padding: var(--zw-space-5);
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-xl);
+  background:
+    radial-gradient(circle at 100% 0%, rgb(200 182 255 / 0.34), transparent 13rem),
+    linear-gradient(145deg, var(--zw-surface), var(--zw-surface-2));
+  box-shadow: var(--zw-shadow-md);
+  transform:
+    perspective(900px)
+    rotateX(var(--tilt-y))
+    rotateY(var(--tilt-x))
+    translateY(0);
+  transition:
+    transform var(--zw-speed-3) var(--zw-ease),
+    box-shadow var(--zw-speed-3) var(--zw-ease);
+}
+
+.zw-home-path:hover {
+  box-shadow: var(--zw-shadow-glow);
+}
+
+.zw-home-path__number {
+  width: fit-content;
+  padding: 0.25rem 0.55rem;
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-pill);
+  background: var(--zw-action);
+  color: var(--zw-action-text);
+  box-shadow: var(--zw-shadow-xs);
+  font-size: var(--zw-step--1);
+}
+
+.zw-home-path h3 {
+  font-size: var(--zw-step-3);
+}
+
+.zw-home-path p {
+  color: var(--zw-text-soft);
+}
+
+.zw-home-path__action {
+  color: var(--zw-link);
+  font-weight: 700;
+}
+
+.zw-home-feature__panel,
+.zw-home-process {
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-xl);
+  background:
+    radial-gradient(circle at 0% 0%, rgb(111 29 50 / 0.2), transparent 18rem),
+    var(--zw-surface);
+  box-shadow: var(--zw-shadow-lg);
+}
+
+.zw-home-feature__panel {
+  display: grid;
+  gap: var(--zw-space-7);
+}
+
+@media (min-width: 920px) {
+  .zw-home-feature__panel {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+.zw-home-feature__copy p {
+  color: var(--zw-text-soft);
+  font-size: var(--zw-step-1);
+}
+
+.zw-home-format-grid {
+  display: grid;
+  gap: var(--zw-space-4);
+}
+
+.zw-home-format {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zw-space-4);
+  min-height: 5.5rem;
+  padding: var(--zw-space-5);
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-lg);
+  background: var(--zw-surface-2);
+  color: var(--zw-text);
+  box-shadow: var(--zw-shadow-sm);
+  text-decoration: none;
+  transition:
+    transform var(--zw-speed-2) var(--zw-ease),
+    box-shadow var(--zw-speed-2) var(--zw-ease),
+    background-color var(--zw-speed-2) var(--zw-ease);
+}
+
+.zw-home-format:hover {
+  background: var(--zw-accent);
+  color: var(--zw-black);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--zw-border);
+}
+
+.zw-home-format span {
+  font-family: var(--zw-font-display);
+  font-size: var(--zw-step-2);
+  line-height: 1;
+}
+
+.zw-home-format strong {
+  font-size: var(--zw-step-1);
+}
+
+.zw-home-steps {
+  display: grid;
+  gap: var(--zw-space-4);
+  counter-reset: zw-step;
+}
+
+@media (min-width: 760px) {
+  .zw-home-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.zw-home-step {
+  counter-increment: zw-step;
+  position: relative;
+  min-height: 11rem;
+  padding: var(--zw-space-5);
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-lg);
+  background: var(--zw-surface-2);
+  box-shadow: var(--zw-shadow-sm);
+}
+
+.zw-home-step::before {
+  content: counter(zw-step, decimal-leading-zero);
+  position: absolute;
+  top: var(--zw-space-4);
+  right: var(--zw-space-4);
+  color: var(--zw-muted);
+  font-size: var(--zw-step--1);
+}
+
+.zw-home-step span {
+  display: block;
+  margin-bottom: var(--zw-space-3);
+  font-family: var(--zw-font-display);
+  font-size: var(--zw-step-2);
+  line-height: 1;
+}
+
+.zw-home-step p {
+  color: var(--zw-text-soft);
+}
+
+.zw-sibling-band {
+  padding-bottom: 0;
+}
+
+.zw-sibling-banner {
+  display: grid;
+  gap: var(--zw-space-5);
+  align-items: center;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: var(--zw-border-size) solid var(--zw-border);
+  border-radius: var(--zw-radius-xl);
+  background:
+    radial-gradient(circle at 16% 40%, rgb(200 182 255 / 0.28), transparent 18rem),
+    var(--zw-gradient-dark-band);
+  color: var(--zw-cream);
+  box-shadow: var(--zw-shadow-lg);
+}
+
+@media (min-width: 860px) {
+  .zw-sibling-banner {
+    grid-template-columns: minmax(10rem, 0.55fr) minmax(0, 1fr) auto;
+  }
+}
+
+.zw-sibling-banner__mark {
+  width: fit-content;
+  padding: 0.45rem 1rem 0.25rem;
+  border: var(--zw-border-size) solid var(--zw-cream);
+  border-radius: var(--zw-radius-pill);
+  color: var(--zw-lavender);
+  font-family: var(--zw-font-display);
+  font-size: clamp(2.25rem, 7vw, 5.4rem);
+  line-height: 0.9;
+  transform: rotate(-2deg);
+}
+
+.zw-sibling-banner h2 {
+  color: var(--zw-cream);
+}
+
+.zw-sibling-banner p {
+  max-width: 58ch;
+  color: rgb(245 236 217 / 0.82);
+}
+
+.zw-home-video-section {
+  padding-top: var(--zw-space-7);
+}
+
+.zw-video-loader {
+  position: relative;
+  overflow: hidden;
+  min-height: 18rem;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(circle at 50% 45%, rgb(200 182 255 / 0.22), transparent 13rem),
+    linear-gradient(135deg, #080605, #211412);
+}
+
+.zw-video-loader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  background-image:
+    linear-gradient(90deg, rgb(245 236 217 / 0.22) 1px, transparent 1px),
+    linear-gradient(0deg, rgb(245 236 217 / 0.22) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.zw-video-loader__button {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  gap: var(--zw-space-3);
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--zw-cream);
+}
+
+.zw-video-loader__play {
+  display: grid;
+  place-items: center;
+  width: clamp(4.25rem, 12vw, 7rem);
+  aspect-ratio: 1;
+  border: var(--zw-border-size) solid var(--zw-cream);
+  border-radius: 50%;
+  background: var(--zw-maroon);
+  box-shadow: 0 0 0 8px rgb(200 182 255 / 0.18);
+  transform: translateX(0);
+  transition:
+    transform var(--zw-speed-2) var(--zw-ease-bounce),
+    box-shadow var(--zw-speed-2) var(--zw-ease);
+}
+
+.zw-video-loader__text {
+  padding: 0.35rem 0.85rem;
+  border: var(--zw-border-size) solid var(--zw-cream);
+  border-radius: var(--zw-radius-pill);
+  background: rgb(0 0 0 / 0.38);
+  text-transform: lowercase;
+}
+
+.zw-video-loader__button:hover .zw-video-loader__play {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 13px rgb(200 182 255 / 0.25);
+}
+
+.zw-video-loader iframe {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 520px) {
+  .zw-signal-console__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .zw-sibling-banner .zw-button {
+    width: 100%;
+  }
+}
