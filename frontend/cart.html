@@ -1,36 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-CA">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Cart — zazenware</title>
-  <meta name="description" content="Review your zazenware order and proceed to e-transfer checkout." />
+  <meta name="description" content="Review your zazenware order and proceed to e-transfer checkout.">
 
   <script src="/scripts/theme-init.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
     rel="stylesheet"
-  />
+  >
 
-  <link rel="stylesheet" href="/styles/main.css" />
-
-  <script type="module" src="/scripts/partials.js"></script>
-  <script type="module" src="/scripts/theme.js"></script>
-  <script type="module" src="/scripts/nav.js"></script>
-  <script type="module" src="/scripts/cart-badge.js"></script>
-
-  <!-- Cart page script -->
-  <script type="module" src="/scripts/cart-page.js"></script>
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/cart.css">
 </head>
-<body>
 
+<body>
   <div id="site-header"></div>
 
-  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
-
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: var(--zw-space-8);">
     <!-- HERO -->
     <section class="zw-hero">
       <div class="zw-hero__eyebrow">Review your order</div>
@@ -40,72 +33,34 @@
       </p>
     </section>
 
-    <!-- CART LAYOUT: items on left, summary on right -->
-    <div class="zw-cart-layout">
-
-      <!-- CART ITEMS SECTION -->
-      <section class="zw-stack">
-        <h2 style="font-size: 1.75rem; margin: 0;">Items in cart</h2>
-        
-        <!-- Cart items list (populated by JavaScript) -->
-        <ul id="cart-items" class="zw-cart-items">
-          <li>
-            <article class="zw-panel" style="text-align: center;">
-              <p class="zw-text-muted">Your cart is empty</p>
-              <p style="margin-top: var(--zw-space-3);">
-                <a href="/shop.html" class="zw-btn zw-btn--primary zw-btn--small">Continue shopping</a>
-              </p>
-            </article>
-          </li>
-        </ul>
-      </section>
-
-      <!-- ORDER SUMMARY SIDEBAR -->
-      <aside>
-        <article class="zw-panel" style="position: sticky; top: var(--zw-space-5);">
-          <h2 style="font-size: 1.5rem; margin: 0 0 var(--zw-space-4) 0;">Order total</h2>
-          
-          <!-- Summary lines -->
-          <div id="order-summary" style="display: grid; gap: var(--zw-space-2); margin-bottom: var(--zw-space-4);">
-            <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
-              <span>Subtotal</span>
-              <span id="summary-subtotal">$0.00</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
-              <span>Shipping</span>
-              <span id="summary-shipping">$0.00</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
-              <span>Discount</span>
-              <span id="summary-discount" style="color: var(--zw-success);">$0.00</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
-              <span>Tax (HST)</span>
-              <span id="summary-tax">$0.00</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; padding-top: var(--zw-space-2); border-top: var(--zw-border-width) solid var(--zw-border);">
-              <span>Total</span>
-              <span id="summary-total">$0.00</span>
-            </div>
-          </div>
-
-          <!-- Checkout button -->
-          <button id="checkout-btn" class="zw-btn zw-btn--primary zw-btn--full" style="margin-bottom: var(--zw-space-3);">
-            Proceed to checkout
-          </button>
-
-          <!-- Continue shopping link -->
-          <p style="margin: 0; text-align: center;">
-            <a href="/shop.html" class="zw-btn zw-btn--ghost zw-btn--small">Continue shopping</a>
+    <!-- CART APP AREA -->
+    <section class="zw-stack">
+      <!-- Empty state controlled by cart-page.js -->
+      <div id="cart-empty" hidden>
+        <article class="zw-panel" style="text-align: center;">
+          <p>Your cart is empty</p>
+          <p style="margin-top: var(--zw-space-3);">
+            <a href="/shop.html" class="zw-btn zw-btn--primary zw-btn--small">
+              Continue shopping
+            </a>
           </p>
         </article>
-      </aside>
+      </div>
 
-    </div>
+      <!-- Items controlled by cart-page.js -->
+      <div id="cart-items" hidden></div>
 
+      <!-- Summary + checkout form controlled by cart-page.js -->
+      <aside id="cart-summary" hidden></aside>
+    </section>
   </main>
 
   <div id="site-footer"></div>
 
+  <script type="module" src="/scripts/partials.js"></script>
+  <script type="module" src="/scripts/theme.js"></script>
+  <script type="module" src="/scripts/nav.js"></script>
+  <script type="module" src="/scripts/cart-badge.js"></script>
+  <script type="module" src="/scripts/cart-page.js"></script>
 </body>
 </html>
