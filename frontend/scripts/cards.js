@@ -1,34 +1,34 @@
 /* ============================================================================
    zazenware — cards.js
    ----------------------------------------------------------------------------
-   Pure render functions for the four card types.
+   Pure render functions for product/design cards.
 
-   E-16 change: ShirtCard now swaps the card image when Black or White is
-   selected. URL is constructed from the design slug + chosen colour:
-     /assets/images/{slug}/{slug}-shirt-{black|white}.png
+   Card rules:
+     - DesignCard: parent artwork. No Add to Cart.
+     - ShirtCard: size + colour required before Add to Cart enables.
+     - PatchCard: immediate Add to Cart, no variants.
+     - PrintCard: immediate Add to Cart, no variants.
 
-   Card rules (Master Spec § 9):
-     - DesignCard:  parent artwork. Never has Add to Cart.
-                    Shows View Shirt / View Patch / View Print links.
-     - ShirtCard:   size + colour required before Add to Cart enables.
-                    Sizes: S, M, L, XL, 2XL.  Colours: Black, White.
-                    Card image swaps to match selected colour.
-     - PatchCard:   immediate Add to Cart, no variants, uses design image.
-     - PrintCard:   immediate Add to Cart, no variants, uses design image.
+   Cart shortcut:
+     - Each product card includes a "Go to cart" link.
+     - It is hidden while the cart is empty.
+     - It appears on all product cards once the cart contains at least one item.
    ============================================================================ */
 
 import { el, formatMoney } from "./format.js";
-import { addToCart } from "./cart.js";
+import { addToCart, readCart, totalQuantity } from "./cart.js";
 
-const SHIRT_SIZES  = ["S", "M", "L", "XL", "2XL"];
+const SHIRT_SIZES = ["S", "M", "L", "XL", "2XL"];
 const SHIRT_COLORS = ["Black", "White"];
 
-/** Shirt image URL derived from slug + colour. */
+const CART_HREF = "/cart.html";
+
+/* ─── Shared helpers ──────────────────────────────────────────────────── */
+
 function shirtImageUrl(slug, color) {
-  return `/assets/images/${slug}/${slug}-shirt-${color.toLowerCase()}.png`;
+  return `/images/${slug}/${slug}-shirt-${String(color).toLowerCase()}.png`;
 }
 
-/** Common card image wrapper with lazy loading. */
 function cardImage(src, alt) {
   return el("div", { class: "zw-card__image zw-img-frame zw-aspect-square" }, [
     el("img", {
@@ -40,40 +40,119 @@ function cardImage(src, alt) {
   ]);
 }
 
-/* ─── DesignCard (Art page) ──────────────────────────────────────────── */
+function productId(product) {
+  return Number(product?.id ?? product?.product_id);
+}
+
+function priceCents(product) {
+  return Number(product?.unit_price_cents ?? product?.price_cents);
+}
+
+function productImage(product, fallback = "") {
+  return product?.image_url || product?.image || fallback || "";
+}
+
+function cartHasItems() {
+  return totalQuantity(readCart()) > 0;
+}
+
+function makeGoToCartLink() {
+  return el("a", {
+    href: CART_HREF,
+    class: "zw-btn zw-btn--secondary",
+    dataset: { zwGoToCart: "true" },
+    hidden: !cartHasItems(),
+  }, ["Go to cart"]);
+}
+
+function syncGoToCartLinks() {
+  const show = cartHasItems();
+
+  document.querySelectorAll("[data-zw-go-to-cart]").forEach((link) => {
+    link.hidden = !show;
+  });
+}
+
+function updatePressed(clicked, group) {
+  for (const button of group) {
+    button.setAttribute("aria-pressed", button === clicked ? "true" : "false");
+  }
+}
+
+function flashStatus(statusEl, text, variant = "success") {
+  if (!statusEl) return;
+
+  statusEl.textContent = "";
+
+  const cls = variant === "error"
+    ? "zw-status zw-status--error"
+    : "zw-status zw-status--success";
+
+  statusEl.append(el("div", { class: cls }, [text]));
+
+  clearTimeout(statusEl._flashTimer);
+  statusEl._flashTimer = setTimeout(() => {
+    statusEl.textContent = "";
+  }, 4000);
+}
+
+/* Keep all card-level Go to Cart links synced with cart state. */
+document.addEventListener("zw:cart-updated", syncGoToCartLinks);
+
+window.addEventListener("storage", (event) => {
+  if (event.key === "zw-cart") syncGoToCartLinks();
+});
+
+/* ─── DesignCard: Art page ────────────────────────────────────────────── */
 
 export function renderDesignCard(design) {
   const actions = [];
-  if (design.shirt) actions.push(
-    el("a", {
-      href: `/shop.html#shirt-${design.slug}`,
-      class: "zw-btn zw-btn--secondary zw-btn--small",
-    }, ["View shirt"])
-  );
-  if (design.patch) actions.push(
-    el("a", {
-      href: `/shop.html#patch-${design.slug}`,
-      class: "zw-btn zw-btn--secondary zw-btn--small",
-    }, ["View patch"])
-  );
-  if (design.print) actions.push(
-    el("a", {
-      href: `/shop.html#print-${design.slug}`,
-      class: "zw-btn zw-btn--secondary zw-btn--small",
-    }, ["View print"])
-  );
+
+  if (design.shirt) {
+    actions.push(
+      el("a", {
+        href: `/shop.html#shirt-${design.slug}`,
+        class: "zw-btn zw-btn--secondary zw-btn--small",
+      }, ["View shirt"]),
+    );
+  }
+
+  if (design.patch) {
+    actions.push(
+      el("a", {
+        href: `/shop.html#patch-${design.slug}`,
+        class: "zw-btn zw-btn--secondary zw-btn--small",
+      }, ["View patch"]),
+    );
+  }
+
+  if (design.print) {
+    actions.push(
+      el("a", {
+        href: `/shop.html#print-${design.slug}`,
+        class: "zw-btn zw-btn--secondary zw-btn--small",
+      }, ["View print"]),
+    );
+  }
 
   return el("article", {
     class: "zw-card zw-design-card",
     dataset: { slug: design.slug },
   }, [
     cardImage(design.image_url, design.alt_text),
-    el("div", { class: "zw-card__body" }, [
+
+    el("div", { class: "zw-card__body zw-stack" }, [
       el("h3", { class: "zw-card__title zw-display" }, [design.name]),
-      el("p", { class: "zw-card__meta" }, [design.short_description || ""]),
+
+      el("p", { class: "zw-card__meta" }, [
+        design.short_description || "",
+      ]),
+
       actions.length > 0
         ? el("div", { class: "zw-card__actions zw-cluster" }, actions)
-        : el("p", { class: "zw-text-muted zw-text-small" }, ["Not available right now."]),
+        : el("p", { class: "zw-text-muted zw-text-small" }, [
+            "Not available right now.",
+          ]),
     ]),
   ]);
 }
@@ -84,29 +163,39 @@ export function renderShirtCard(design) {
   const shirt = design.shirt;
   if (!shirt) return null;
 
-  let selectedSize  = null;
+  let selectedSize = null;
   let selectedColor = null;
+
   const helperId = `shirt-helper-${design.slug}`;
 
-  // Build card image element first so we can grab the <img> for swapping
   const cardImg = cardImage(
-    shirtImageUrl(design.slug, "black"),   // default to black
-    `${design.name} shirt`
+    shirtImageUrl(design.slug, "Black"),
+    `${design.name} shirt`,
   );
+
   const imgEl = cardImg.querySelector("img");
+
+  const statusEl = el("div", {
+    class: "zw-card__status",
+    role: "status",
+    "aria-live": "polite",
+  });
 
   const sizeButtons = SHIRT_SIZES.map((size) =>
     el("button", {
       type: "button",
       class: "zw-btn zw-btn--small zw-variant-btn",
       "aria-pressed": "false",
-      dataset: { variantType: "size", variant: size },
-      onClick: (e) => {
-        selectedSize = size;
-        updatePressed(e.currentTarget, sizeButtons);
-        refreshAdd();
+      dataset: {
+        variantType: "size",
+        variant: size,
       },
-    }, [size])
+      onClick: (event) => {
+        selectedSize = size;
+        updatePressed(event.currentTarget, sizeButtons);
+        refreshAddButton();
+      },
+    }, [size]),
   );
 
   const colorButtons = SHIRT_COLORS.map((color) =>
@@ -114,18 +203,22 @@ export function renderShirtCard(design) {
       type: "button",
       class: "zw-btn zw-btn--small zw-variant-btn",
       "aria-pressed": "false",
-      dataset: { variantType: "color", variant: color },
-      onClick: (e) => {
+      dataset: {
+        variantType: "color",
+        variant: color,
+      },
+      onClick: (event) => {
         selectedColor = color;
-        updatePressed(e.currentTarget, colorButtons);
-        // ── Swap card image to match chosen colour ──────────────────────
+        updatePressed(event.currentTarget, colorButtons);
+
         if (imgEl) {
           imgEl.src = shirtImageUrl(design.slug, color);
           imgEl.alt = `${design.name} shirt in ${color}`;
         }
-        refreshAdd();
+
+        refreshAddButton();
       },
-    }, [color])
+    }, [color]),
   );
 
   const addBtn = el("button", {
@@ -134,7 +227,9 @@ export function renderShirtCard(design) {
     disabled: true,
     "aria-disabled": "true",
     "aria-describedby": helperId,
-    onClick: () => handleAddShirt(design, shirt, selectedSize, selectedColor, statusEl),
+    onClick: () => {
+      handleAddShirt(design, shirt, selectedSize, selectedColor, statusEl);
+    },
   }, ["Add to cart"]);
 
   const helper = el("p", {
@@ -142,41 +237,53 @@ export function renderShirtCard(design) {
     id: helperId,
   }, ["Select size and colour first."]);
 
-  const statusEl = el("div", {
-    class: "zw-card__status",
-    role: "status",
-    "aria-live": "polite",
-  });
+  function refreshAddButton() {
+    const ok = Boolean(selectedSize && selectedColor);
 
-  function refreshAdd() {
-    const ok = selectedSize && selectedColor;
     addBtn.disabled = !ok;
     addBtn.setAttribute("aria-disabled", ok ? "false" : "true");
-    if (ok) helper.textContent = `Selected: size ${selectedSize}, colour ${selectedColor}.`;
-    else    helper.textContent = "Select size and colour first.";
+
+    helper.textContent = ok
+      ? `Selected: size ${selectedSize}, colour ${selectedColor}.`
+      : "Select size and colour first.";
   }
 
   return el("article", {
     class: "zw-card zw-shirt-card",
     id: `shirt-${design.slug}`,
-    dataset: { slug: design.slug, productId: String(shirt.id) },
+    dataset: {
+      slug: design.slug,
+      productId: String(productId(shirt)),
+    },
   }, [
-    cardImg,   // ← the swappable image element
+    cardImg,
+
     el("div", { class: "zw-card__body zw-stack" }, [
       el("h3", { class: "zw-card__title zw-display" }, [design.name]),
-      el("p", { class: "zw-card__price" }, [formatMoney(shirt.unit_price_cents)]),
+
+      el("p", { class: "zw-card__price" }, [
+        formatMoney(priceCents(shirt)),
+      ]),
+
       el("div", { class: "zw-card__variants zw-stack-sm" }, [
         el("fieldset", { class: "zw-variant-group" }, [
           el("legend", { class: "zw-variant-legend" }, ["Size"]),
           el("div", { class: "zw-cluster zw-cluster-sm" }, sizeButtons),
         ]),
+
         el("fieldset", { class: "zw-variant-group" }, [
           el("legend", { class: "zw-variant-legend" }, ["Colour"]),
           el("div", { class: "zw-cluster zw-cluster-sm" }, colorButtons),
         ]),
       ]),
+
       helper,
-      el("div", { class: "zw-card__actions" }, [addBtn]),
+
+      el("div", { class: "zw-card__actions zw-cluster" }, [
+        addBtn,
+        makeGoToCartLink(),
+      ]),
+
       statusEl,
     ]),
   ]);
@@ -197,20 +304,39 @@ export function renderPatchCard(design) {
   return el("article", {
     class: "zw-card zw-patch-card",
     id: `patch-${design.slug}`,
-    dataset: { slug: design.slug, productId: String(patch.id) },
+    dataset: {
+      slug: design.slug,
+      productId: String(productId(patch)),
+    },
   }, [
-    cardImage(patch.image_url, patch.alt_text || `${design.name} patch`),
+    cardImage(
+      productImage(patch, design.image_url),
+      patch.alt_text || `${design.name} patch`,
+    ),
+
     el("div", { class: "zw-card__body zw-stack" }, [
       el("h3", { class: "zw-card__title zw-display" }, [design.name]),
-      el("p", { class: "zw-card__meta" }, [patch.size_label || ""]),
-      el("p", { class: "zw-card__price" }, [formatMoney(patch.unit_price_cents)]),
-      el("div", { class: "zw-card__actions" }, [
+
+      patch.size_label
+        ? el("p", { class: "zw-card__meta" }, [patch.size_label])
+        : null,
+
+      el("p", { class: "zw-card__price" }, [
+        formatMoney(priceCents(patch)),
+      ]),
+
+      el("div", { class: "zw-card__actions zw-cluster" }, [
         el("button", {
           type: "button",
           class: "zw-btn zw-btn--primary",
-          onClick: () => handleAddSimple(design, patch, "patch", "Back Patch", statusEl),
+          onClick: () => {
+            handleAddSimple(design, patch, "patch", "Back Patch", statusEl);
+          },
         }, ["Add to cart"]),
+
+        makeGoToCartLink(),
       ]),
+
       statusEl,
     ]),
   ]);
@@ -231,62 +357,71 @@ export function renderPrintCard(design) {
   return el("article", {
     class: "zw-card zw-print-card",
     id: `print-${design.slug}`,
-    dataset: { slug: design.slug, productId: String(print.id) },
+    dataset: {
+      slug: design.slug,
+      productId: String(productId(print)),
+    },
   }, [
-    cardImage(print.image_url, print.alt_text || `${design.name} print`),
+    cardImage(
+      productImage(print, design.image_url),
+      print.alt_text || `${design.name} print`,
+    ),
+
     el("div", { class: "zw-card__body zw-stack" }, [
       el("h3", { class: "zw-card__title zw-display" }, [design.name]),
-      el("p", { class: "zw-card__meta" }, [print.size_label || ""]),
-      el("p", { class: "zw-card__price" }, [formatMoney(print.unit_price_cents)]),
-      el("div", { class: "zw-card__actions" }, [
+
+      print.size_label
+        ? el("p", { class: "zw-card__meta" }, [print.size_label])
+        : null,
+
+      el("p", { class: "zw-card__price" }, [
+        formatMoney(priceCents(print)),
+      ]),
+
+      el("div", { class: "zw-card__actions zw-cluster" }, [
         el("button", {
           type: "button",
           class: "zw-btn zw-btn--primary",
-          onClick: () => handleAddSimple(design, print, "print", "Print", statusEl),
+          onClick: () => {
+            handleAddSimple(design, print, "print", "Print", statusEl);
+          },
         }, ["Add to cart"]),
+
+        makeGoToCartLink(),
       ]),
+
       statusEl,
     ]),
   ]);
 }
 
-/* ─── Helpers ────────────────────────────────────────────────────────── */
-
-function updatePressed(clicked, group) {
-  for (const b of group) b.setAttribute("aria-pressed", b === clicked ? "true" : "false");
-}
-
-function flashStatus(statusEl, text, variant = "success") {
-  statusEl.textContent = "";
-  const cls = variant === "error"
-    ? "zw-status zw-status--error"
-    : "zw-status zw-status--success";
-  statusEl.append(el("div", { class: cls }, [text]));
-  clearTimeout(statusEl._flashTimer);
-  statusEl._flashTimer = setTimeout(() => { statusEl.textContent = ""; }, 4000);
-}
+/* ─── Add handlers ───────────────────────────────────────────────────── */
 
 function handleAddShirt(design, shirt, size, color, statusEl) {
   if (!size || !color) {
     flashStatus(statusEl, "Select size and colour first.", "error");
     return;
   }
+
   try {
     addToCart({
-      product_id:       Number(shirt.id),
-      product_type:     "shirt",
-      design_slug:      design.slug,
-      name:             `${design.name} — Shirt`,
-      unit_price_cents: shirt.unit_price_cents,
-      quantity:         1,
-      image_url:        shirtImageUrl(design.slug, color),  // store the chosen colour image
+      product_id: productId(shirt),
+      product_type: "shirt",
+      design_slug: design.slug,
+      name: `${design.name} — Shirt`,
+      unit_price_cents: priceCents(shirt),
+      quantity: 1,
+      image_url: shirtImageUrl(design.slug, color),
       size,
       color,
     });
+
+    syncGoToCartLinks();
+
     flashStatus(
       statusEl,
       `Added: ${design.name} shirt, size ${size}, colour ${color}.`,
-      "success"
+      "success",
     );
   } catch (err) {
     console.error("[zw] addToCart failed:", err);
@@ -297,15 +432,22 @@ function handleAddShirt(design, shirt, size, color, statusEl) {
 function handleAddSimple(design, product, type, label, statusEl) {
   try {
     addToCart({
-      product_id:       Number(product.id),
-      product_type:     type,
-      design_slug:      design.slug,
-      name:             `${design.name} — ${label}`,
-      unit_price_cents: product.unit_price_cents,
-      quantity:         1,
-      image_url:        product.image_url,
+      product_id: productId(product),
+      product_type: type,
+      design_slug: design.slug,
+      name: `${design.name} — ${label}`,
+      unit_price_cents: priceCents(product),
+      quantity: 1,
+      image_url: productImage(product, design.image_url),
     });
-    flashStatus(statusEl, `Added: ${design.name} ${label.toLowerCase()}.`, "success");
+
+    syncGoToCartLinks();
+
+    flashStatus(
+      statusEl,
+      `Added: ${design.name} ${label.toLowerCase()}.`,
+      "success",
+    );
   } catch (err) {
     console.error("[zw] addToCart failed:", err);
     flashStatus(statusEl, "Couldn't add to cart. Please try again.", "error");
