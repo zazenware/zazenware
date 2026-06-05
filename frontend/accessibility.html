@@ -1,62 +1,280 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-CA">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Accessibility — zazenware</title>
-  <meta name="description" content="zazenware aims to meet WCAG 2.1 Level AA. If something doesn't work for you, please let us know." />
+  <meta
+    name="description"
+    content="zazenware aims to meet WCAG 2.1 Level AA. If something does not work for you, please let us know."
+  >
 
   <script src="/scripts/theme-init.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap"
     rel="stylesheet"
-  />
+  >
 
-  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/main.css">
 
   <script type="module" src="/scripts/partials.js"></script>
   <script type="module" src="/scripts/theme.js"></script>
   <script type="module" src="/scripts/nav.js"></script>
   <script type="module" src="/scripts/cart-badge.js"></script>
 </head>
-<body>
 
+<body>
   <div id="site-header"></div>
 
-  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: 2rem;">
+  <main id="main-content" class="zw-container zw-stack-xl" style="padding-block: var(--zw-space-8);">
 
     <!-- HERO -->
-    <section class="zw-hero">
+    <section class="zw-hero" aria-labelledby="accessibility-title">
       <div class="zw-hero__eyebrow">Inclusive design</div>
-      <h1 class="zw-hero__title zw-display">accessibility</h1>
+      <h1 id="accessibility-title" class="zw-hero__title zw-display">accessibility</h1>
       <p class="zw-hero__sub">
-        Our target is WCAG 2.1 Level AA across every page. If anything doesn't work for you, message us.
+        zazenware aims to meet WCAG 2.1 Level AA across every page. If something does not work
+        for you, please let us know.
       </p>
     </section>
 
+    <!-- POLICY DATE -->
+    <section aria-labelledby="accessibility-date">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack-sm">
+          <h2 id="accessibility-date" class="zw-card__title zw-display">policy date</h2>
+          <p>
+            <strong>Effective:</strong> May 26, 2026.
+            <strong>Last reviewed:</strong> May 26, 2026.
+          </p>
+        </div>
+      </article>
+    </section>
+
     <!-- COMMITMENT -->
-    <article class="zw-panel zw-prose">
-      <p style="color: var(--zw-text-muted); font-size: var(--zw-text-sm);"><strong>Effective:</strong> May 26, 2026</p>
-      <h2 style="font-size: 1.75rem; margin-top: var(--zw-space-4);">Our commitment</h2>
-      <p>
-        zazenware aims to meet the Web Content Accessibility Guidelines (WCAG) 2.1, Level AA, across every page of the site. Accessibility is a design value, not a checkbox — we want anyone who wants to browse our art or place an order to be able to do so.
-      </p>
-      <p>
-        We treat accessibility issues as bugs. If you encounter something that doesn't work, please tell us; we will work to fix it.
-      </p>
-    </article>
+    <section aria-labelledby="our-commitment">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="our-commitment" class="zw-card__title zw-display">our commitment</h2>
+
+          <p>
+            zazenware aims to meet the Web Content Accessibility Guidelines (WCAG) 2.1,
+            Level AA, across the site.
+          </p>
+
+          <p>
+            Accessibility is a design value, not a checkbox. We want people to be able to browse
+            the art, understand the products, use the cart, submit an order, and contact us without
+            unnecessary barriers.
+          </p>
+
+          <p>
+            We treat accessibility issues as bugs. If you encounter something that does not work,
+            please tell us and we will work to fix it.
+          </p>
+        </div>
+      </article>
+    </section>
 
     <!-- HOW WE BUILD -->
-    <article class="zw-panel zw-prose">
-      <h2 style="font-size: 1.75rem; margin-top: 0;">How we build for accessibility</h2>
-      <p>
-        The site is built with the following accessibility principles in mind:
-      </p>
-      <ul style="color: var(--zw-text-muted);">
-        <li><strong>Semantic HTML.</strong> Pages use proper landmarks (header, nav, main, footer), one h1 per page, and a sensible heading hierarchy.</li>
-        <li><strong>Keyboard navigation.</strong> Everything you can do with a mouse, you can do with the keyboard. Tab order matches visual order; menus, dropdowns, and the cart drawer are operable via Tab, Enter, Escape, and arrow keys.</li>
-        <li><strong>Visible focus.</strong> Every interactive control shows a clear focus outline when reached by keyboard.</li>
-        <li><strong>Skip link.</strong> The first focusable element on every page is "Skip to main content",
+    <section aria-labelledby="how-we-build">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="how-we-build" class="zw-card__title zw-display">how we build for accessibility</h2>
+
+          <p>
+            The site is built with the following accessibility principles in mind:
+          </p>
+
+          <ul>
+            <li>
+              <strong>Semantic HTML.</strong> Pages use landmarks such as header, nav, main,
+              and footer, with one main h1 per page and a sensible heading order.
+            </li>
+            <li>
+              <strong>Keyboard navigation.</strong> Interactive controls should be reachable and
+              usable with a keyboard.
+            </li>
+            <li>
+              <strong>Visible focus.</strong> Links, buttons, form fields, and controls should
+              show a visible focus state when reached by keyboard.
+            </li>
+            <li>
+              <strong>Readable contrast.</strong> Text should appear on visible blocks or panels,
+              not directly on low-contrast backgrounds.
+            </li>
+            <li>
+              <strong>Clear forms.</strong> Checkout and contact forms should use labels,
+              helper text, validation messages, and clear error summaries.
+            </li>
+            <li>
+              <strong>Meaningful images.</strong> Product and artwork images should use useful
+              alternative text when the image communicates important information.
+            </li>
+            <li>
+              <strong>Reduced motion awareness.</strong> The site avoids unnecessary motion and
+              should respect reduced-motion preferences where motion is used.
+            </li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- SHOPPING ACCESSIBILITY -->
+    <section aria-labelledby="shopping-accessibility">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="shopping-accessibility" class="zw-card__title zw-display">shopping accessibility</h2>
+
+          <p>
+            zazenware uses a simple shopping flow so customers can move from product browsing to
+            cart review without needing an account.
+          </p>
+
+          <ul>
+            <li>
+              Product cards use visible names, prices, images, and action buttons.
+            </li>
+            <li>
+              Shirt products require size and colour selection before the item can be added to cart.
+            </li>
+            <li>
+              The cart badge communicates cart quantity visually and through an accessible label.
+            </li>
+            <li>
+              The checkout form shows field-level errors and a top-of-form error summary.
+            </li>
+            <li>
+              Order confirmation pages display the order number, items, totals, and payment instructions.
+            </li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- KNOWN LIMITS -->
+    <section aria-labelledby="known-limits">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="known-limits" class="zw-card__title zw-display">known limits</h2>
+
+          <p>
+            zazenware is a small independent project, and the site will continue improving over time.
+            Some areas may still need refinement as the shop grows.
+          </p>
+
+          <p>
+            Current areas we expect to keep reviewing include:
+          </p>
+
+          <ul>
+            <li>image alternative text quality across all artwork and product images;</li>
+            <li>keyboard behaviour for navigation menus on different screen sizes;</li>
+            <li>screen reader clarity for cart updates and validation messages;</li>
+            <li>mobile layout readability;</li>
+            <li>colour contrast across both light and dark themes;</li>
+            <li>embedded third-party content, such as YouTube videos.</li>
+          </ul>
+
+          <p>
+            Third-party embeds may not be fully controlled by zazenware. Where possible, we provide
+            direct links so people can open the content on the original platform.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- TESTING -->
+    <section aria-labelledby="accessibility-testing">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="accessibility-testing" class="zw-card__title zw-display">testing approach</h2>
+
+          <p>
+            We plan to test accessibility as part of normal site quality control, not only at launch.
+          </p>
+
+          <p>
+            Testing may include:
+          </p>
+
+          <ul>
+            <li>keyboard-only navigation checks;</li>
+            <li>browser zoom and responsive layout checks;</li>
+            <li>light and dark theme contrast checks;</li>
+            <li>form validation checks;</li>
+            <li>screen reader spot checks;</li>
+            <li>automated accessibility scans where useful;</li>
+            <li>manual review of the main shopping and checkout flow.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section aria-labelledby="accessibility-feedback">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="accessibility-feedback" class="zw-card__title zw-display">accessibility feedback</h2>
+
+          <p>
+            If something on the site is hard to read, hard to navigate, hard to use with a keyboard,
+            difficult with assistive technology, or otherwise inaccessible, please contact us.
+          </p>
+
+          <p>
+            Email:
+            <a href="mailto:contact@zazenware.com">contact@zazenware.com</a>
+          </p>
+
+          <p>
+            Helpful details include:
+          </p>
+
+          <ul>
+            <li>the page or URL where the issue happened;</li>
+            <li>what you were trying to do;</li>
+            <li>what went wrong;</li>
+            <li>your browser and device, if you know them;</li>
+            <li>the assistive technology used, if any.</li>
+          </ul>
+
+          <p>
+            We will review accessibility feedback and prioritize fixes based on severity and impact.
+          </p>
+
+          <p>
+            <a class="zw-btn zw-btn--primary" href="/contact.html">Contact zazenware</a>
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ALTERNATE SUPPORT -->
+    <section aria-labelledby="alternate-support">
+      <article class="zw-card">
+        <div class="zw-card__body zw-stack">
+          <h2 id="alternate-support" class="zw-card__title zw-display">help placing an order</h2>
+
+          <p>
+            If the website does not work for you and you still want to place an order, email
+            <a href="mailto:contact@zazenware.com">contact@zazenware.com</a>.
+          </p>
+
+          <p>
+            We can help confirm product availability, order details, payment instructions,
+            and shipping information by email.
+          </p>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>
