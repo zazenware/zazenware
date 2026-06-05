@@ -2,95 +2,107 @@
    tokens.css — zazenware MVP1
    ----------------------------------------------------------------------------
    Palette + semantic CSS custom properties.
-   Both themes share a near-black page background.
-   Light = dusty lilac blocks, black text.
-   Dark  = deep crimson blocks, bone text.
-   Rule  : light block → black text · dark block → bone text.
-   DO NOT hard-code hex values in other CSS files — tokens only.
+
+   Theme direction:
+   - Both themes use a near-black page background.
+   - Light theme uses dusty lilac blocks with ink-black text.
+   - Dark theme uses deep crimson blocks with warm bone text.
+   - Components should use semantic tokens only.
    ============================================================ */
 
 /* -------------------------------------------------------
    RAW PALETTE
-   Named reference values. Components use semantic tokens.
 ------------------------------------------------------- */
+
 :root {
-  /* New block colours */
-  --zw-raw-lilac:        #A89EC8;   /* dusty lilac — light blocks     */
-  --zw-raw-lilac-deep:   #8880B4;   /* hover/deep lilac               */
-  --zw-raw-lilac-light:  #C0B8D8;   /* lighter lilac for surfaces     */
-  --zw-raw-crimson:      #5C1520;   /* deep crimson — dark blocks     */
-  --zw-raw-crimson-deep: #3D0E15;   /* hover/deep crimson             */
-  --zw-raw-crimson-mid:  #6E1A26;   /* slightly lighter crimson       */
+  /* Lilacs */
+  --zw-raw-lilac:        #A89EC8;
+  --zw-raw-lilac-deep:   #8880B4;
+  --zw-raw-lilac-light:  #C0B8D8;
+  --zw-raw-lilac-pale:   #D9D2EA;
+
+  /* Crimsons / maroons */
+  --zw-raw-crimson:      #5C1520;
+  --zw-raw-crimson-deep: #3D0E15;
+  --zw-raw-crimson-mid:  #6E1A26;
+  --zw-raw-crimson-soft: #7D2230;
 
   /* Neutrals */
-  --zw-raw-page-black:   #080808;   /* page background, both themes   */
-  --zw-raw-ink-black:    #0d0d0d;   /* text on light blocks           */
-  --zw-raw-bone:         #EDE0CC;   /* text on dark blocks            */
-  --zw-raw-bone-muted:   #C4B5A0;   /* muted bone for secondary text  */
+  --zw-raw-page-black:   #080808;
+  --zw-raw-black:        #000000;
+  --zw-raw-ink-black:    #0D0D0D;
+  --zw-raw-ink-muted:    #2A2535;
+  --zw-raw-bone:         #EDE0CC;
+  --zw-raw-bone-muted:   #C4B5A0;
 
-  /* Kept for focus rings / accents */
-  --zw-raw-lavender:     #B9A1FF;   /* focus ring colour, both themes */
+  /* Focus / special accents */
+  --zw-raw-lavender:     #B9A1FF;
 
   /* Status */
   --zw-raw-success:      #38A169;
-  --zw-raw-success-dark: #2D6A4F;
+  --zw-raw-success-dark: #1A3D2B;
   --zw-raw-error:        #E53E3E;
-  --zw-raw-error-dark:   #8B1A1A;
+  --zw-raw-error-dark:   #3D1A1A;
   --zw-raw-warning:      #C07928;
   --zw-raw-info:         #4A6FA5;
 }
 
 /* -------------------------------------------------------
    LIGHT THEME
-   Page background: black.
-   Blocks and surfaces: dusty lilac (#A89EC8).
-   Text on blocks: ink black.
-   Borders: ink black.
 ------------------------------------------------------- */
+
 :root,
 [data-theme="light"] {
+  color-scheme: light;
+
   /* Page */
   --zw-bg:              var(--zw-raw-page-black);
+  --zw-page-text:       var(--zw-raw-bone);
 
-  /* Surfaces — cards and content panels */
+  /* Surfaces */
   --zw-surface:         var(--zw-raw-lilac);
   --zw-surface-alt:     var(--zw-raw-lilac-deep);
+  --zw-surface-soft:    var(--zw-raw-lilac-light);
+  --zw-surface-strong:  var(--zw-raw-lilac-deep);
 
-  /* Primary block (header, hero, section headers) */
+  /* Content blocks */
   --zw-block:           var(--zw-raw-lilac);
   --zw-block-deep:      var(--zw-raw-lilac-deep);
+  --zw-block-soft:      var(--zw-raw-lilac-light);
   --zw-block-text:      var(--zw-raw-ink-black);
 
-  /* Body text (always sits on a block, so always ink) */
+  /* Text */
   --zw-text:            var(--zw-raw-ink-black);
-  --zw-text-muted:      #2A2535;
+  --zw-text-muted:      var(--zw-raw-ink-muted);
+  --zw-text-inverse:    var(--zw-raw-bone);
 
-  /* Borders */
+  /* Borders / shadows */
   --zw-border:          var(--zw-raw-ink-black);
+  --zw-border-muted:    color-mix(in srgb, var(--zw-raw-ink-black) 72%, transparent);
   --zw-shadow-color:    var(--zw-raw-ink-black);
 
-  /* Accent — crimson on lilac */
+  /* Accent */
   --zw-accent:          var(--zw-raw-crimson);
   --zw-accent-deep:     var(--zw-raw-crimson-deep);
+  --zw-accent-soft:     var(--zw-raw-crimson-mid);
   --zw-accent-text:     var(--zw-raw-bone);
 
   /* Links */
   --zw-link:            var(--zw-raw-crimson);
   --zw-link-hover:      var(--zw-raw-crimson-deep);
 
-  /* Forms */
+  /* Inputs */
   --zw-input-bg:        var(--zw-raw-lilac-light);
   --zw-input-border:    var(--zw-raw-ink-black);
   --zw-input-text:      var(--zw-raw-ink-black);
+  --zw-input-placeholder: color-mix(in srgb, var(--zw-raw-ink-black) 62%, transparent);
 
-  /* Focus */
-  --zw-focus-ring:      2px solid var(--zw-raw-lavender);
-  --zw-focus-offset:    3px;
-
-  /* Header / footer explicit tokens */
+  /* Header */
   --zw-header-bg:       var(--zw-raw-lilac);
   --zw-header-text:     var(--zw-raw-ink-black);
   --zw-header-border:   var(--zw-raw-ink-black);
+
+  /* Footer */
   --zw-footer-bg:       var(--zw-raw-lilac);
   --zw-footer-text:     var(--zw-raw-ink-black);
   --zw-footer-border:   var(--zw-raw-ink-black);
@@ -105,9 +117,16 @@
   --zw-btn-primary-bg:       var(--zw-raw-lilac-deep);
   --zw-btn-primary-text:     var(--zw-raw-ink-black);
   --zw-btn-primary-border:   var(--zw-raw-ink-black);
-  --zw-btn-secondary-bg:     var(--zw-raw-lilac-light);
-  --zw-btn-secondary-text:   var(--zw-raw-ink-black);
-  --zw-btn-secondary-border: var(--zw-raw-ink-black);
+  --zw-btn-primary-hover-bg: var(--zw-raw-lilac-light);
+
+  --zw-btn-secondary-bg:       var(--zw-raw-lilac-light);
+  --zw-btn-secondary-text:     var(--zw-raw-ink-black);
+  --zw-btn-secondary-border:   var(--zw-raw-ink-black);
+  --zw-btn-secondary-hover-bg: var(--zw-raw-lilac-deep);
+
+  --zw-btn-danger-bg:       var(--zw-raw-crimson);
+  --zw-btn-danger-text:     var(--zw-raw-bone);
+  --zw-btn-danger-border:   var(--zw-raw-ink-black);
 
   /* Badge */
   --zw-badge-bg:        var(--zw-raw-crimson);
@@ -118,64 +137,71 @@
   --zw-error:           var(--zw-raw-error);
   --zw-warning:         var(--zw-raw-warning);
   --zw-info:            var(--zw-raw-info);
-  --zw-success-bg:      #1A3D2B;
+
+  --zw-success-bg:      var(--zw-raw-success-dark);
   --zw-success-border:  var(--zw-raw-success);
   --zw-success-text:    var(--zw-raw-bone);
-  --zw-error-bg:        #3D1A1A;
+
+  --zw-error-bg:        var(--zw-raw-error-dark);
   --zw-error-border:    var(--zw-raw-error);
   --zw-error-text:      var(--zw-raw-bone);
 }
 
 /* -------------------------------------------------------
    DARK THEME
-   Page background: black.
-   Blocks and surfaces: deep crimson (#5C1520).
-   Text on blocks: warm bone.
-   Borders: bone.
 ------------------------------------------------------- */
+
 [data-theme="dark"] {
+  color-scheme: dark;
+
   /* Page */
   --zw-bg:              var(--zw-raw-page-black);
+  --zw-page-text:       var(--zw-raw-bone);
 
   /* Surfaces */
   --zw-surface:         var(--zw-raw-crimson);
   --zw-surface-alt:     var(--zw-raw-crimson-deep);
+  --zw-surface-soft:    var(--zw-raw-crimson-mid);
+  --zw-surface-strong:  var(--zw-raw-crimson-deep);
 
-  /* Primary block */
+  /* Content blocks */
   --zw-block:           var(--zw-raw-crimson);
   --zw-block-deep:      var(--zw-raw-crimson-deep);
+  --zw-block-soft:      var(--zw-raw-crimson-mid);
   --zw-block-text:      var(--zw-raw-bone);
 
-  /* Body text */
+  /* Text */
   --zw-text:            var(--zw-raw-bone);
   --zw-text-muted:      var(--zw-raw-bone-muted);
+  --zw-text-inverse:    var(--zw-raw-ink-black);
 
-  /* Borders */
+  /* Borders / shadows */
   --zw-border:          var(--zw-raw-bone);
+  --zw-border-muted:    color-mix(in srgb, var(--zw-raw-bone) 68%, transparent);
   --zw-shadow-color:    var(--zw-raw-bone);
 
-  /* Accent — lilac on crimson */
+  /* Accent */
   --zw-accent:          var(--zw-raw-lilac);
   --zw-accent-deep:     var(--zw-raw-lilac-deep);
+  --zw-accent-soft:     var(--zw-raw-lilac-light);
   --zw-accent-text:     var(--zw-raw-ink-black);
 
   /* Links */
   --zw-link:            var(--zw-raw-lilac-light);
   --zw-link-hover:      var(--zw-raw-lilac);
 
-  /* Forms */
+  /* Inputs */
   --zw-input-bg:        var(--zw-raw-crimson-mid);
   --zw-input-border:    var(--zw-raw-bone);
   --zw-input-text:      var(--zw-raw-bone);
+  --zw-input-placeholder: color-mix(in srgb, var(--zw-raw-bone) 62%, transparent);
 
-  /* Focus */
-  --zw-focus-ring:      2px solid var(--zw-raw-lavender);
-  --zw-focus-offset:    3px;
-
-  /* Header / footer */
+  /* Header */
   --zw-header-bg:       var(--zw-raw-crimson);
   --zw-header-text:     var(--zw-raw-bone);
   --zw-header-border:   var(--zw-raw-bone);
+
+  /* Footer */
   --zw-footer-bg:       var(--zw-raw-crimson);
   --zw-footer-text:     var(--zw-raw-bone);
   --zw-footer-border:   var(--zw-raw-bone);
@@ -190,9 +216,16 @@
   --zw-btn-primary-bg:       var(--zw-raw-crimson-mid);
   --zw-btn-primary-text:     var(--zw-raw-bone);
   --zw-btn-primary-border:   var(--zw-raw-bone);
-  --zw-btn-secondary-bg:     var(--zw-raw-crimson-deep);
-  --zw-btn-secondary-text:   var(--zw-raw-bone);
-  --zw-btn-secondary-border: var(--zw-raw-bone);
+  --zw-btn-primary-hover-bg: var(--zw-raw-crimson-soft);
+
+  --zw-btn-secondary-bg:       var(--zw-raw-crimson-deep);
+  --zw-btn-secondary-text:     var(--zw-raw-bone);
+  --zw-btn-secondary-border:   var(--zw-raw-bone);
+  --zw-btn-secondary-hover-bg: var(--zw-raw-crimson-mid);
+
+  --zw-btn-danger-bg:       var(--zw-raw-lilac);
+  --zw-btn-danger-text:     var(--zw-raw-ink-black);
+  --zw-btn-danger-border:   var(--zw-raw-bone);
 
   /* Badge */
   --zw-badge-bg:        var(--zw-raw-lilac);
@@ -203,79 +236,109 @@
   --zw-error:           var(--zw-raw-error);
   --zw-warning:         var(--zw-raw-warning);
   --zw-info:            var(--zw-raw-info);
+
   --zw-success-bg:      #0D2B1F;
   --zw-success-border:  var(--zw-raw-success);
   --zw-success-text:    var(--zw-raw-bone);
+
   --zw-error-bg:        #2B0D0D;
   --zw-error-border:    var(--zw-raw-error);
   --zw-error-text:      var(--zw-raw-bone);
 }
 
 /* -------------------------------------------------------
-   SHARED — theme-independent
-   Typography, spacing, layout, borders, shadows, z-index.
+   SHARED TOKENS
 ------------------------------------------------------- */
+
 :root {
   /* Typography */
   --zw-font-display: 'UnifrakturMaguntia', 'MedievalSharp', 'Pirata One', serif;
   --zw-font-body:    'Special Elite', 'Courier Prime', 'Cutive Mono', monospace;
 
   /* Type scale */
-  --zw-text-xs:   0.75rem;    /*  12px */
-  --zw-text-sm:   0.875rem;   /*  14px */
-  --zw-text-md:   1rem;       /*  16px */
-  --zw-text-base: 1.125rem;   /*  18px — body default */
-  --zw-text-lg:   1.25rem;    /*  20px */
-  --zw-text-xl:   1.5rem;     /*  24px */
-  --zw-text-2xl:  2rem;       /*  32px */
-  --zw-text-3xl:  2.5rem;     /*  40px */
-  --zw-text-4xl:  3rem;       /*  48px */
-  --zw-text-5xl:  3.75rem;    /*  60px */
+  --zw-text-xs:   0.75rem;
+  --zw-text-sm:   0.875rem;
+  --zw-text-md:   1rem;
+  --zw-text-base: 1.125rem;
+  --zw-text-lg:   1.25rem;
+  --zw-text-xl:   1.5rem;
+  --zw-text-2xl:  2rem;
+  --zw-text-3xl:  2.5rem;
+  --zw-text-4xl:  3rem;
+  --zw-text-5xl:  3.75rem;
+
+  /* Fluid display sizes */
+  --zw-display-sm: clamp(2rem, 7vw, 3.5rem);
+  --zw-display-md: clamp(3rem, 10vw, 5.5rem);
+  --zw-display-lg: clamp(3.5rem, 13vw, 7.5rem);
 
   /* Leading */
-  --zw-leading-tight:  1.25;
+  --zw-leading-tight:  1.15;
   --zw-leading-normal: 1.55;
   --zw-leading-loose:  1.75;
 
-  /* Spacing scale */
-  --zw-space-1:  0.25rem;    /*  4px  */
-  --zw-space-2:  0.5rem;     /*  8px  */
-  --zw-space-3:  0.75rem;    /* 12px  */
-  --zw-space-4:  1rem;       /* 16px  */
-  --zw-space-5:  1.25rem;    /* 20px  */
-  --zw-space-6:  1.5rem;     /* 24px  */
-  --zw-space-7:  1.75rem;    /* 28px  */
-  --zw-space-8:  2rem;       /* 32px  */
-  --zw-space-10: 2.5rem;     /* 40px  */
-  --zw-space-12: 3rem;       /* 48px  */
-  --zw-space-16: 4rem;       /* 64px  */
-  --zw-space-20: 5rem;       /* 80px  */
+  /* Spacing */
+  --zw-space-1:  0.25rem;
+  --zw-space-2:  0.5rem;
+  --zw-space-3:  0.75rem;
+  --zw-space-4:  1rem;
+  --zw-space-5:  1.25rem;
+  --zw-space-6:  1.5rem;
+  --zw-space-7:  1.75rem;
+  --zw-space-8:  2rem;
+  --zw-space-10: 2.5rem;
+  --zw-space-12: 3rem;
+  --zw-space-16: 4rem;
+  --zw-space-20: 5rem;
+  --zw-space-24: 6rem;
 
   /* Layout */
   --zw-container-max:    1200px;
+  --zw-container-wide:   1440px;
   --zw-container-narrow: 44rem;
   --zw-container-pad:    var(--zw-space-4);
   --zw-container-pad-md: var(--zw-space-8);
 
-  /* Borders */
-  --zw-border-width: 2px;
-  --zw-border-thick: 3px;      /* used as width in border shorthand */
+  /* Borders / radius */
+  --zw-border-width:       2px;
+  --zw-border-thick:       3px;
+  --zw-border-width-heavy: var(--zw-border-thick);
+  --zw-radius:             0;
+  --zw-radius-sm:          0;
+  --zw-radius-md:          0;
+  --zw-radius-lg:          0;
+  --zw-radius-pill:        999px;
 
-  /* Hard-shadow offsets (printed-layer aesthetic) */
+  /* Hard-shadow offsets */
+  --zw-shadow-xs: 2px 2px 0 0 var(--zw-shadow-color);
   --zw-shadow-sm: 3px 3px 0 0 var(--zw-shadow-color);
   --zw-shadow-md: 4px 4px 0 0 var(--zw-shadow-color);
   --zw-shadow-lg: 6px 6px 0 0 var(--zw-shadow-color);
-  --zw-shadow:    var(--zw-shadow-md);   /* default alias */
+  --zw-shadow-xl: 8px 8px 0 0 var(--zw-shadow-color);
+  --zw-shadow:    var(--zw-shadow-md);
+
+  /* Focus */
+  --zw-focus-ring:   2px solid var(--zw-raw-lavender);
+  --zw-focus-offset: 3px;
 
   /* Transitions */
   --zw-transition-fast: 120ms ease;
   --zw-transition-base: 200ms ease;
-  --zw-transition:      var(--zw-transition-base);   /* default alias */
+  --zw-transition-slow: 320ms ease;
+  --zw-transition:      var(--zw-transition-base);
 
-  /* Z-index scale */
+  /* Z-index */
   --zw-z-base:   1;
   --zw-z-header: 100;
   --zw-z-drawer: 200;
   --zw-z-modal:  300;
   --zw-z-toast:  400;
+
+  /* Component aliases */
+  --zw-section-gap: var(--zw-space-16);
+  --zw-panel-pad:   var(--zw-space-7);
+  --zw-card-pad:    var(--zw-space-5);
+
+  /* Overlay / scrim */
+  --zw-overlay-bg: color-mix(in srgb, var(--zw-raw-page-black) 78%, transparent);
 }
